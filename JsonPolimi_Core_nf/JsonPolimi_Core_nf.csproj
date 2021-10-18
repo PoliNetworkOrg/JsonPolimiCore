@@ -81,6 +81,7 @@
     <Compile Include="Tipi\Riga.cs" />
     <Compile Include="Tipi\SomiglianzaClasse.cs" />
     <Compile Include="Utils\Dates.cs" />
+    <Compile Include="Utils\JsonBuilder.cs" />
     <Compile Include="Utils\ODS_Reader.cs" />
   </ItemGroup>
   <ItemGroup>
