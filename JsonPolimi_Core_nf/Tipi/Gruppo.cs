@@ -1630,7 +1630,7 @@ namespace JsonPolimi_Core_nf.Tipi
             }
 
             bool? works = null;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
                 works = CheckSeIlLinkVa2_Telegram();
                 if (works != null && works.Value == true)
@@ -1654,15 +1654,13 @@ namespace JsonPolimi_Core_nf.Tipi
                 catch (Exception ex)
                 {
                     Console.WriteLine("Error in CheckSeIlLinkVa2_Telegram");
-                    Console.WriteLine(ex.Message + " while downloading link: '" + link + "' (" + i + "/3)");
+                    Console.WriteLine(ex.Message + " while downloading link: '" + link + "' (" + (i + 1) + "/3)");
                 }
                 i++;
             }
 
             if (string.IsNullOrEmpty(content))
             {
-                Console.WriteLine("--CheckSeIlLinkVa2_Telegram--");
-                Console.WriteLine("");
                 return null;
             }
             else if (content.Contains("tg://") && content.Contains("Join Group") && (content.Contains("member")))
