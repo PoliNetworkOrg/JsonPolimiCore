@@ -2465,11 +2465,14 @@ namespace JsonPolimi_Core_nf.Tipi
             var r = openFileDialog.ShowDialog();
             if (r != DialogResult.OK)
                 return;
-
+                        
             var obj = BinaryDeserializeObject(openFileDialog.FileName);
 
-            ;
+            HandleSerializedObject(obj);
+        }
 
+        public void HandleSerializedObject(object obj)
+        {
             if (obj == null)
                 return;
 

@@ -1643,17 +1643,25 @@ namespace JsonPolimi_Core_nf.Tipi
         {
             string link = this.GetLink();
             string content = null;
-            try
+            int i = 0;
+            while (i <= 2 && content == null)
             {
-                content = Download(link);
-            }
-            catch
-            {
-                ;
+                try
+                {
+                    content = Download(link);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error in CheckSeIlLinkVa2_Telegram");
+                    Console.WriteLine(ex.Message + " while downloading link: '" + link + "' (" + i + "/3)");
+                }
+                i++;
             }
 
             if (string.IsNullOrEmpty(content))
             {
+                Console.WriteLine("--CheckSeIlLinkVa2_Telegram--");
+                Console.WriteLine("");
                 return null;
             }
             else if (content.Contains("tg://") && content.Contains("Join Group") && (content.Contains("member")))

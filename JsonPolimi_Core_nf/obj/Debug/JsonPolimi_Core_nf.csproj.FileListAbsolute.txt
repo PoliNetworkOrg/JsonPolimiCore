@@ -12,6 +12,6 @@ C:\repos\JsonPolimiCore\JsonPolimi_Core_nf\bin\Debug\HtmlAgilityPack.pdb
 C:\repos\JsonPolimiCore\JsonPolimi_Core_nf\bin\Debug\HtmlAgilityPack.xml
 C:\repos\JsonPolimiCore\JsonPolimi_Core_nf\bin\Debug\Newtonsoft.Json.xml
 C:\repos\JsonPolimiCore\JsonPolimi_Core_nf\bin\Debug\Telegram.Bot.xml
-C:\repos\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\JsonPolimi_Core_nf.csproj.CopyComplete
 C:\repos\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\JsonPolimi_Core_nf.dll
 C:\repos\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\JsonPolimi_Core_nf.pdb
+C:\repos\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\JsonPolimi_Core_nf.csproj.CopyComplete
