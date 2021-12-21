@@ -1608,16 +1608,17 @@ namespace JsonPolimi_Core_nf.Tipi
             return true;
         }
 
-        public void CheckSeIlLinkVa(bool saltaQuelliGiaFunzionanti)
+        public bool? CheckSeIlLinkVa(bool saltaQuelliGiaFunzionanti)
         {
             switch (this.Platform)
             {
                 case "TG":
                     {
                         this.LinkFunzionante = CheckSeIlLinkVa3_Telegram(saltaQuelliGiaFunzionanti);
-                        break;
+                        return this.LinkFunzionante;
                     }
             }
+            return null;
         }
 
         private bool? CheckSeIlLinkVa3_Telegram(bool saltaQuelliGiaFunzionanti)
