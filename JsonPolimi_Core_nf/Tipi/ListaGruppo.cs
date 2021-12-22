@@ -2637,21 +2637,21 @@ namespace JsonPolimi_Core_nf.Tipi
                 Gruppo g = new Gruppo() { Classe = nome, IdLink = idlink, Platform = "TG", PermanentId = permanentId };
                 g.Aggiusta(true, true);
                 this.Add(g, false);
+                return;
             }
-            else
+
+            foreach (var i2 in i)
             {
-                foreach (var i2 in i)
+                if (linkFunzionante != null && linkFunzionante.Value == true)
                 {
-                    if (linkFunzionante != null && linkFunzionante.Value == true)
-                    {
-                        this._l[i2].IdLink = newlink;
-                        this._l[i2].LastUpdateInviteLinkTime = DateTime.Now;
-                        this._l[i2].LinkFunzionante = true;
-                    }
-                    this._l[i2].PermanentId = permanentId;
-                    this._l[i2].Aggiusta(false, true);
+                    this._l[i2].IdLink = newlink;
+                    this._l[i2].LastUpdateInviteLinkTime = DateTime.Now;
+                    this._l[i2].LinkFunzionante = true;
                 }
+                this._l[i2].PermanentId = permanentId;
+                this._l[i2].Aggiusta(false, true);
             }
+
         }
 
         private List<string> GetOldLinks(string oldlinks)
@@ -2693,10 +2693,10 @@ namespace JsonPolimi_Core_nf.Tipi
             }
             else
             {
-                if (oldlinks.StartsWith("'"))
-                    oldlinks = oldlinks.Substring(1);
-                else
+                if (!oldlinks.StartsWith("'"))
                     return null;
+
+                oldlinks = oldlinks.Substring(1);
 
                 if (oldlinks.EndsWith("'"))
                     oldlinks = oldlinks.Remove(oldlinks.Length - 1);
@@ -2734,7 +2734,7 @@ namespace JsonPolimi_Core_nf.Tipi
             List<int> r = new List<int>();
             for (int i = 0; i < this._l.Count; i++)
             {
-                if (this._l[i].Platform == "TG")
+                if (_l[i].Platform == "TG")
                 {
                     if (this._l[i].IdLink == idlink && !string.IsNullOrEmpty(idlink))
                         r.Add(i);
@@ -2785,7 +2785,7 @@ namespace JsonPolimi_Core_nf.Tipi
                 {
                     if (x.LinkFunzionante == null || x.LinkFunzionante.Value == false)
                     {
-                        if (string.IsNullOrEmpty(anno))
+                        if (IsNullOrEmpty(anno))
                         {
                             l.Add(x);
                         }
