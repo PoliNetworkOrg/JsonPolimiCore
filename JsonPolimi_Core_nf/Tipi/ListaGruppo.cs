@@ -2496,9 +2496,22 @@ namespace JsonPolimi_Core_nf.Tipi
         private void ImportaGruppoDaDataRow(DataRow dr)
         {
             ;
-
+            
             var idlink1 = dr.ItemArray[3].ToString().Split('/');
             var idlink2 = idlink1[idlink1.Length - 1];
+            TipoLink tipoLink;
+            if (dr.ItemArray[3].ToString().StartsWith("https://t.me/+"))
+            {
+                tipoLink = TipoLink.PLUS;
+            } 
+            else if (dr.ItemArray[3].ToString().StartsWith("https://t.me/joinchat/"))
+            {
+                tipoLink = TipoLink.JOINCHAT;
+            }
+            else
+            {
+                tipoLink = TipoLink.UNKNOWN;
+            }
 
             var date = dr.ItemArray[4];
             DateTime? date2 = null;
@@ -2517,7 +2530,8 @@ namespace JsonPolimi_Core_nf.Tipi
                 PermanentId = Convert.ToInt64(dr.ItemArray[0]).ToString(),
                 IdLink = idlink2,
                 Classe = dr.ItemArray[6].ToString(),
-                LastUpdateInviteLinkTime = date2
+                LastUpdateInviteLinkTime = date2,
+                TipoLink = tipoLink
             };
             gruppo.Aggiusta(true, true);
             this.Add(gruppo, true);

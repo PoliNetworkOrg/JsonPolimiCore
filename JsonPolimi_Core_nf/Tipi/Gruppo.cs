@@ -38,7 +38,21 @@ namespace JsonPolimi_Core_nf.Tipi
         public string IdLink; // esempio: 21432583243205
         public string Language;
         public ListaStringhePerJSON Office; // esempio: LEONARDO
+        
+        public string PermanentId; //per telegram, esempio -1000345953
+        public string Platform; // esempio: FB
+        public string School;
+        public string Tipo;
+        public string Year; // esempio: 2018/2019
+        public TipoLink TipoLink = TipoLink.UNKNOWN;
+        public DateTime? LastUpdateInviteLinkTime;
+        public bool? LinkFunzionante;
 
+        public Gruppo()
+        {
+            ;
+        }
+        
         public string GetHTML_DataRow(string textBox_anno, string textBox_piattaforma)
         {
             if (!string.IsNullOrEmpty(textBox_anno))
@@ -115,22 +129,13 @@ namespace JsonPolimi_Core_nf.Tipi
             html += "<td>";
             html += this.LinkFunzionante;
             html += "</td>";
+            
+            html += "<td>";
+            html += this.TipoLink;
+            html += "</td>";
 
             html += "</tr>";
             return html;
-        }
-
-        public string PermanentId; //per telegram, esempio -1000345953
-        public string Platform; // esempio: FB
-        public string School;
-        public string Tipo;
-        public string Year; // esempio: 2018/2019
-        public DateTime? LastUpdateInviteLinkTime;
-        public bool? LinkFunzionante;
-
-        public Gruppo()
-        {
-            ;
         }
 
         public void Aggiusta(bool aggiusta_anno, bool creaid)
@@ -333,6 +338,9 @@ namespace JsonPolimi_Core_nf.Tipi
                         json += StringCheckNull(GetTelegramTime());
                         json += ",\"platform\":";
                         json += StringCheckNull(Platform);
+                        json += ",\"LinkType\":";
+                        json += TipoLinkCheckNull(TipoLink);
+
 
                         break;
                     }
@@ -366,6 +374,8 @@ namespace JsonPolimi_Core_nf.Tipi
                         json += StringCheckNull(GetTelegramTime());
                         json += ",\"linkfunzionante\":";
                         json += BoolCheckNotNull(LinkFunzionante);
+                        json += ",\"LinkType\":";
+                        json += TipoLinkCheckNull(TipoLink);
                         break;
                     }
                 case CheckGruppo.E.NUOVA_RICERCA:
@@ -400,6 +410,8 @@ namespace JsonPolimi_Core_nf.Tipi
                         json += StringCheckNull(CCS);
                         json += ",\"platform\":";
                         json += StringCheckNull(Platform);
+                        json += ",\"LinkType\":";
+                        json += TipoLinkCheckNull(TipoLink);
                         break;
                     }
             }
@@ -436,6 +448,14 @@ namespace JsonPolimi_Core_nf.Tipi
                 return "null";
 
             return '"' + s + '"';
+        }
+        
+        private string TipoLinkCheckNull(TipoLink s)
+        {
+            if (String.IsNullOrEmpty(s.ToString()))
+                return "null";
+
+            return '"' + s.ToString() + '"';
         }
 
         private static string EscapeQuotes(string s)
@@ -724,6 +744,7 @@ namespace JsonPolimi_Core_nf.Tipi
                 if (string.IsNullOrEmpty(IdLink))
                 {
                     IdLink = gruppo.IdLink;
+                    TipoLink = gruppo.TipoLink;
                     LastUpdateInviteLinkTime = gruppo.LastUpdateInviteLinkTime;
                 }
                 else
@@ -732,11 +753,13 @@ namespace JsonPolimi_Core_nf.Tipi
                     {
                         case null when gruppo.LastUpdateInviteLinkTime == null:
                             IdLink = gruppo.IdLink;
+                            TipoLink = gruppo.TipoLink;
                             LastUpdateInviteLinkTime = gruppo.LastUpdateInviteLinkTime;
                             break;
 
                         case null:
                             IdLink = gruppo.IdLink;
+                            TipoLink = gruppo.TipoLink;
                             LastUpdateInviteLinkTime = gruppo.LastUpdateInviteLinkTime;
                             break;
 
@@ -749,6 +772,7 @@ namespace JsonPolimi_Core_nf.Tipi
                                     if (r < 0)
                                     {
                                         IdLink = gruppo.IdLink;
+                                        TipoLink = gruppo.TipoLink;
                                         LastUpdateInviteLinkTime = gruppo.LastUpdateInviteLinkTime;
                                     }
                                 }
@@ -791,7 +815,8 @@ namespace JsonPolimi_Core_nf.Tipi
 
             return office.IsEmpty();
         }
-
+        
+        [Obsolete("DEPRECATED")]
         public string To_json_Tg()
         {
             /*
@@ -869,7 +894,17 @@ namespace JsonPolimi_Core_nf.Tipi
             {
                 case "TG":
                     {
-                        return "https://t.me/joinchat/" + this.IdLink;
+                        switch (TipoLink)
+                        {
+                            case TipoLink.JOINCHAT:
+                                return "https://t.me/joinchat/" + this.IdLink;
+                            case TipoLink.PLUS:
+                                return "https://t.me/" + this.IdLink;
+                            case TipoLink.UNKNOWN:
+                                return "https://t.me/joinchat/" + this.IdLink;
+                            default:
+                                return "https://t.me/joinchat/" + this.IdLink;
+                        }
                     }
 
                 case "WA":
@@ -1338,6 +1373,7 @@ namespace JsonPolimi_Core_nf.Tipi
                 Id = this.Id,
                 IDCorsoPolimi = this.IDCorsoPolimi,
                 IdLink = this.IdLink,
+                TipoLink = this.TipoLink,
                 Language = this.Language,
                 LastUpdateInviteLinkTime = this.LastUpdateInviteLinkTime,
                 Office = this.Office,
@@ -1684,5 +1720,7 @@ namespace JsonPolimi_Core_nf.Tipi
             reader.Close();
             return s;
         }
+        
+        
     }
 }

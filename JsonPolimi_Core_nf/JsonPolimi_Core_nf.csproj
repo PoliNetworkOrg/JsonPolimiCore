@@ -64,6 +64,7 @@
     <Compile Include="Enums\Chiedi.cs" />
     <Compile Include="Enums\Lingua.cs" />
     <Compile Include="Enums\SomiglianzaEnum.cs" />
+    <Compile Include="Enums\TipoLink.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tipi\CheckGruppo.cs" />
     <Compile Include="Tipi\FileSalvare.cs" />
