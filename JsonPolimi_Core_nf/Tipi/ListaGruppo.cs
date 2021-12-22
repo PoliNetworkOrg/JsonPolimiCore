@@ -2466,7 +2466,7 @@ namespace JsonPolimi_Core_nf.Tipi
             var r = openFileDialog.ShowDialog();
             if (r != DialogResult.OK)
                 return;
-                        
+
             var obj = BinaryDeserializeObject(openFileDialog.FileName);
 
             HandleSerializedObject(obj);
@@ -2497,14 +2497,14 @@ namespace JsonPolimi_Core_nf.Tipi
         private void ImportaGruppoDaDataRow(DataRow dr)
         {
             ;
-            
+
             var idlink1 = dr.ItemArray[3].ToString().Split('/');
             var idlink2 = idlink1[idlink1.Length - 1];
             TipoLink tipoLink;
             if (dr.ItemArray[3].ToString().StartsWith("https://t.me/+"))
             {
                 tipoLink = TipoLink.PLUS;
-            } 
+            }
             else if (dr.ItemArray[3].ToString().StartsWith("https://t.me/joinchat/"))
             {
                 tipoLink = TipoLink.JOINCHAT;
@@ -2822,21 +2822,14 @@ namespace JsonPolimi_Core_nf.Tipi
 
         public void CheckSeILinkVanno(bool saltaQuelliGiaFunzionanti)
         {
-            while (true)
+            int n = saltaQuelliGiaFunzionanti ? 2 : 1;
+            for (int j = 0; j < n; j++)
             {
                 for (int i = 0; i < this._l.Count; i++)
                 {
                     this._l[i].CheckSeIlLinkVa(saltaQuelliGiaFunzionanti);
                     Task.Delay(10).Wait();
                 }
-
-                if (saltaQuelliGiaFunzionanti)
-                {
-                    saltaQuelliGiaFunzionanti = false;
-                    continue;
-                }
-
-                break;
             }
         }
 
