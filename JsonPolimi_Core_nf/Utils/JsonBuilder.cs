@@ -1,10 +1,6 @@
 ﻿using JsonPolimi_Core_nf.Data;
 using JsonPolimi_Core_nf.Tipi;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JsonPolimi_Core_nf.Utils
 {
@@ -141,33 +137,34 @@ namespace JsonPolimi_Core_nf.Utils
         }
 
         private static bool DoCheckGruppo(CheckGruppo v, Gruppo elem)
+        {
+            switch (v.n)
             {
-                switch (v.n)
-                {
-                    case CheckGruppo.E.RICERCA_SITO_V3:
-                    case CheckGruppo.E.VECCHIA_RICERCA:
-                        {
-                            if (string.IsNullOrEmpty(elem.Classe))
-                                return false;
-                            if (string.IsNullOrEmpty(elem.IdLink))
-                                return false;
-                            break;
-                        }
-                    case CheckGruppo.E.NUOVA_RICERCA:
-                        {
-                            if (Empty(elem.CCS))
-                                return false;
+                case CheckGruppo.E.RICERCA_SITO_V3:
+                case CheckGruppo.E.VECCHIA_RICERCA:
+                    {
+                        if (string.IsNullOrEmpty(elem.Classe))
+                            return false;
+                        if (string.IsNullOrEmpty(elem.IdLink))
+                            return false;
+                        break;
+                    }
+                case CheckGruppo.E.NUOVA_RICERCA:
+                    {
+                        if (Empty(elem.CCS))
+                            return false;
 
-                            break;
-                        }
-                    case CheckGruppo.E.TUTTO:
-                        {
-                            break;
-                        }
-                }
-
-                return true;
+                        break;
+                    }
+                case CheckGruppo.E.TUTTO:
+                    {
+                        break;
+                    }
             }
+
+            return true;
+        }
+
         private static bool Empty(ListaStringhePerJSON cCS)
         {
             if (cCS == null)

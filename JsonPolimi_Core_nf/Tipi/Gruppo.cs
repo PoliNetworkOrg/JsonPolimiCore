@@ -38,7 +38,7 @@ namespace JsonPolimi_Core_nf.Tipi
         public string IdLink; // esempio: 21432583243205
         public string Language;
         public ListaStringhePerJSON Office; // esempio: LEONARDO
-        
+
         public string PermanentId; //per telegram, esempio -1000345953
         public string Platform; // esempio: FB
         public string School;
@@ -52,7 +52,7 @@ namespace JsonPolimi_Core_nf.Tipi
         {
             ;
         }
-        
+
         public string GetHTML_DataRow(string textBox_anno, string textBox_piattaforma)
         {
             if (!string.IsNullOrEmpty(textBox_anno))
@@ -129,7 +129,7 @@ namespace JsonPolimi_Core_nf.Tipi
             html += "<td>";
             html += this.LinkFunzionante;
             html += "</td>";
-            
+
             html += "<td>";
             html += this.TipoLink;
             html += "</td>";
@@ -341,7 +341,6 @@ namespace JsonPolimi_Core_nf.Tipi
                         json += ",\"LinkType\":";
                         json += TipoLinkCheckNull(TipoLink);
 
-
                         break;
                     }
 
@@ -449,7 +448,7 @@ namespace JsonPolimi_Core_nf.Tipi
 
             return '"' + s + '"';
         }
-        
+
         private string TipoLinkCheckNull(TipoLink s)
         {
             if (String.IsNullOrEmpty(s.ToString()))
@@ -815,7 +814,7 @@ namespace JsonPolimi_Core_nf.Tipi
 
             return office.IsEmpty();
         }
-        
+
         [Obsolete("DEPRECATED")]
         public string To_json_Tg()
         {
@@ -898,10 +897,13 @@ namespace JsonPolimi_Core_nf.Tipi
                         {
                             case TipoLink.JOINCHAT:
                                 return "https://t.me/joinchat/" + this.IdLink;
+
                             case TipoLink.PLUS:
                                 return "https://t.me/" + this.IdLink;
+
                             case TipoLink.UNKNOWN:
                                 return "https://t.me/joinchat/" + this.IdLink;
+
                             default:
                                 return "https://t.me/joinchat/" + this.IdLink;
                         }
@@ -1720,7 +1722,5 @@ namespace JsonPolimi_Core_nf.Tipi
             reader.Close();
             return s;
         }
-        
-        
     }
 }

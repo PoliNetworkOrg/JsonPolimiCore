@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace JsonPolimi_Core_nf.Tipi
+﻿namespace JsonPolimi_Core_nf.Tipi
 {
     public enum TipoLink
     {
