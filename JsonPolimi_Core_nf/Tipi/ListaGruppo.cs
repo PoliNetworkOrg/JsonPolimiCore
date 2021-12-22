@@ -7,6 +7,7 @@ using System.Data;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.String;
 
@@ -2821,9 +2822,21 @@ namespace JsonPolimi_Core_nf.Tipi
 
         public void CheckSeILinkVanno(bool saltaQuelliGiaFunzionanti)
         {
-            for (int i = 0; i < this._l.Count; i++)
+            while (true)
             {
-                this._l[i].CheckSeIlLinkVa(saltaQuelliGiaFunzionanti);
+                for (int i = 0; i < this._l.Count; i++)
+                {
+                    this._l[i].CheckSeIlLinkVa(saltaQuelliGiaFunzionanti);
+                    Task.Delay(10).Wait();
+                }
+
+                if (saltaQuelliGiaFunzionanti)
+                {
+                    saltaQuelliGiaFunzionanti = false;
+                    continue;
+                }
+
+                break;
             }
         }
 
