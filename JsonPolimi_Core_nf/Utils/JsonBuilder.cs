@@ -6,7 +6,7 @@ namespace JsonPolimi_Core_nf.Utils
 {
     public static class JsonBuilder
     {
-        public static string getJson(CheckGruppo v, bool entrambi_index)
+        public static string GetJson(CheckGruppo v, bool entrambi_index)
         {
             if (Variabili.L == null)
                 return null;
