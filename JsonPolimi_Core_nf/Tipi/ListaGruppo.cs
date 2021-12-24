@@ -2496,13 +2496,13 @@ namespace JsonPolimi_Core_nf.Tipi
 
         private void ImportaGruppoDaDataRow(DataRow dr)
         {
-            Gruppo gruppo = creaGruppo(dr);
+            Gruppo gruppo = CreaGruppo(dr);
             
             gruppo.Aggiusta(true, true);
             this.Add(gruppo, true);
         }
 
-        public Gruppo creaGruppo(DataRow dr)
+        public Gruppo CreaGruppo(DataRow dr)
         {
             var idlink1 = dr.ItemArray[3].ToString().Split('/');
             var idlink2 = idlink1[idlink1.Length - 1];
