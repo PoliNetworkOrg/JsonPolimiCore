@@ -2496,8 +2496,14 @@ namespace JsonPolimi_Core_nf.Tipi
 
         private void ImportaGruppoDaDataRow(DataRow dr)
         {
-            ;
+            Gruppo gruppo = creaGruppo(dr);
+            
+            gruppo.Aggiusta(true, true);
+            this.Add(gruppo, true);
+        }
 
+        public Gruppo creaGruppo(DataRow dr)
+        {
             var idlink1 = dr.ItemArray[3].ToString().Split('/');
             var idlink2 = idlink1[idlink1.Length - 1];
             TipoLink tipoLink;
@@ -2534,8 +2540,7 @@ namespace JsonPolimi_Core_nf.Tipi
                 LastUpdateInviteLinkTime = date2,
                 TipoLink = tipoLink
             };
-            gruppo.Aggiusta(true, true);
-            this.Add(gruppo, true);
+            return gruppo;
         }
 
         public static object BinaryDeserializeObject(string path)
