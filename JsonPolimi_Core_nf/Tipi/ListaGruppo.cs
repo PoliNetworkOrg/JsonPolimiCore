@@ -2656,7 +2656,6 @@ namespace JsonPolimi_Core_nf.Tipi
                 this._l[i2].PermanentId = permanentId;
                 this._l[i2].Aggiusta(false, true);
             }
-
         }
 
         private List<string> GetOldLinks(string oldlinks)
@@ -2835,6 +2834,8 @@ namespace JsonPolimi_Core_nf.Tipi
                     this._l[i].CheckSeIlLinkVa(saltaQuelliGiaFunzionanti);
                     Task.Delay(10).Wait();
                 }
+
+                saltaQuelliGiaFunzionanti = false;
             }
         }
 
