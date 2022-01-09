@@ -2824,18 +2824,17 @@ namespace JsonPolimi_Core_nf.Tipi
             }
         }
 
-        public void CheckSeILinkVanno(bool saltaQuelliGiaFunzionanti)
+        public void CheckSeILinkVanno(int volteCheCiRiprova, bool laPrimaVoltaControllaDaCapo)
         {
-            int n = saltaQuelliGiaFunzionanti ? 2 : 1;
-            for (int j = 0; j < n; j++)
+            
+            for (int j = 0; j < volteCheCiRiprova; j++)
             {
+                bool b = j != 0 || !laPrimaVoltaControllaDaCapo;
                 for (int i = 0; i < this._l.Count; i++)
                 {
-                    this._l[i].CheckSeIlLinkVa(saltaQuelliGiaFunzionanti);
+                    this._l[i].CheckSeIlLinkVa(b);
                     Task.Delay(10).Wait();
                 }
-
-                saltaQuelliGiaFunzionanti = false;
             }
         }
 
