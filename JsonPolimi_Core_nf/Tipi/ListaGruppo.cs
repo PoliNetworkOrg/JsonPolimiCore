@@ -2611,7 +2611,7 @@ namespace JsonPolimi_Core_nf.Tipi
             string nome = l3[9].Substring("Nome: ".Length).Trim();
             List<string> oldlinks_list = null;
 
-            bool? linkFunzionante = null;
+            bool? linkFunzionante;
 
             if (l3[0] == "Success: N")
             {

@@ -1670,7 +1670,8 @@ namespace JsonPolimi_Core_nf.Tipi
             bool? works = null;
             for (int i = 0; i < 2; i++)
             {
-                works = CheckSeIlLinkVa2_Telegram();
+                string link = this.GetLink();
+                works = CheckSeIlLinkVa2_Telegram(link);
                 if (works != null && works.Value == true)
                     return true;
             }
@@ -1678,9 +1679,9 @@ namespace JsonPolimi_Core_nf.Tipi
             return works;
         }
 
-        private bool? CheckSeIlLinkVa2_Telegram()
+        public bool? CheckSeIlLinkVa2_Telegram(string link)
         {
-            string link = this.GetLink();
+
             string content = null;
             int i = 0;
             while (i <= 2 && content == null)
@@ -1691,24 +1692,16 @@ namespace JsonPolimi_Core_nf.Tipi
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error in CheckSeIlLinkVa2_Telegram");
-                    Console.WriteLine(ex.Message + " while downloading link: '" + link + "' (" + (i + 1) + "/3)");
+                    string s = "Error in CheckSeIlLinkVa2_Telegram";
+                    s += "\n";
+                    s += ex.Message + " while downloading link: '" + link + "' (" + (i + 1) + "/3)";
+
+                    Console.WriteLine(s);
                 }
                 i++;
             }
 
-            if (string.IsNullOrEmpty(content))
-            {
-                return null;
-            }
-            else if (content.Contains("tgme_page_title"))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return string.IsNullOrEmpty(content) ? null : (bool?)content.Contains("tgme_page_title");
         }
 
         public static string Download(string uri)
