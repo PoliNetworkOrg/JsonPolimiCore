@@ -1684,7 +1684,7 @@ namespace JsonPolimi_Core_nf.Tipi
 
             string content = null;
             int i = 0;
-            while (i <= 2 && content == null)
+            while (i <= 2 && string.IsNullOrEmpty(content))
             {
                 try
                 {
@@ -1704,16 +1704,21 @@ namespace JsonPolimi_Core_nf.Tipi
             return string.IsNullOrEmpty(content) ? null : (bool?)content.Contains("tgme_page_title");
         }
 
+        public static WebClient clientDownload = new WebClient();
+
         public static string Download(string uri)
         {
-            WebClient client = new WebClient();
+            try
+            {
+                string htmlCode = clientDownload.DownloadString(uri);
+                return htmlCode;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception in download: link " + uri + "\n" + e);
+            }
 
-            Stream data = client.OpenRead(uri);
-            StreamReader reader = new StreamReader(data);
-            string s = reader.ReadToEnd();
-            data.Close();
-            reader.Close();
-            return s;
+            return null;
         }
     }
 }
