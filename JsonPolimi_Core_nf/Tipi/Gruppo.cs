@@ -1701,7 +1701,7 @@ namespace JsonPolimi_Core_nf.Tipi
             {
                 return null;
             }
-            else if (content.Contains("tg://") && content.Contains("Join Group") && (content.Contains("member")))
+            else if (content.Contains("tgme_page_title"))
             {
                 return true;
             }
