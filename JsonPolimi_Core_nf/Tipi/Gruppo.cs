@@ -1679,7 +1679,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return works;
         }
 
-        public bool? CheckSeIlLinkVa2_Telegram(string link)
+        public static bool? CheckSeIlLinkVa2_Telegram(string link)
         {
 
             string content = null;
