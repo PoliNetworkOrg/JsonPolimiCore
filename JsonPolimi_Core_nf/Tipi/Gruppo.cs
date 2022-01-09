@@ -1668,9 +1668,9 @@ namespace JsonPolimi_Core_nf.Tipi
             }
 
             bool? works = null;
+            string link = this.GetLink();
             for (int i = 0; i < 2; i++)
             {
-                string link = this.GetLink();
                 works = CheckSeIlLinkVa2_Telegram(link);
                 if (works != null && works.Value == true)
                     return true;
