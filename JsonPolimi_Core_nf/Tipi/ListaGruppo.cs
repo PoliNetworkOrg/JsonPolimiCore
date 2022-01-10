@@ -7,6 +7,7 @@ using System.Data;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.String;
@@ -2824,15 +2825,21 @@ namespace JsonPolimi_Core_nf.Tipi
             }
         }
 
-        public void CheckSeILinkVanno(int volteCheCiRiprova, bool laPrimaVoltaControllaDaCapo, int waitOgniVoltaCheCiRiprova = 10)
+        public EventoConLog<object> CheckSeILinkVanno(int volteCheCiRiprova, bool laPrimaVoltaControllaDaCapo, int waitOgniVoltaCheCiRiprova = 10)
         {
-            
+            EventoConLog<object> eventoConLog = new EventoConLog<object>();
+            eventoConLog.action = ((sender, e) => CheckSeILinkVanno2(eventoConLog, volteCheCiRiprova, laPrimaVoltaControllaDaCapo, waitOgniVoltaCheCiRiprova));
+            return eventoConLog;
+        }
+
+        public void CheckSeILinkVanno2(EventoConLog<object> eventoConLog, int volteCheCiRiprova, bool laPrimaVoltaControllaDaCapo, int waitOgniVoltaCheCiRiprova = 10)
+        {
             for (int j = 0; j < volteCheCiRiprova; j++)
             {
                 bool b = j != 0 || !laPrimaVoltaControllaDaCapo;
                 for (int i = 0; i < this._l.Count; i++)
                 {
-                    this._l[i].CheckSeIlLinkVa(b);
+                    this._l[i].CheckSeIlLinkVa(b, eventoConLog);
                 }
                 Task.Delay(waitOgniVoltaCheCiRiprova).Wait();
             }

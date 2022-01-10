@@ -1646,20 +1646,20 @@ namespace JsonPolimi_Core_nf.Tipi
             return true;
         }
 
-        public bool? CheckSeIlLinkVa(bool saltaQuelliGiaFunzionanti)
+        public bool? CheckSeIlLinkVa(bool saltaQuelliGiaFunzionanti, EventoConLog<object> eventoConLog)
         {
             switch (this.Platform)
             {
                 case "TG":
                     {
-                        this.LinkFunzionante = CheckSeIlLinkVa3_Telegram(saltaQuelliGiaFunzionanti);
+                        this.LinkFunzionante = CheckSeIlLinkVa3_Telegram(saltaQuelliGiaFunzionanti, 2, 2, eventoConLog);
                         return this.LinkFunzionante;
                     }
             }
             return null;
         }
 
-        private bool? CheckSeIlLinkVa3_Telegram(bool saltaQuelliGiaFunzionanti, int tentativi1 = 2, int tentativi2 = 2)
+        private bool? CheckSeIlLinkVa3_Telegram(bool saltaQuelliGiaFunzionanti, int tentativi1 = 2, int tentativi2 = 2, EventoConLog<object> eventoConLog = null)
         {
             if (saltaQuelliGiaFunzionanti)
             {
@@ -1671,7 +1671,7 @@ namespace JsonPolimi_Core_nf.Tipi
             string link = this.GetLink();
             for (int i = 0; i < tentativi1; i++)
             {
-                works = CheckSeIlLinkVa2_Telegram(link, tentativi2);
+                works = CheckSeIlLinkVa2_Telegram(link, tentativi2, eventoConLog);
                 if (works != null && works.Value == true)
                     return true;
             }
@@ -1679,25 +1679,17 @@ namespace JsonPolimi_Core_nf.Tipi
             return works;
         }
 
-        public static bool? CheckSeIlLinkVa2_Telegram(string link, int tentativi = 2)
+        public static bool? CheckSeIlLinkVa2_Telegram(string link, int tentativi = 2, EventoConLog<object> eventoConLog = null)
         {
 
             string content = null;
             int i = 0;
             while (i <= tentativi && string.IsNullOrEmpty(content))
             {
-                try
-                {
-                    content = Download(link);
-                }
-                catch (Exception ex)
-                {
-                    string s = "Error in CheckSeIlLinkVa2_Telegram";
-                    s += "\n";
-                    s += ex.Message + " while downloading link: '" + link + "' (" + (i + 1) + "/3)";
 
-                    Console.WriteLine(s);
-                }
+                content = Download(link, eventoConLog);
+
+
                 i++;
             }
 
@@ -1706,7 +1698,7 @@ namespace JsonPolimi_Core_nf.Tipi
 
         public static WebClient clientDownload = new WebClient();
 
-        public static string Download(string uri)
+        public static string Download(string uri, EventoConLog<object> eventoConLog)
         {
             try
             {
@@ -1715,7 +1707,10 @@ namespace JsonPolimi_Core_nf.Tipi
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception in download: link " + uri + "\n" + e);
+                string s = "Exception in download: link " + uri + "\n" + e;
+                Console.WriteLine(s);
+                if (eventoConLog != null)
+                    eventoConLog.Log(s);
             }
 
             return null;

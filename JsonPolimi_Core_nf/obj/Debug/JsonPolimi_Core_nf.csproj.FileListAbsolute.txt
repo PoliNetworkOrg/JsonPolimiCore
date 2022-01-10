@@ -30,4 +30,3 @@ D:\git\PoliNetwork\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\JsonPolimi_Core_n
 D:\git\PoliNetwork\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\JsonPolimi_Core_nf.csproj.CopyComplete
 D:\git\PoliNetwork\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\JsonPolimi_Core_nf.dll
 D:\git\PoliNetwork\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\JsonPolimi_Core_nf.pdb
-D:\git\PoliNetwork\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\JsonPolimi_Core_nf.csproj.AssemblyReference.cache

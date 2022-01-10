@@ -67,6 +67,7 @@
     <Compile Include="Enums\TipoLink.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tipi\CheckGruppo.cs" />
+    <Compile Include="Tipi\EventoConLog.cs" />
     <Compile Include="Tipi\FileSalvare.cs" />
     <Compile Include="Tipi\Gruppo.cs" />
     <Compile Include="Tipi\GruppoTelegram.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Tipi\ListaGruppo.cs" />
     <Compile Include="Tipi\ListaStringhePerJSON.cs" />
     <Compile Include="Tipi\ParametriCondivisi.cs" />
+    <Compile Include="Tipi\Result.cs" />
     <Compile Include="Tipi\Riga.cs" />
     <Compile Include="Tipi\SomiglianzaClasse.cs" />
     <Compile Include="Utils\Dates.cs" />
