@@ -7,7 +7,7 @@ namespace JsonPolimi_Core_nf.Tipi
     {
         public Dictionary<string,object> _params;
 
-        internal object getParam(string v)
+        internal object GetParam(string v)
         {
             return _params[v];
         }

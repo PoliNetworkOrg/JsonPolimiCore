@@ -2832,9 +2832,9 @@ namespace JsonPolimi_Core_nf.Tipi
             eventoConLog.action = (
                 (sender, e) => CheckSeILinkVanno2(
                                     eventoConLog,
-                                    (int)parametriFunzione.getParam("volteCheCiRiprova"),
-                                    (bool)parametriFunzione.getParam("laPrimaVoltaControllaDaCapo"),
-                                    (int)parametriFunzione.getParam("waitOgniVoltaCheCiRiprova")
+                                    (int)parametriFunzione.GetParam("volteCheCiRiprova"),
+                                    (bool)parametriFunzione.GetParam("laPrimaVoltaControllaDaCapo"),
+                                    (int)parametriFunzione.GetParam("waitOgniVoltaCheCiRiprova")
                                 )
                 );
 
