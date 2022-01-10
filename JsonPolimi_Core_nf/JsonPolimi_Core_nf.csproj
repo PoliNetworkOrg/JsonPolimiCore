@@ -80,6 +80,7 @@
     <Compile Include="Tipi\ListaGruppo.cs" />
     <Compile Include="Tipi\ListaStringhePerJSON.cs" />
     <Compile Include="Tipi\ParametriCondivisi.cs" />
+    <Compile Include="Tipi\ParametriFunzione.cs" />
     <Compile Include="Tipi\Result.cs" />
     <Compile Include="Tipi\Riga.cs" />
     <Compile Include="Tipi\SomiglianzaClasse.cs" />

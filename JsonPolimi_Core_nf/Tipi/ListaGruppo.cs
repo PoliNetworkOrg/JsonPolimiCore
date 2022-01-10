@@ -2825,14 +2825,23 @@ namespace JsonPolimi_Core_nf.Tipi
             }
         }
 
-        public EventoConLog<object> CheckSeILinkVanno(int volteCheCiRiprova, bool laPrimaVoltaControllaDaCapo, int waitOgniVoltaCheCiRiprova = 10)
+        public EventoConLog CheckSeILinkVanno(ParametriFunzione parametriFunzione)
         {
-            EventoConLog<object> eventoConLog = new EventoConLog<object>();
-            eventoConLog.action = ((sender, e) => CheckSeILinkVanno2(eventoConLog, volteCheCiRiprova, laPrimaVoltaControllaDaCapo, waitOgniVoltaCheCiRiprova));
+            EventoConLog eventoConLog = new EventoConLog();
+
+            eventoConLog.action = (
+                (sender, e) => CheckSeILinkVanno2(
+                                    eventoConLog,
+                                    (int)parametriFunzione.getParam("volteCheCiRiprova"),
+                                    (bool)parametriFunzione.getParam("laPrimaVoltaControllaDaCapo"),
+                                    (int)parametriFunzione.getParam("waitOgniVoltaCheCiRiprova")
+                                )
+                );
+
             return eventoConLog;
         }
 
-        public void CheckSeILinkVanno2(EventoConLog<object> eventoConLog, int volteCheCiRiprova, bool laPrimaVoltaControllaDaCapo, int waitOgniVoltaCheCiRiprova = 10)
+        public void CheckSeILinkVanno2(EventoConLog eventoConLog, int volteCheCiRiprova, bool laPrimaVoltaControllaDaCapo, int waitOgniVoltaCheCiRiprova = 10)
         {
             for (int j = 0; j < volteCheCiRiprova; j++)
             {

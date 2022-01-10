@@ -1646,7 +1646,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return true;
         }
 
-        public bool? CheckSeIlLinkVa(bool saltaQuelliGiaFunzionanti, EventoConLog<object> eventoConLog)
+        public bool? CheckSeIlLinkVa(bool saltaQuelliGiaFunzionanti, EventoConLog eventoConLog)
         {
             switch (this.Platform)
             {
@@ -1659,7 +1659,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return null;
         }
 
-        private bool? CheckSeIlLinkVa3_Telegram(bool saltaQuelliGiaFunzionanti, int tentativi1 = 2, int tentativi2 = 2, EventoConLog<object> eventoConLog = null)
+        private bool? CheckSeIlLinkVa3_Telegram(bool saltaQuelliGiaFunzionanti, int tentativi1 = 2, int tentativi2 = 2, EventoConLog eventoConLog = null)
         {
             if (saltaQuelliGiaFunzionanti)
             {
@@ -1679,7 +1679,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return works;
         }
 
-        public static bool? CheckSeIlLinkVa2_Telegram(string link, int tentativi = 2, EventoConLog<object> eventoConLog = null)
+        public static bool? CheckSeIlLinkVa2_Telegram(string link, int tentativi = 2, EventoConLog eventoConLog = null)
         {
 
             string content = null;
@@ -1698,7 +1698,7 @@ namespace JsonPolimi_Core_nf.Tipi
 
         public static WebClient clientDownload = new WebClient();
 
-        public static string Download(string uri, EventoConLog<object> eventoConLog)
+        public static string Download(string uri, EventoConLog eventoConLog)
         {
             try
             {
