@@ -2824,7 +2824,7 @@ namespace JsonPolimi_Core_nf.Tipi
             }
         }
 
-        public void CheckSeILinkVanno(int volteCheCiRiprova, bool laPrimaVoltaControllaDaCapo)
+        public void CheckSeILinkVanno(int volteCheCiRiprova, bool laPrimaVoltaControllaDaCapo, int waitOgniVoltaCheCiRiprova = 10)
         {
             
             for (int j = 0; j < volteCheCiRiprova; j++)
@@ -2833,8 +2833,8 @@ namespace JsonPolimi_Core_nf.Tipi
                 for (int i = 0; i < this._l.Count; i++)
                 {
                     this._l[i].CheckSeIlLinkVa(b);
-                    Task.Delay(10).Wait();
                 }
+                Task.Delay(waitOgniVoltaCheCiRiprova).Wait();
             }
         }
 

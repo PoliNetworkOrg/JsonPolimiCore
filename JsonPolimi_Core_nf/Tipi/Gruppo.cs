@@ -1659,7 +1659,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return null;
         }
 
-        private bool? CheckSeIlLinkVa3_Telegram(bool saltaQuelliGiaFunzionanti)
+        private bool? CheckSeIlLinkVa3_Telegram(bool saltaQuelliGiaFunzionanti, int tentativi1 = 2, int tentativi2 = 2)
         {
             if (saltaQuelliGiaFunzionanti)
             {
@@ -1669,9 +1669,9 @@ namespace JsonPolimi_Core_nf.Tipi
 
             bool? works = null;
             string link = this.GetLink();
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < tentativi1; i++)
             {
-                works = CheckSeIlLinkVa2_Telegram(link);
+                works = CheckSeIlLinkVa2_Telegram(link, tentativi2);
                 if (works != null && works.Value == true)
                     return true;
             }
@@ -1679,12 +1679,12 @@ namespace JsonPolimi_Core_nf.Tipi
             return works;
         }
 
-        public static bool? CheckSeIlLinkVa2_Telegram(string link)
+        public static bool? CheckSeIlLinkVa2_Telegram(string link, int tentativi = 2)
         {
 
             string content = null;
             int i = 0;
-            while (i <= 2 && string.IsNullOrEmpty(content))
+            while (i <= tentativi && string.IsNullOrEmpty(content))
             {
                 try
                 {
