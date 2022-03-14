@@ -8,7 +8,7 @@ namespace JsonPolimi_Core_nf.Tipi
     {
         public System.Action<object, object> action;
         private readonly List<string> logs = new List<string>();
-        private readonly Result result = new Result();
+        private readonly Result result = new();
 
         public void RunAction()
         {

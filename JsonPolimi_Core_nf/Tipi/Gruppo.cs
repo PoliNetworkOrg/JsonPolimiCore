@@ -425,7 +425,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return linkFunzionante == null ? "null" : linkFunzionante.Value ? '"' + "Y" + '"' : '"' + "N" + '"';
         }
 
-        private string StringCheckNull(int? annoCorsoStudio)
+        private static string StringCheckNull(int? annoCorsoStudio)
         {
             if (annoCorsoStudio == null)
                 return "null";
@@ -433,7 +433,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return StringCheckNull(annoCorsoStudio.Value.ToString());
         }
 
-        private string StringCheckNull(ListaStringhePerJSON office)
+        private static string StringCheckNull(ListaStringhePerJSON office)
         {
             if (office == null)
                 return "null";
@@ -441,7 +441,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return '"' + office.StringNotNull() + '"';
         }
 
-        private string StringCheckNull(string s)
+        private static string StringCheckNull(string s)
         {
             if (String.IsNullOrEmpty(s))
                 return "null";
@@ -449,7 +449,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return '"' + s + '"';
         }
 
-        private string TipoLinkCheckNull(TipoLink s)
+        private static string TipoLinkCheckNull(TipoLink s)
         {
             if (String.IsNullOrEmpty(s.ToString()))
                 return "null";
@@ -859,7 +859,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return json;
         }
 
-        private string Escape(string classe)
+        private static string Escape(string classe)
         {
             string a = "" + '\\' + '"';
             string b = "" + '"';
@@ -1196,7 +1196,7 @@ namespace JsonPolimi_Core_nf.Tipi
                     string x2 = x1.Replace('\r', '\t');
                     x2 = x2.Replace('\n', '\t');
                     var x3 = x2.Split('\t');
-                    List<string> x4 = new List<string>();
+                    List<string> x4 = new();
                     foreach (var x3a in x3)
                     {
                         if (!string.IsNullOrEmpty(x3a.Trim()))
@@ -1616,7 +1616,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return text;
         }
 
-        private bool FindSeUguali(List<string> s2, int i, int rip)
+        private static bool FindSeUguali(List<string> s2, int i, int rip)
         {
             if (i >= s2.Count || rip >= s2.Count)
             {
@@ -1691,7 +1691,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return string.IsNullOrEmpty(content) ? null : (bool?)content.Contains("tgme_page_title");
         }
 
-        public static WebClient clientDownload = new WebClient();
+        public static WebClient clientDownload = new();
 
         public static string Download(string uri, EventoConLog eventoConLog)
         {

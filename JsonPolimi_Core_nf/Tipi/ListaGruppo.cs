@@ -161,7 +161,7 @@ namespace JsonPolimi_Core_nf.Tipi
                 return 0;
             }
 
-            private int CompareInt(int? annoCorsoStudio1, int? annoCorsoStudio2)
+            private static int CompareInt(int? annoCorsoStudio1, int? annoCorsoStudio2)
             {
                 if (annoCorsoStudio1 == null && annoCorsoStudio2 == null)
                     return 0;
@@ -455,7 +455,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return new Tuple<SomiglianzaClasse, Gruppo>(new SomiglianzaClasse(SomiglianzaEnum.DIVERSI), null);
         }
 
-        private bool JsonEmpty(ListaStringhePerJSON office)
+        private static bool JsonEmpty(ListaStringhePerJSON office)
         {
             if (office == null)
                 return true;
@@ -463,7 +463,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return office.IsEmpty();
         }
 
-        private SomiglianzaEnum SciogliDubbio(Gruppo a1, Gruppo a2)
+        private static SomiglianzaEnum SciogliDubbio(Gruppo a1, Gruppo a2)
         {
             ;
 
@@ -530,7 +530,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return SomiglianzaEnum.DUBBIO;
         }
 
-        private SomiglianzaEnum Equivalenti6(Gruppo a1, Gruppo a2, SomiglianzaClasse somiglianzaEnumOld)
+        private static SomiglianzaEnum Equivalenti6(Gruppo a1, Gruppo a2, SomiglianzaClasse somiglianzaEnumOld)
         {
             ;
 
@@ -876,7 +876,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return somiglianzaEnumOld.somiglianzaEnum;
         }
 
-        private SomiglianzaClasse Equivalenti3(Gruppo a1, Gruppo a2)
+        private static SomiglianzaClasse Equivalenti3(Gruppo a1, Gruppo a2)
         {
             var r1 = Equivalenti5(a1, a2);
 
@@ -904,7 +904,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return r1;
         }
 
-        private SomiglianzaClasse Equivalenti5(Gruppo a1, Gruppo a2)
+        private static SomiglianzaClasse Equivalenti5(Gruppo a1, Gruppo a2)
         {
             if (!string.IsNullOrEmpty(a1.IDCorsoPolimi) && !string.IsNullOrEmpty(a2.IDCorsoPolimi) &&
                 a1.IDCorsoPolimi == a2.IDCorsoPolimi)
@@ -1054,7 +1054,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI);
         }
 
-        private SomiglianzaEnum NomiSimili(string n1, string n2)
+        private static SomiglianzaEnum NomiSimili(string n1, string n2)
         {
             if (n1.Length == 0 || n2.Length == 0)
                 return SomiglianzaEnum.DIVERSI;
@@ -1188,7 +1188,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return SomiglianzaEnum.DIVERSI;
         }
 
-        private void TryRename(ref List<string> l1, ref List<string> l2)
+        private static void TryRename(ref List<string> l1, ref List<string> l2)
         {
             List<Tuple<string, string>> rename = new List<Tuple<string, string>>
             {
@@ -1211,9 +1211,9 @@ namespace JsonPolimi_Core_nf.Tipi
             }
         }
 
-        private bool? ManualCheck(string n1, string n2)
+        private static bool? ManualCheck(string n1, string n2)
         {
-            if (n1[n1.Length - 1] == ' ')
+            if (n1[^1] == ' ')
                 n1 = n1.Remove(n1.Length - 1);
 
             if (n2[^1] == ' ')
@@ -1619,7 +1619,7 @@ namespace JsonPolimi_Core_nf.Tipi
             this._l[i] = r.Item2;
         }
 
-        private void TryRemove(ref List<string> l1, ref List<string> l2, List<string> to_remove)
+        private static void TryRemove(ref List<string> l1, ref List<string> l2, List<string> to_remove)
         {
             foreach (string s in to_remove)
             {
@@ -1765,7 +1765,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return a1;
         }
 
-        private string UnisciNomi(string classe1, string classe2)
+        private static string UnisciNomi(string classe1, string classe2)
         {
             string s1 = classe1.ToLower().Trim();
             string s2 = classe2.ToLower().Trim();
@@ -2408,10 +2408,10 @@ namespace JsonPolimi_Core_nf.Tipi
                     return true;
                 }
 
-                if (a1.Classe.ToLower().Contains("~") && !a2.Classe.ToLower().Contains("~"))
+                if (a1.Classe.ToLower().Contains('~') && !a2.Classe.ToLower().Contains('~'))
                     return true;
 
-                if (a2.Classe.ToLower().Contains("~") && !a1.Classe.ToLower().Contains('~'))
+                if (a2.Classe.ToLower().Contains('~') && !a1.Classe.ToLower().Contains('~'))
                     return true;
             }
 
@@ -2511,7 +2511,7 @@ namespace JsonPolimi_Core_nf.Tipi
         public static Gruppo CreaGruppo(DataRow dr)
         {
             var idlink1 = dr.ItemArray[3].ToString().Split('/');
-            var idlink2 = idlink1[idlink1.Length - 1];
+            var idlink2 = idlink1[^1];
             TipoLink tipoLink;
             if (dr.ItemArray[3].ToString().StartsWith("https://t.me/+"))
             {
@@ -2608,7 +2608,7 @@ namespace JsonPolimi_Core_nf.Tipi
             if (l3.Count < 4)
                 return;
 
-            string permanentId = l3[3].Substring("PermanentId: ".Length).Trim();
+            string permanentId = l3[3]["PermanentId: ".Length..].Trim();
             if (permanentId == "null" || permanentId == "[null]")
                 permanentId = null;
 
@@ -2636,9 +2636,9 @@ namespace JsonPolimi_Core_nf.Tipi
                 oldlinks_list = GetOldLinks(oldlinks);
 
                 string exceptionmessage = l3[5].Substring("ExceptionMessage: ".Length).Trim();
-                string q1 = l3[6].Substring("q1: ".Length).Trim();
-                string q2 = l3[7].Substring("q2: ".Length).Trim();
-                string q3 = l3[8].Substring("q3: ".Length).Trim();
+                string q1 = l3[6]["q1: ".Length..].Trim();
+                string q2 = l3[7]["q2: ".Length..].Trim();
+                string q3 = l3[8]["q3: ".Length..].Trim();
             }
 
             List<int> i = TrovaGruppo(idlink, nome, permanentId, oldlinks_list);
@@ -2664,7 +2664,7 @@ namespace JsonPolimi_Core_nf.Tipi
             }
         }
 
-        private List<string> GetOldLinks(string oldlinks)
+        private static List<string> GetOldLinks(string oldlinks)
         {
             if (string.IsNullOrEmpty(oldlinks))
                 return null;
@@ -2681,7 +2681,7 @@ namespace JsonPolimi_Core_nf.Tipi
             else
                 return null;
 
-            if (oldlinks.Contains(","))
+            if (oldlinks.Contains(','))
             {
                 List<string> r = new List<string>();
 
@@ -2706,7 +2706,7 @@ namespace JsonPolimi_Core_nf.Tipi
                 if (!oldlinks.StartsWith("'"))
                     return null;
 
-                oldlinks = oldlinks.Substring(1);
+                oldlinks = oldlinks[1..];
 
                 if (oldlinks.EndsWith("'"))
                     oldlinks = oldlinks.Remove(oldlinks.Length - 1);
@@ -2727,7 +2727,7 @@ namespace JsonPolimi_Core_nf.Tipi
             o2 = o2.Trim();
 
             if (o2.StartsWith("'"))
-                o2 = o2.Substring(1);
+                o2 = o2[1..];
             else
                 return null;
 
@@ -2760,9 +2760,9 @@ namespace JsonPolimi_Core_nf.Tipi
             return r;
         }
 
-        private List<List<string>> SplitPerStringaVuota(string[] l)
+        private static List<List<string>> SplitPerStringaVuota(string[] l)
         {
-            List<List<string>> r = new List<List<string>>();
+            List<List<string>> r = new();
             List<string> r2 = null;
             for (int i = 0; i < l.Length; i++)
             {
@@ -2788,7 +2788,7 @@ namespace JsonPolimi_Core_nf.Tipi
 
         public void SalvaTelegramIdDeiGruppiLinkCheNonVanno(string anno)
         {
-            List<Gruppo> l = new List<Gruppo>();
+            List<Gruppo> l = new();
             foreach (var x in this._l)
             {
                 if (x.Platform == "TG")
