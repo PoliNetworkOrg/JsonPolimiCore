@@ -23,6 +23,11 @@ namespace JsonPolimi_Core_nf.Tipi
             _l = new List<Gruppo>();
         }
 
+        public List<Gruppo> GetGroups()
+        {
+            return this._l;
+        }
+
         public IEnumerator GetEnumerator()
         {
             return _l.GetEnumerator();
@@ -2827,7 +2832,7 @@ namespace JsonPolimi_Core_nf.Tipi
 
         public EventoConLog CheckSeILinkVanno(ParametriFunzione parametriFunzione)
         {
-            EventoConLog eventoConLog = new EventoConLog();
+            EventoConLog eventoConLog = new();
 
             eventoConLog.action = (
                 (sender, e) => CheckSeILinkVanno2(
