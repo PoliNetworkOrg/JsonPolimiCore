@@ -40,6 +40,6 @@ jobs:
     - name: Create Github Release
       uses: ncipollo/release-action@v1
       with:
-          artifacts: ".\\JsonPolimiCore\\JsonPolimi_Core_nf\\bin\\Debug\\net6.0-windows\\JsonPolimi_Core_nf.dll"
+          artifacts: ".\\JsonPolimi_Core_nf\\bin\\Debug\\net6.0-windows\\JsonPolimi_Core_nf.dll"
           token: ${{ secrets.RELEASES_TOKEN }}
           tag: ${{ steps.date.outputs.date }}
