@@ -267,7 +267,7 @@ namespace JsonPolimi_Core_nf.Tipi
                 PianoDiStudi;
         }
 
-        private string StringNotEmpty(string a)
+        private static string StringNotEmpty(string a)
         {
             if (a == null)
                 return "";
@@ -420,7 +420,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return json;
         }
 
-        private string BoolCheckNotNull(bool? linkFunzionante)
+        private static string BoolCheckNotNull(bool? linkFunzionante)
         {
             return linkFunzionante == null ? "null" : linkFunzionante.Value ? '"' + "Y" + '"' : '"' + "N" + '"';
         }
@@ -893,20 +893,13 @@ namespace JsonPolimi_Core_nf.Tipi
             {
                 case "TG":
                     {
-                        switch (TipoLink)
+                        return TipoLink switch
                         {
-                            case TipoLink.JOINCHAT:
-                                return "https://t.me/joinchat/" + this.IdLink;
-
-                            case TipoLink.PLUS:
-                                return "https://t.me/" + this.IdLink;
-
-                            case TipoLink.UNKNOWN:
-                                return "https://t.me/joinchat/" + this.IdLink;
-
-                            default:
-                                return "https://t.me/joinchat/" + this.IdLink;
-                        }
+                            TipoLink.JOINCHAT => "https://t.me/joinchat/" + this.IdLink,
+                            TipoLink.PLUS => "https://t.me/" + this.IdLink,
+                            TipoLink.UNKNOWN => "https://t.me/joinchat/" + this.IdLink,
+                            _ => "https://t.me/joinchat/" + this.IdLink,
+                        };
                     }
 
                 case "WA":
@@ -1453,6 +1446,8 @@ namespace JsonPolimi_Core_nf.Tipi
 
                 case "LC, MI":
                     return new List<string>() { "Lecco", "Leonardo" };
+                default:
+                    break;
             }
 
             return null;

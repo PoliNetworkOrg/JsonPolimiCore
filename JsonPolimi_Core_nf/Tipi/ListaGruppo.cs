@@ -1211,7 +1211,7 @@ namespace JsonPolimi_Core_nf.Tipi
             if (n1[n1.Length - 1] == ' ')
                 n1 = n1.Remove(n1.Length - 1);
 
-            if (n2[n2.Length - 1] == ' ')
+            if (n2[^1] == ' ')
                 n2 = n2.Remove(n2.Length - 1);
 
             n1 = n1.ToLower();
@@ -1780,7 +1780,7 @@ namespace JsonPolimi_Core_nf.Tipi
             return false;
         }
 
-        private bool CheckIfToExit(Gruppo a1, Gruppo a2)
+        private static bool CheckIfToExit(Gruppo a1, Gruppo a2)
         {
             if (!string.IsNullOrEmpty(a1.Classe) && !string.IsNullOrEmpty(a2.Classe))
             {
@@ -2406,7 +2406,7 @@ namespace JsonPolimi_Core_nf.Tipi
                 if (a1.Classe.ToLower().Contains("~") && !a2.Classe.ToLower().Contains("~"))
                     return true;
 
-                if (a2.Classe.ToLower().Contains("~") && !a1.Classe.ToLower().Contains("~"))
+                if (a2.Classe.ToLower().Contains("~") && !a1.Classe.ToLower().Contains('~'))
                     return true;
             }
 
@@ -2503,7 +2503,7 @@ namespace JsonPolimi_Core_nf.Tipi
             this.Add(gruppo, true);
         }
 
-        public Gruppo CreaGruppo(DataRow dr)
+        public static Gruppo CreaGruppo(DataRow dr)
         {
             var idlink1 = dr.ItemArray[3].ToString().Split('/');
             var idlink2 = idlink1[idlink1.Length - 1];
@@ -2625,7 +2625,7 @@ namespace JsonPolimi_Core_nf.Tipi
                 idlink = l3[1].Substring("IdLink: ".Length).Trim();
                 newlink = l3[2].Substring("NewLink: ".Length).Trim();
                 var n2 = newlink.Split('/');
-                newlink = n2[n2.Length - 1];
+                newlink = n2[^1];
 
                 string oldlinks = l3[4].Substring("OldLink: ".Length).Trim();
                 oldlinks_list = GetOldLinks(oldlinks);
@@ -2712,7 +2712,7 @@ namespace JsonPolimi_Core_nf.Tipi
             }
         }
 
-        private string GetOldLinks2(string o2)
+        private static string GetOldLinks2(string o2)
         {
             //'feuwbbggqwgqwwg'
 
