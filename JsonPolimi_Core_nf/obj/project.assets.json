@@ -3107,19 +3107,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Arme\\.nuget\\packages\\": {}
+    "C:\\Users\\Elia Maggioni\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\git\\PoliNetwork\\JsonPolimiCore\\JsonPolimi_Core_nf\\JsonPolimi_Core_nf.csproj",
+      "projectUniqueName": "C:\\repos\\jsonpolimicore\\JsonPolimi_Core_nf\\JsonPolimi_Core_nf.csproj",
       "projectName": "JsonPolimi_Core_nf",
-      "projectPath": "D:\\git\\PoliNetwork\\JsonPolimiCore\\JsonPolimi_Core_nf\\JsonPolimi_Core_nf.csproj",
-      "packagesPath": "C:\\Users\\Arme\\.nuget\\packages\\",
-      "outputPath": "D:\\git\\PoliNetwork\\JsonPolimiCore\\JsonPolimi_Core_nf\\obj\\",
+      "projectPath": "C:\\repos\\jsonpolimicore\\JsonPolimi_Core_nf\\JsonPolimi_Core_nf.csproj",
+      "packagesPath": "C:\\Users\\Elia Maggioni\\.nuget\\packages\\",
+      "outputPath": "C:\\repos\\jsonpolimicore\\JsonPolimi_Core_nf\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Arme\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Elia Maggioni\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3201,7 +3201,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

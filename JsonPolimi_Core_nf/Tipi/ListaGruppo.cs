@@ -2530,7 +2530,7 @@ namespace JsonPolimi_Core_nf.Tipi
             DateTime? date2 = null;
             try
             {
-                date2 = (DateTime?)date;
+                date2 = DateTime.Parse(date?.ToString() ?? string.Empty);
             }
             catch
             {
