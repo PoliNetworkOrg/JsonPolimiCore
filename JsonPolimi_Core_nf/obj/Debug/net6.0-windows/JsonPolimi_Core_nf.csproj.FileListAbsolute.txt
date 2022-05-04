@@ -9,3 +9,14 @@ D:\git\PoliNetwork\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\net6.0-windows\Js
 D:\git\PoliNetwork\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\net6.0-windows\refint\JsonPolimi_Core_nf.dll
 D:\git\PoliNetwork\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\net6.0-windows\JsonPolimi_Core_nf.pdb
 D:\git\PoliNetwork\JsonPolimiCore\JsonPolimi_Core_nf\obj\Debug\net6.0-windows\ref\JsonPolimi_Core_nf.dll
+C:\repos\jsonpolimicore\JsonPolimi_Core_nf\bin\Debug\net6.0-windows\JsonPolimi_Core_nf.dll.config
+C:\repos\jsonpolimicore\JsonPolimi_Core_nf\bin\Debug\net6.0-windows\JsonPolimi_Core_nf.deps.json
+C:\repos\jsonpolimicore\JsonPolimi_Core_nf\bin\Debug\net6.0-windows\JsonPolimi_Core_nf.dll
+C:\repos\jsonpolimicore\JsonPolimi_Core_nf\bin\Debug\net6.0-windows\ref\JsonPolimi_Core_nf.dll
+C:\repos\jsonpolimicore\JsonPolimi_Core_nf\bin\Debug\net6.0-windows\JsonPolimi_Core_nf.pdb
+C:\repos\jsonpolimicore\JsonPolimi_Core_nf\obj\Debug\net6.0-windows\JsonPolimi_Core_nf.csproj.AssemblyReference.cache
+C:\repos\jsonpolimicore\JsonPolimi_Core_nf\obj\Debug\net6.0-windows\JsonPolimi_Core_nf.GeneratedMSBuildEditorConfig.editorconfig
+C:\repos\jsonpolimicore\JsonPolimi_Core_nf\obj\Debug\net6.0-windows\JsonPolimi_Core_nf.csproj.CoreCompileInputs.cache
+C:\repos\jsonpolimicore\JsonPolimi_Core_nf\obj\Debug\net6.0-windows\JsonPolimi_Core_nf.dll
+C:\repos\jsonpolimicore\JsonPolimi_Core_nf\obj\Debug\net6.0-windows\ref\JsonPolimi_Core_nf.dll
+C:\repos\jsonpolimicore\JsonPolimi_Core_nf\obj\Debug\net6.0-windows\JsonPolimi_Core_nf.pdb
