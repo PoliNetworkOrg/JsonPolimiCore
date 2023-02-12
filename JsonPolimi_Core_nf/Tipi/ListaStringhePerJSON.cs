@@ -37,17 +37,7 @@ public class ListaStringhePerJSON
 
     public bool IsEmpty()
     {
-        if (o == null)
-            return true;
-
-        if (o.Count == 0)
-            return true;
-
-        foreach (var x in o)
-            if (string.IsNullOrEmpty(x))
-                return true;
-
-        return false;
+        return o == null || o.Count == 0 || o.Any(string.IsNullOrEmpty);
     }
 
     public string StringNotNull()
@@ -57,14 +47,7 @@ public class ListaStringhePerJSON
 
     public bool Contains_In_Uno(string v)
     {
-        if (o == null)
-            return false;
-
-        foreach (var s2 in o)
-            if (s2.Contains(v))
-                return true;
-
-        return false;
+        return o != null && o.Any(s2 => s2.Contains(v));
     }
 
     public string GetCCSCode()
@@ -80,42 +63,39 @@ public class ListaStringhePerJSON
                 if (x1.StartsWith("(") && x1.EndsWith("),"))
                 {
                     var s3 = x1.Substring(0, x1.Length - 1);
-                    return GetCCSCode2(s3);
+                    return GetCcsCode2(s3);
                 }
                 else if (x1.StartsWith("(") && x1.EndsWith(")"))
                 {
-                    return GetCCSCode2(x1);
+                    return GetCcsCode2(x1);
                 }
 
-            return GetCCSCode2(s2[s2.Length - 1]);
+            return GetCcsCode2(s2[^1]);
         }
 
         foreach (var x1 in o)
             if (x1.StartsWith("(") && x1.EndsWith("),"))
             {
                 var s3 = x1.Substring(0, x1.Length - 1);
-                return GetCCSCode2(s3);
+                return GetCcsCode2(s3);
             }
             else if (x1.StartsWith("(") && x1.EndsWith(")"))
             {
-                return GetCCSCode2(x1);
+                return GetCcsCode2(x1);
             }
 
         return null;
     }
 
-    private string GetCCSCode2(string v)
+    private static string GetCcsCode2(string v)
     {
         var s = v.Trim();
-        if (s.StartsWith("(") && s.EndsWith(")"))
-        {
-            s = s.Substring(1);
-            s = s.Substring(0, s.Length - 1);
+        if (!s.StartsWith("(") || !s.EndsWith(")")) return null;
+        s = s[1..];
+        s = s[..^1];
 
-            return s;
-        }
+        return s;
 
-        return null;
     }
 
     /*
@@ -138,10 +118,9 @@ public class ListaStringhePerJSON
             return 1;
 
         var contained = true;
-        foreach (var i1 in o1.o)
+        foreach (var contains in o1.o.Select(i1 => o2.o.Contains(i1)).Where(contains => !contains))
         {
-            var contains = o2.o.Contains(i1);
-            if (!contains) contained = false;
+            contained = false;
         }
 
         if (contained)

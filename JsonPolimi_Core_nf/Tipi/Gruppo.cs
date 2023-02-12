@@ -386,10 +386,7 @@ public class Gruppo
 
     private static string StringCheckNull(int? annoCorsoStudio)
     {
-        if (annoCorsoStudio == null)
-            return "null";
-
-        return StringCheckNull(annoCorsoStudio.Value.ToString());
+        return annoCorsoStudio == null ? "null" : StringCheckNull(annoCorsoStudio.Value.ToString());
     }
 
     private static string StringCheckNull(ListaStringhePerJSON office)
@@ -483,8 +480,7 @@ public class Gruppo
         {
             AggiungiSede(v, ref g);
         }
-        else if (vUpper == "FACEBOOK" || vUpper == "TELEGRAM" || vUpper == "NON ANCORA CREATO" ||
-                 vUpper == "CORSI" || vUpper == "LUOGO" || vUpper.StartsWith("LAUREE", StringComparison.Ordinal))
+        else if (vUpper is "FACEBOOK" or "TELEGRAM" or "NON ANCORA CREATO" or "CORSI" or "LUOGO" || vUpper.StartsWith("LAUREE", StringComparison.Ordinal))
         {
             //è una cella inutile
             ;
@@ -523,9 +519,7 @@ public class Gruppo
 
     private static bool IsSede(string vUpper)
     {
-        return vUpper == "LEONARDO" || vUpper == "MANTOVA" || vUpper == "BOVISA" || vUpper == "PIACENZA" ||
-               vUpper == "LECCO" || vUpper == "COMO" || vUpper == "CREMONA" || vUpper == "LEONARDO-CREMONA" ||
-               vUpper == "LEONARDO*";
+        return vUpper is "LEONARDO" or "MANTOVA" or "BOVISA" or "PIACENZA" or "LECCO" or "COMO" or "CREMONA" or "LEONARDO-CREMONA" or "LEONARDO*";
     }
 
     private static void AggiungiAltro(ref string vUpper, ref InsiemeDiGruppi g, ref string v)

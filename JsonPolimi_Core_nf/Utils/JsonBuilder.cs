@@ -27,18 +27,16 @@ public static class JsonBuilder
                 var elem = Variabili.L.GetElem(i);
 
                 var tenere = DoCheckGruppo(v, elem);
-                if (tenere)
-                {
-                    json += '\n';
-                    json += '"';
-                    json += elem.Id;
-                    json += '"' + ":";
-                    json += elem.To_json(v.n);
-                    json += ',';
-                }
+                if (!tenere) continue;
+                json += '\n';
+                json += '"';
+                json += elem.Id;
+                json += '"' + ":";
+                json += elem.To_json(v.n);
+                json += ',';
             }
 
-            if (json.EndsWith(",")) json = json.Substring(0, json.Length - 1);
+            if (json.EndsWith(",")) json = json[..^1];
 
             json += "}";
             json += ",";
@@ -52,13 +50,11 @@ public static class JsonBuilder
             {
                 var elem = Variabili.L.GetElem(i);
                 var tenere = DoCheckGruppo(v, elem);
-                if (tenere)
-                {
-                    json += '\n';
-                    json += "        ";
-                    json += elem.To_json(v.n);
-                    json += ',';
-                }
+                if (!tenere) continue;
+                json += '\n';
+                json += "        ";
+                json += elem.To_json(v.n);
+                json += ',';
             }
 
             if (json.EndsWith(",")) json = json.Substring(0, json.Length - 1);
@@ -110,8 +106,8 @@ public static class JsonBuilder
         {
             var n = s.IndexOf("<=", StringComparison.Ordinal);
             var r = "";
-            r += s.Substring(0, n);
-            r += s.Substring(n + 2);
+            r += s[..n];
+            r += s[(n + 2)..];
             return r;
         }
 
@@ -119,8 +115,8 @@ public static class JsonBuilder
         {
             var n = s.IndexOf("&lt;=", StringComparison.Ordinal);
             var r = "";
-            r += s.Substring(0, n);
-            r += s.Substring(n + 5);
+            r += s[..n];
+            r += s[(n + 5)..];
             return r;
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -19,7 +20,7 @@ public class ODS_Reader
 
     public static List<List<string>> Read2(string fileName)
     {
-        var e = GetContentXML(fileName);
+        var e = GetContentXml(fileName);
         if (e == null)
             return null;
 
@@ -31,42 +32,41 @@ public class ODS_Reader
         var doc = new XmlDocument();
         doc.LoadXml(r2);
 
-        return GetTableFromXML(doc);
+        return GetTableFromXml(doc);
     }
 
-    private static List<List<string>> GetTableFromXML(XmlDocument doc)
+    private static List<List<string>> GetTableFromXml(XmlNode doc)
     {
-        var x1 = GetTableFromXML1(doc);
+        var x1 = GetTableFromXml1(doc);
         if (x1 == null)
             return null;
 
-        var x2 = GetTableFromXML2(x1);
+        var x2 = GetTableFromXml2(x1);
         if (x2 == null)
             return null;
 
-        var x3 = GetTableFromXML3(x2);
+        var x3 = GetTableFromXml3(x2);
         if (x3 == null)
             return null;
 
-        var x4 = GetTableFromXML4(x3);
+        var x4 = GetTableFromXml4(x3);
         if (x4 == null)
             return null;
 
         var r = new List<List<string>>();
 
         foreach (var x5 in x4.ChildNodes)
-            if (x5 is XmlElement x6)
-                if (x6.Name == "table:table-row")
-                {
-                    var r1 = GetRowFromXML(x6);
-                    if (r1 != null)
-                        r.Add(r1);
-                }
+            if (x5 is XmlElement { Name: "table:table-row" } x6)
+            {
+                var r1 = GetRowFromXml(x6);
+                if (r1 != null)
+                    r.Add(r1);
+            }
 
         return r;
     }
 
-    private static List<string> GetRowFromXML(XmlElement x6)
+    private static List<string> GetRowFromXml(XmlNode x6)
     {
         var r = new List<string>();
 
@@ -90,16 +90,16 @@ public class ODS_Reader
         return r;
     }
 
-    private static int? DetectRepeteadColumn(string[] c3)
+    private static int? DetectRepeteadColumn(IReadOnlyList<string> c3)
     {
         var i = DetectRepeteadColumn2(c3);
 
         return i + 1;
     }
 
-    private static int? DetectRepeteadColumn2(string[] c3)
+    private static int? DetectRepeteadColumn2(IReadOnlyList<string> c3)
     {
-        for (var i = 0; i < c3.Length; i++)
+        for (var i = 0; i < c3.Count; i++)
         {
             var s = c3[i];
             if (s.Contains("number-columns-repeated"))
@@ -109,17 +109,16 @@ public class ODS_Reader
         return null;
     }
 
-    private static XmlElement GetTableFromXML4(XmlElement x1)
+    private static XmlElement GetTableFromXml4(XmlNode x1)
     {
         foreach (var x2 in x1.ChildNodes)
-            if (x2 is XmlElement x3)
-                if (x3.Name == "table:table")
-                    return x3;
+            if (x2 is XmlElement { Name: "table:table" } x3)
+                return x3;
 
         return null;
     }
 
-    private static XmlElement GetTableFromXML3(XmlElement doc)
+    private static XmlElement GetTableFromXml3(XmlNode doc)
     {
         foreach (var c1 in doc.ChildNodes)
             if (c1 is XmlElement x2)
@@ -128,17 +127,16 @@ public class ODS_Reader
         return null;
     }
 
-    private static XmlElement GetTableFromXML2(XmlElement x1)
+    private static XmlElement GetTableFromXml2(XmlNode x1)
     {
         foreach (var x2 in x1.ChildNodes)
-            if (x2 is XmlElement x3)
-                if (x3.Name == "office:body")
-                    return x3;
+            if (x2 is XmlElement { Name: "office:body" } x3)
+                return x3;
 
         return null;
     }
 
-    private static XmlElement GetTableFromXML1(XmlDocument doc)
+    private static XmlElement GetTableFromXml1(XmlNode doc)
     {
         foreach (var c1 in doc.ChildNodes)
             if (c1 is XmlElement x2)
@@ -147,16 +145,10 @@ public class ODS_Reader
         return null;
     }
 
-    private static ZipEntry GetContentXML(string fileName)
+    private static ZipEntry GetContentXml(string fileName)
     {
         var options = new ReadOptions { Encoding = Encoding.UTF8 };
-        using (var zip = ZipFile.Read(fileName, options))
-        {
-            foreach (var e in zip)
-                if (e.FileName == "content.xml")
-                    return e;
-        }
-
-        return null;
+        using var zip = ZipFile.Read(fileName, options);
+        return zip.FirstOrDefault(e => e.FileName == "content.xml");
     }
 }
