@@ -2469,6 +2469,7 @@ namespace JsonPolimi_Core_nf.Tipi
         public void ImportaGruppiDaTabellaTelegramGruppiBot_PuntoBin()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Bin files (*.bin)|*.bin";
             var r = openFileDialog.ShowDialog();
             if (r != DialogResult.OK)
                 return;
