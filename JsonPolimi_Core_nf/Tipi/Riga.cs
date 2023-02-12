@@ -2,7 +2,7 @@
 
 public class Riga
 {
-    public readonly Gruppo G;
+    public Gruppo G;
     public int I;
 
     public Riga(Gruppo g, int i)

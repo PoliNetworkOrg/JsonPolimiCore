@@ -8,7 +8,7 @@ public class InsiemeDiGruppi
 {
     public readonly Gruppo GruppoDiBase;
     public readonly List<Gruppo> L;
-    public readonly Gruppo NomeOld;
+    public Gruppo NomeOld;
 
     public InsiemeDiGruppi()
     {
