@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
@@ -108,21 +109,20 @@ public class ListaGruppo : IEnumerable
         _l.Sort(cc.Compare);
     }
 
-    public static int CompareOrdinal2(ListaStringhePerJSON office1, ListaStringhePerJSON office2)
+    private static int CompareOrdinal2(ListaStringhePerJSON office1, ListaStringhePerJSON office2)
     {
-        if (office1 == null && office2 == null)
-            return 0;
-
-        if (office1 == null)
-            return -1;
+        switch (office1)
+        {
+            case null when office2 == null:
+                return 0;
+            case null:
+                return -1;
+        }
 
         if (office2 == null)
             return +1;
 
-        if (office1.StringNotNull() == office2.StringNotNull())
-            return 0;
-
-        return CompareOrdinal23(office1.o, office2.o);
+        return office1.StringNotNull() == office2.StringNotNull() ? 0 : CompareOrdinal23(office1.o, office2.o);
     }
 
     private static int CompareOrdinal23(List<string> office1, List<string> office2)
@@ -141,14 +141,7 @@ public class ListaGruppo : IEnumerable
 
         if (office1.Count == office2.Count)
         {
-            for (var i = 0; i < office1.Count; i++)
-            {
-                var i1 = CompareOrdinal(office1[i].ToLower(), office2[i].ToLower());
-                if (i1 != 0)
-                    return i1;
-            }
-
-            return 0;
+            return office1.Select((t, i) => CompareOrdinal(t.ToLower(), office2[i].ToLower())).FirstOrDefault(i1 => i1 != 0);
         }
 
         if (office1.Count > office2.Count)
@@ -206,8 +199,7 @@ public class ListaGruppo : IEnumerable
             }
         }
 
-        if (_l[v1].LastUpdateInviteLinkTime == null)
-            _l[v1].LastUpdateInviteLinkTime = DateTime.Now;
+        _l[v1].LastUpdateInviteLinkTime ??= DateTime.Now;
 
         _l[v1].Aggiusta(true, true);
     }
@@ -218,53 +210,55 @@ public class ListaGruppo : IEnumerable
         {
             _l[i].Aggiusta(true, true);
             for (var j = _l.Count - 1; j >= 0; j--)
-                if (i != j)
+            {
+                if (i == j) continue;
+                var r = Equivalenti(i, j, true);
+
+                var doThat = false;
+                switch (r.Item1.somiglianzaEnum)
                 {
-                    var r = Equivalenti(i, j, true);
-
-                    var do_that = false;
-                    if (r.Item1.somiglianzaEnum == SomiglianzaEnum.IDENTITICI)
-                        do_that = true;
-                    else if (r.Item1.somiglianzaEnum == SomiglianzaEnum.DUBBIO) do_that = true;
-
-                    if (r.Item2 == null) do_that = false;
-
-                    if (do_that)
-                    {
-                        if (i > j)
-                        {
-                            _l.RemoveAt(i);
-                            _l.RemoveAt(j);
-                        }
-                        else
-                        {
-                            _l.RemoveAt(j);
-                            _l.RemoveAt(i);
-                        }
-
-                        _l.Add(r.Item2);
-
-                        i--;
-                        j++;
-
-                        if (i < 0)
-                            i = 0;
-
-                        if (j > _l.Count - 1)
-                            j = _l.Count - 1;
-                    }
+                    case SomiglianzaEnum.IDENTITICI:
+                    case SomiglianzaEnum.DUBBIO:
+                        doThat = true;
+                        break;
                 }
+
+                if (r.Item2 == null) doThat = false;
+
+                if (!doThat) continue;
+                if (i > j)
+                {
+                    _l.RemoveAt(i);
+                    _l.RemoveAt(j);
+                }
+                else
+                {
+                    _l.RemoveAt(j);
+                    _l.RemoveAt(i);
+                }
+
+                _l.Add(r.Item2);
+
+                i--;
+                j++;
+
+                if (i < 0)
+                    i = 0;
+
+                if (j > _l.Count - 1)
+                    j = _l.Count - 1;
+            }
         }
 
         ;
     }
 
-    private Tuple<SomiglianzaClasse, Gruppo> Equivalenti(int i, int j, bool aggiusta_Anno)
+    private Tuple<SomiglianzaClasse, Gruppo> Equivalenti(int i, int j, bool aggiustaAnno)
     {
-        return Equivalenti2(i, new Tuple<Gruppo, int>(_l[j], j), aggiusta_Anno);
+        return Equivalenti2(i, new Tuple<Gruppo, int>(_l[j], j), aggiustaAnno);
     }
 
-    private Tuple<SomiglianzaClasse, Gruppo> Equivalenti2(int i, Tuple<Gruppo, int> j, bool aggiusta_Annno)
+    private Tuple<SomiglianzaClasse, Gruppo> Equivalenti2(int i, Tuple<Gruppo, int> j, bool aggiustaAnnno)
     {
         var a1 = _l[i];
         var a2 = j.Item1;
@@ -280,7 +274,7 @@ public class ListaGruppo : IEnumerable
                 if ((JsonEmpty(a1.Office) && !JsonEmpty(a2.Office)) || (!JsonEmpty(a1.Office) && JsonEmpty(a2.Office)))
                     if ((a1.Tipo == "C" && a2.Tipo == "S") || (a1.Tipo == "S" && a2.Tipo == "C"))
                     {
-                        var r7 = Unisci4(i, j, aggiusta_Annno);
+                        var r7 = Unisci4(i, j, aggiustaAnnno);
                         r7.Item2.Tipo = "C";
                         return new Tuple<SomiglianzaClasse, Gruppo>(
                             new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI, a1, a2), r7.Item2);
@@ -291,69 +285,67 @@ public class ListaGruppo : IEnumerable
             return new Tuple<SomiglianzaClasse, Gruppo>(new SomiglianzaClasse(SomiglianzaEnum.DIVERSI), null);
 
         var eq = Equivalenti3(a1, a2);
-        if (eq.somiglianzaEnum == SomiglianzaEnum.IDENTITICI || eq.somiglianzaEnum == SomiglianzaEnum.DUBBIO)
+        if (eq.somiglianzaEnum != SomiglianzaEnum.IDENTITICI && eq.somiglianzaEnum != SomiglianzaEnum.DUBBIO)
+            return new Tuple<SomiglianzaClasse, Gruppo>(new SomiglianzaClasse(SomiglianzaEnum.DIVERSI), null);
+
+        var somiglianzaEnum2 = Equivalenti6(a1, a2, eq);
+        switch (somiglianzaEnum2)
         {
-            ;
-
-            var somiglianzaEnum2 = Equivalenti6(a1, a2, eq);
-            switch (somiglianzaEnum2)
+            case SomiglianzaEnum.IDENTITICI:
             {
-                case SomiglianzaEnum.IDENTITICI:
-                {
-                    ;
-                    break;
-                }
-                case SomiglianzaEnum.DIVERSI:
-                {
-                    eq.somiglianzaEnum = SomiglianzaEnum.DIVERSI;
-                    return new Tuple<SomiglianzaClasse, Gruppo>(eq, null);
-                }
-                case SomiglianzaEnum.DUBBIO:
-                {
-                    ;
-
-                    var somiglianzaEnum3 = SciogliDubbio(a1, a2);
-                    switch (somiglianzaEnum3)
-                    {
-                        case SomiglianzaEnum.IDENTITICI:
-                        {
-                            ; //todo
-                            break;
-                        }
-                        case SomiglianzaEnum.DIVERSI:
-                        {
-                            return new Tuple<SomiglianzaClasse, Gruppo>(eq, null);
-                        }
-                        case SomiglianzaEnum.DUBBIO:
-                        {
-                            ;
-
-                            if (a1.Id == a2.Id)
-                            {
-                                var r7 = Unisci4(i, j, aggiusta_Annno);
-                                eq.somiglianzaEnum = SomiglianzaEnum.IDENTITICI;
-                                return new Tuple<SomiglianzaClasse, Gruppo>(eq, r7.Item2);
-                            }
-
-                            ;
-
-                            break;
-                        }
-                    }
-
-                    break;
-                }
+                ;
+                break;
             }
+            case SomiglianzaEnum.DIVERSI:
+            {
+                eq.somiglianzaEnum = SomiglianzaEnum.DIVERSI;
+                return new Tuple<SomiglianzaClasse, Gruppo>(eq, null);
+            }
+            case SomiglianzaEnum.DUBBIO:
+            {
+                ;
 
-            var r2 = Unisci4(i, j, aggiusta_Annno);
-            if (r2.Item1 == false) return new Tuple<SomiglianzaClasse, Gruppo>(eq, null);
+                var somiglianzaEnum3 = SciogliDubbio(a1, a2);
+                switch (somiglianzaEnum3)
+                {
+                    case SomiglianzaEnum.IDENTITICI:
+                    {
+                        ; //todo
+                        break;
+                    }
+                    case SomiglianzaEnum.DIVERSI:
+                    {
+                        return new Tuple<SomiglianzaClasse, Gruppo>(eq, null);
+                    }
+                    case SomiglianzaEnum.DUBBIO:
+                    {
+                        ;
 
-            ;
+                        if (a1.Id == a2.Id)
+                        {
+                            var r7 = Unisci4(i, j, aggiustaAnnno);
+                            eq.somiglianzaEnum = SomiglianzaEnum.IDENTITICI;
+                            return new Tuple<SomiglianzaClasse, Gruppo>(eq, r7.Item2);
+                        }
 
-            return new Tuple<SomiglianzaClasse, Gruppo>(eq, r2.Item2);
+                        ;
+
+                        break;
+                    }
+                }
+
+                break;
+            }
         }
 
-        return new Tuple<SomiglianzaClasse, Gruppo>(new SomiglianzaClasse(SomiglianzaEnum.DIVERSI), null);
+        var r2 = Unisci4(i, j, aggiustaAnnno);
+        if (r2.Item1 == false) return new Tuple<SomiglianzaClasse, Gruppo>(eq, null);
+
+        ;
+
+        return new Tuple<SomiglianzaClasse, Gruppo>(eq, r2.Item2);
+    
+
     }
 
     private static bool JsonEmpty(ListaStringhePerJSON office)
@@ -761,10 +753,10 @@ public class ListaGruppo : IEnumerable
                 r1.somiglianzaEnum = SomiglianzaEnum.DUBBIO;
         }
 
-        if (r1.somiglianzaEnum == SomiglianzaEnum.DUBBIO)
-            if (!IsNullOrEmpty(a1.Tipo) && !IsNullOrEmpty(a2.Tipo) &&
-                a1.Tipo.ToLower() != a2.Tipo.ToLower())
-                r1.somiglianzaEnum = SomiglianzaEnum.DIVERSI;
+        if (r1.somiglianzaEnum != SomiglianzaEnum.DUBBIO) return r1;
+        if (!IsNullOrEmpty(a1.Tipo) && !IsNullOrEmpty(a2.Tipo) &&
+            !string.Equals(a1.Tipo, a2.Tipo, StringComparison.CurrentCultureIgnoreCase))
+            r1.somiglianzaEnum = SomiglianzaEnum.DIVERSI;
 
         return r1;
     }
@@ -775,15 +767,10 @@ public class ListaGruppo : IEnumerable
             a1.IDCorsoPolimi == a2.IDCorsoPolimi)
         {
             var i1 = CompareOrdinal2(a1.CCS, a2.CCS);
-            if (i1 == 0)
-            {
-                var i2 = CompareOrdinal(a1.PianoDiStudi, a2.PianoDiStudi);
-                if (i2 == 0)
-                    return new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI);
-                return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
-            }
+            if (i1 != 0) return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
+            var i2 = CompareOrdinal(a1.PianoDiStudi, a2.PianoDiStudi);
+            return i2 == 0 ? new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI) : new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
 
-            return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
         }
 
         if (!IsNullOrEmpty(a1.IDCorsoPolimi) && !IsNullOrEmpty(a2.IDCorsoPolimi) &&
@@ -879,16 +866,14 @@ public class ListaGruppo : IEnumerable
             return new SomiglianzaClasse(SomiglianzaEnum.DUBBIO, a1, a2);
         }
 
-        if (b1 == SomiglianzaEnum.IDENTITICI)
-        {
-            if (!IsNullOrEmpty(a1.IdLink) && IsNullOrEmpty(a2.IdLink) &&
-                IsNullOrEmpty(a1.IDCorsoPolimi) && !IsNullOrEmpty(a2.IDCorsoPolimi))
-                return new SomiglianzaClasse(SomiglianzaEnum.DUBBIO, a1, a2);
+        if (b1 != SomiglianzaEnum.IDENTITICI) 
+            return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI);
+        if (!IsNullOrEmpty(a1.IdLink) && IsNullOrEmpty(a2.IdLink) &&
+            IsNullOrEmpty(a1.IDCorsoPolimi) && !IsNullOrEmpty(a2.IDCorsoPolimi))
+            return new SomiglianzaClasse(SomiglianzaEnum.DUBBIO, a1, a2);
 
-            return new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI);
-        }
+        return new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI);
 
-        return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI);
     }
 
     private static SomiglianzaEnum NomiSimili(string n1, string n2)
@@ -899,7 +884,7 @@ public class ListaGruppo : IEnumerable
         if (n1 == n2)
             return SomiglianzaEnum.IDENTITICI;
 
-        if (n1.ToLower() == n2.ToLower())
+        if (string.Equals(n1, n2, StringComparison.CurrentCultureIgnoreCase))
             return SomiglianzaEnum.DUBBIO;
 
         try
@@ -922,30 +907,31 @@ public class ListaGruppo : IEnumerable
             //remove duplicate
             var la1 = new List<string>();
             var la2 = new List<string>();
-            for (var i = 0; i < l1.Count; i++)
-                if (!la1.Contains(l1[i]))
-                    la1.Add(l1[i]);
-            for (var i = 0; i < l2.Count; i++)
-                if (!la2.Contains(l2[i]))
-                    la2.Add(l2[i]);
+            foreach (var t in l1.Where(t => !la1.Contains(t)))
+                la1.Add(t);
+
+            foreach (var t in l2.Where(t => !la2.Contains(t)))
+                la2.Add(t);
+
             l1 = la1;
             l2 = la2;
 
-            var no_merge = new List<string> { "analisi", "vehicles", "440" };
-            foreach (var no_merge_s in no_merge)
-                if (l1.Contains(no_merge_s) || l2.Contains(no_merge_s))
-                    return SomiglianzaEnum.DIVERSI;
+            var noMerge = new List<string> { "analisi", "vehicles", "440" };
+            if (noMerge.Any(noMergeS => l1.Contains(noMergeS) || l2.Contains(noMergeS)))
+            {
+                return SomiglianzaEnum.DIVERSI;
+            }
 
-            var no_merge2 = new List<Tuple<string, string>>
+            var noMerge2 = new List<Tuple<string, string>>
             {
                 new("chimica", "elettrica")
             };
 
-            foreach (var no_merge_s2 in no_merge2)
+            foreach (var noMergeS2 in noMerge2)
             {
-                if (l1.Contains(no_merge_s2.Item1) && l1.Contains(no_merge_s2.Item2))
+                if (l1.Contains(noMergeS2.Item1) && l1.Contains(noMergeS2.Item2))
                     return SomiglianzaEnum.DIVERSI;
-                if (l2.Contains(no_merge_s2.Item1) && l2.Contains(no_merge_s2.Item2))
+                if (l2.Contains(noMergeS2.Item1) && l2.Contains(noMergeS2.Item2))
                     return SomiglianzaEnum.DIVERSI;
             }
 
@@ -1241,135 +1227,124 @@ public class ListaGruppo : IEnumerable
         return null;
     }
 
-    public List<ImportaReturn> Importa(List<Tuple<Gruppo>> l2, bool aggiusta_Anno, Chiedi chiedi2)
+    public List<ImportaReturn> Importa(IEnumerable<Tuple<Gruppo>> l2, bool aggiustaAnno, Chiedi chiedi2)
     {
-        var r2 = new List<ImportaReturn>();
-        for (var i = 0; i < l2.Count; i++)
-        {
-            var l3 = l2[i].Item1;
-            var r = Importa2(new Tuple<Gruppo, int>(l3, i), aggiusta_Anno, chiedi2);
-            r2.Add(r);
-        }
-
-        return r2;
+        return l2.Select(t => t.Item1).Select((l3, i) => Importa2(new Tuple<Gruppo, int>(l3, i), aggiustaAnno, chiedi2)).ToList();
     }
 
-    private ImportaReturn Importa2(Tuple<Gruppo, int> l3, bool aggiusta_anno, Chiedi chiedi2)
+    private ImportaReturn Importa2(Tuple<Gruppo, int> l3, bool aggiustaAnno, Chiedi chiedi2)
     {
         var simili = new List<Tuple<int, Tuple<SomiglianzaClasse, Gruppo>>>();
 
-        var ci_sono_simili_da_chiedere = false;
+        var ciSonoSimiliDaChiedere = false;
 
         int i;
         for (i = 0; i < _l.Count; i++)
         {
-            var r = Equivalenti2(i, l3, aggiusta_anno);
-            var do_that = false;
-            if (r.Item1.somiglianzaEnum == SomiglianzaEnum.IDENTITICI)
+            var r = Equivalenti2(i, l3, aggiustaAnno);
+            var doThat = false;
+            switch (r.Item1.somiglianzaEnum)
             {
-                do_that = true;
-            }
-            else if (r.Item1.somiglianzaEnum == SomiglianzaEnum.DUBBIO)
-            {
-                var to_show = true;
-
-                //todo: E' TEMPORANEA QUESTA COSA
-                if (r.Item1.a2 == null)
-                    to_show = true;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Architettura"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Edile"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Urbanistica"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Design"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Architectural"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Edilizi"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Architecture"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Management"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Aerospaziale"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Biomedica"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Chimica"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Elettrica"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Elettronica"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Energetica"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Fisica"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Gestionale"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Aero"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Automation"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Prevenzione"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Materials"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Mathematical"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Mechanical"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Nuclear"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Space"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Civil"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Ambiente"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Matematica"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Meccanica"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Materiali"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Automazione"))
-                    to_show = false;
-                else if (r.Item1.a2.CCS.Contains_In_Uno("Produzione")) to_show = false;
-                //FINE TEMP
-
-                if (chiedi2 == Chiedi.SI)
+                case SomiglianzaEnum.IDENTITICI:
+                    doThat = true;
+                    break;
+                case SomiglianzaEnum.DUBBIO:
                 {
-                    if (to_show)
+                    var toShow = true;
+
+                    //todo: E' TEMPORANEA QUESTA COSA
+                    if (r.Item1.a2 == null)
+                        toShow = true;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Architettura"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Edile"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Urbanistica"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Design"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Architectural"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Edilizi"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Architecture"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Management"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Aerospaziale"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Biomedica"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Chimica"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Elettrica"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Elettronica"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Energetica"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Fisica"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Gestionale"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Aero"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Automation"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Prevenzione"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Materials"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Mathematical"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Mechanical"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Nuclear"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Space"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Civil"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Ambiente"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Matematica"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Meccanica"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Materiali"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Automazione"))
+                        toShow = false;
+                    else if (r.Item1.a2.CCS.Contains_In_Uno("Produzione")) toShow = false;
+
+                    switch (chiedi2)
                     {
-                        simili.Add(new Tuple<int, Tuple<SomiglianzaClasse, Gruppo>>(i, r));
-                        do_that = false;
-                        ci_sono_simili_da_chiedere = true;
+                        case Chiedi.SI when toShow:
+                            simili.Add(new Tuple<int, Tuple<SomiglianzaClasse, Gruppo>>(i, r));
+                            doThat = false;
+                            ciSonoSimiliDaChiedere = true;
+                            break;
+                        //FINE TEMP
+                        case Chiedi.SI:
+                        case Chiedi.NO_DIVERSI:
+                            doThat = false;
+                            break;
+                        case Chiedi.NO_IDENTICI:
+                            doThat = true;
+                            break;
                     }
-                    else
-                    {
-                        do_that = false;
-                    }
-                }
-                else if (chiedi2 == Chiedi.NO_DIVERSI)
-                {
-                    do_that = false;
-                }
-                else if (chiedi2 == Chiedi.NO_IDENTICI)
-                {
-                    do_that = true;
+
+                    break;
                 }
             }
 
-            if (do_that)
-            {
-                Importa3(i, r);
-                return new ImportaReturn(ActionDoneImport.IMPORTED);
-            }
+            if (!doThat) continue;
+            
+            Importa3(i, r);
+            return new ImportaReturn(ActionDoneImport.IMPORTED);
         }
 
-        if (ci_sono_simili_da_chiedere) return new ImportaReturn(ActionDoneImport.SIMILARITIES_FOUND, simili);
+        if (ciSonoSimiliDaChiedere) return new ImportaReturn(ActionDoneImport.SIMILARITIES_FOUND, simili);
 
         ;
         _l.Add(l3.Item1);
@@ -1426,7 +1401,7 @@ public class ListaGruppo : IEnumerable
                 return null;
         }
 
-        if (!IsNullOrEmpty(a1.Classe) && !IsNullOrEmpty(a2.Classe) && a1.Classe.ToLower() == a2.Classe.ToLower())
+        if (!IsNullOrEmpty(a1.Classe) && !IsNullOrEmpty(a2.Classe) && string.Equals(a1.Classe, a2.Classe, StringComparison.CurrentCultureIgnoreCase))
         {
             //good
         }
@@ -1501,8 +1476,8 @@ public class ListaGruppo : IEnumerable
                     a1.LastUpdateInviteLinkTime = a2.LastUpdateInviteLinkTime;
         }
 
-        if (a1.LinkFunzionante != null && a1.LinkFunzionante == false &&
-            (a2.LinkFunzionante == null || a2.LinkFunzionante != false))
+        if (a1.LinkFunzionante is false &&
+            a2.LinkFunzionante is not false)
         {
             a1.IdLink = a2.IdLink;
             a1.LinkFunzionante = a2.LinkFunzionante;

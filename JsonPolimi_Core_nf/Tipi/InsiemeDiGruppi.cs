@@ -6,9 +6,9 @@ namespace JsonPolimi_Core_nf.Tipi;
 
 public class InsiemeDiGruppi
 {
-    public Gruppo GruppoDiBase;
-    public List<Gruppo> L;
-    public Gruppo NomeOld;
+    public readonly Gruppo GruppoDiBase;
+    public readonly List<Gruppo> L;
+    public readonly Gruppo NomeOld;
 
     public InsiemeDiGruppi()
     {
