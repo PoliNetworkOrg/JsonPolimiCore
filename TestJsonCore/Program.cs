@@ -10,9 +10,11 @@ Console.WriteLine("Hello, World!");
 
 
 ;
-ParametriFunzione parametriFunzione = new();
 
-ListaGruppo x = new ListaGruppo();
-x.Add(new Gruppo() { IdLink = "aY_y5vie7GU2MDNk", Platform = "TG" }, true);
+
+ListaGruppo x = new()
+{
+    { new Gruppo() { IdLink = "aY_y5vie7GU2MDNk", Platform = "TG" }, true }
+};
 x.CheckSeILinkVanno2(null, 10, true, 10);
 ;

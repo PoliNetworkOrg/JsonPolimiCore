@@ -2,7 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\JsonPolimi_Core_nf",
-    "\\JsonPolimi_Core_nf\\Utils"
+    "\\JsonPolimi_Core_nf\\Utils",
+    "\\TestJsonCore"
   ],
+  "SelectedNode": "\\TestJsonCore\\Program.cs",
   "PreviewInSolutionExplorer": false
 }
