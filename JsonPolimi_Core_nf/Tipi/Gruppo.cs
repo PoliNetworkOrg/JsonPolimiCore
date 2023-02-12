@@ -480,7 +480,8 @@ public class Gruppo
         {
             AggiungiSede(v, ref g);
         }
-        else if (vUpper is "FACEBOOK" or "TELEGRAM" or "NON ANCORA CREATO" or "CORSI" or "LUOGO" || vUpper.StartsWith("LAUREE", StringComparison.Ordinal))
+        else if (vUpper is "FACEBOOK" or "TELEGRAM" or "NON ANCORA CREATO" or "CORSI" or "LUOGO" ||
+                 vUpper.StartsWith("LAUREE", StringComparison.Ordinal))
         {
             //è una cella inutile
             ;
@@ -519,7 +520,8 @@ public class Gruppo
 
     private static bool IsSede(string vUpper)
     {
-        return vUpper is "LEONARDO" or "MANTOVA" or "BOVISA" or "PIACENZA" or "LECCO" or "COMO" or "CREMONA" or "LEONARDO-CREMONA" or "LEONARDO*";
+        return vUpper is "LEONARDO" or "MANTOVA" or "BOVISA" or "PIACENZA" or "LECCO" or "COMO" or "CREMONA"
+            or "LEONARDO-CREMONA" or "LEONARDO*";
     }
 
     private static void AggiungiAltro(ref string vUpper, ref InsiemeDiGruppi g, ref string v)

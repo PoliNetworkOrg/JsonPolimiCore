@@ -1493,7 +1493,7 @@ public class ListaGruppo : IEnumerable
     private static bool CheckIfToExit(Gruppo a1, Gruppo a2)
     {
         if (IsNullOrEmpty(a1.Classe) || IsNullOrEmpty(a2.Classe)) return false;
-        
+
         if (a1.Classe.ToLower().Contains("cazzeggio") && !a2.Classe.ToLower().Contains("cazzeggio"))
             return true;
 

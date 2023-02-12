@@ -95,7 +95,6 @@ public class ListaStringhePerJSON
         s = s[..^1];
 
         return s;
-
     }
 
     /*
@@ -118,10 +117,7 @@ public class ListaStringhePerJSON
             return 1;
 
         var contained = true;
-        foreach (var contains in o1.o.Select(i1 => o2.o.Contains(i1)).Where(contains => !contains))
-        {
-            contained = false;
-        }
+        foreach (var contains in o1.o.Select(i1 => o2.o.Contains(i1)).Where(contains => !contains)) contained = false;
 
         if (contained)
         {
