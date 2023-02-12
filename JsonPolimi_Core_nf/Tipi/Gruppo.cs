@@ -636,39 +636,49 @@ public class Gruppo
         var n2 = s1.IndexOf("www.", StringComparison.Ordinal);
         if (n2 >= 0 && n2 < s1.Length) s1 = s1[4..];
 
-        if (s1[0] == 'f') // facebook
+        switch (s1[0])
         {
-            g2.Platform = "FB";
+            // facebook
+            case 'f':
+            {
+                g2.Platform = "FB";
 
-            var s2 = s1.Split('/');
-            g2.IdLink = s2[1] == "groups" ? s2[2] : s2[1];
-        }
-        else if (s1[0] == 't') // telegram
-        {
-            g2.Platform = "TG";
+                var s2 = s1.Split('/');
+                g2.IdLink = s2[1] == "groups" ? s2[2] : s2[1];
+                break;
+            }
+            // telegram
+            case 't':
+            {
+                g2.Platform = "TG";
 
-            var s2 = s1.Split('/');
-            g2.IdLink = s2[1] == "joinchat" ? s2[2] : s2[1];
-        }
-        else if (s1[0] == 'i') // instagram
-        {
-            g2.Platform = "IG";
+                var s2 = s1.Split('/');
+                g2.IdLink = s2[1] == "joinchat" ? s2[2] : s2[1];
+                break;
+            }
+            // instagram
+            case 'i':
+            {
+                g2.Platform = "IG";
 
-            var s2 = s1.Split('/');
+                var s2 = s1.Split('/');
 
-            g2.IdLink = s2[1];
-        }
-        else if (s1[0] == 'c') //whatsapp
-        {
-            g2.Platform = "WA";
+                g2.IdLink = s2[1];
+                break;
+            }
+            //whatsapp
+            case 'c':
+            {
+                g2.Platform = "WA";
 
-            var s2 = s1.Split('/');
+                var s2 = s1.Split('/');
 
-            g2.IdLink = s2[1];
-        }
-        else
-        {
-            ;
+                g2.IdLink = s2[1];
+                break;
+            }
+            default:
+                ;
+                break;
         }
 
         g.L.Add(g2);
@@ -760,10 +770,7 @@ public class Gruppo
 
     public static bool IsEmpty(ListaStringhePerJSON office)
     {
-        if (office == null)
-            return true;
-
-        return office.IsEmpty();
+        return office == null || office.IsEmpty();
     }
 
     [Obsolete("DEPRECATED")]
@@ -1185,12 +1192,8 @@ public class Gruppo
 
     public bool IsValido()
     {
-        if (string.IsNullOrEmpty(Classe))
-            return false;
-
+        return !string.IsNullOrEmpty(Classe);
         //todo: fare altri controlli per vedere se il gruppo è valido
-
-        return true;
     }
 
     public void RicreaId()

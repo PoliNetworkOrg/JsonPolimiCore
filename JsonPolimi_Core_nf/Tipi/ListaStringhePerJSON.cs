@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace JsonPolimi_Core_nf.Tipi;
 
@@ -51,10 +52,7 @@ public class ListaStringhePerJSON
 
     public string StringNotNull()
     {
-        if (o == null)
-            return null;
-
-        return ToString();
+        return o == null ? null : ToString();
     }
 
     public bool Contains_In_Uno(string v)
@@ -128,11 +126,13 @@ public class ListaStringhePerJSON
 
     public static int Confronta(ListaStringhePerJSON o1, ListaStringhePerJSON o2)
     {
-        if (o1 == null && o2 == null)
-            return 0;
-
-        if (o1 == null)
-            return -1;
+        switch (o1)
+        {
+            case null when o2 == null:
+                return 0;
+            case null:
+                return -1;
+        }
 
         if (o2 == null)
             return 1;
@@ -152,19 +152,9 @@ public class ListaStringhePerJSON
             return -1;
         }
 
-        foreach (var i2 in o2.o)
-        {
-            var contains = o1.o.Contains(i2);
-            if (!contains) contained = false;
-        }
+        foreach (var contains in o2.o.Select(i2 => o1.o.Contains(i2)).Where(contains => !contains)) contained = false;
 
-        if (contained)
-        {
-            if (o1.o.Count == o2.o.Count)
-                return 0;
-
-            return 1;
-        }
+        if (contained) return o1.o.Count == o2.o.Count ? 0 : 1;
 
         ;
 
@@ -173,9 +163,6 @@ public class ListaStringhePerJSON
 
     public static bool IsEmpty(ListaStringhePerJSON o)
     {
-        if (o == null)
-            return true;
-
-        return o.IsEmpty();
+        return o == null || o.IsEmpty();
     }
 }

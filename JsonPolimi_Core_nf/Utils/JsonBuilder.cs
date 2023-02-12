@@ -74,8 +74,7 @@ public static class JsonBuilder
 
     private static void Aggiusta()
     {
-        if (Variabili.L == null)
-            Variabili.L = new ListaGruppo();
+        Variabili.L ??= new ListaGruppo();
 
         var n = Variabili.L.GetCount();
         for (var i = 0; i < n; i++)
@@ -162,9 +161,6 @@ public static class JsonBuilder
 
     private static bool Empty(ListaStringhePerJSON cCS)
     {
-        if (cCS == null)
-            return true;
-
-        return cCS.IsEmpty();
+        return cCS == null || cCS.IsEmpty();
     }
 }

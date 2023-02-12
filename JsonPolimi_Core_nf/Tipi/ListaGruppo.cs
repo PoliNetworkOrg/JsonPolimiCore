@@ -127,11 +127,13 @@ public class ListaGruppo : IEnumerable
 
     private static int CompareOrdinal23(List<string> office1, List<string> office2)
     {
-        if (office1 == null && office2 == null)
-            return 0;
-
-        if (office1 == null)
-            return -1;
+        switch (office1)
+        {
+            case null when office2 == null:
+                return 0;
+            case null:
+                return -1;
+        }
 
         if (office2 == null)
             return 1;
@@ -347,10 +349,7 @@ public class ListaGruppo : IEnumerable
 
     private static bool JsonEmpty(ListaStringhePerJSON office)
     {
-        if (office == null)
-            return true;
-
-        return office.IsEmpty();
+        return office == null || office.IsEmpty();
     }
 
     private static SomiglianzaEnum SciogliDubbio(Gruppo a1, Gruppo a2)
@@ -946,23 +945,21 @@ public class ListaGruppo : IEnumerable
                 if (l2.Contains(l1[i]))
                     quanti.Add(l1[i]);
 
-            var minimo = 0;
-            if (l1.Count + l2.Count > 14)
-                minimo = 5;
-            else if (l1.Count + l2.Count > 11)
-                minimo = 4;
-            else if (l1.Count + l2.Count > 5)
-                minimo = 2;
-            else
-                minimo = 1;
+            var minimo = (l1.Count + l2.Count) switch
+            {
+                > 14 => 5,
+                > 11 => 4,
+                > 5 => 2,
+                _ => 1
+            };
 
             if (quanti.Count == 1)
-            {
-                if (quanti[0] == "design")
-                    return SomiglianzaEnum.DIVERSI;
-                if (quanti[0] == "architettura")
-                    return SomiglianzaEnum.DIVERSI;
-            }
+                switch (quanti[0])
+                {
+                    case "design":
+                    case "architettura":
+                        return SomiglianzaEnum.DIVERSI;
+                }
 
             if (quanti.Count == minimo)
                 return SomiglianzaEnum.DUBBIO;
@@ -1375,10 +1372,7 @@ public class ListaGruppo : IEnumerable
     private Tuple<bool, Gruppo> Unisci4(int i, Tuple<Gruppo, int> j, bool aggiusta_anno)
     {
         var g = Unisci2(i, j, aggiusta_anno, false);
-        if (g == null)
-            return new Tuple<bool, Gruppo>(false, null);
-
-        return new Tuple<bool, Gruppo>(true, g);
+        return g == null ? new Tuple<bool, Gruppo>(false, null) : new Tuple<bool, Gruppo>(true, g);
     }
 
     private Gruppo Unisci2(int i, Tuple<Gruppo, int> j, bool aggiusta_anno, bool forced)
@@ -1881,21 +1875,14 @@ public class ListaGruppo : IEnumerable
 
     public void HandleSerializedObject(object obj)
     {
-        if (obj == null)
+        if (obj is not DataTable dt) return;
+
+        if (dt.Rows.Count == 0)
             return;
 
-        if (obj is DataTable dt)
-        {
-            if (dt.Rows == null)
-                return;
+        ;
 
-            if (dt.Rows.Count == 0)
-                return;
-
-            ;
-
-            foreach (DataRow dr in dt.Rows) ImportaGruppoDaDataRow(dr);
-        }
+        foreach (DataRow dr in dt.Rows) ImportaGruppoDaDataRow(dr);
     }
 
     private void ImportaGruppoDaDataRow(DataRow dr)
@@ -2157,11 +2144,9 @@ public class ListaGruppo : IEnumerable
             }
             else
             {
-                if (r2 != null)
-                {
-                    r.Add(r2);
-                    r2 = null;
-                }
+                if (r2 == null) continue;
+                r.Add(r2);
+                r2 = null;
             }
 
         return r;
@@ -2170,19 +2155,15 @@ public class ListaGruppo : IEnumerable
     public void SalvaTelegramIdDeiGruppiLinkCheNonVanno(string anno)
     {
         List<Gruppo> l = new();
-        foreach (var x in _l)
-            if (x.Platform == "TG")
-                if (x.LinkFunzionante == null || x.LinkFunzionante.Value == false)
-                {
-                    if (IsNullOrEmpty(anno))
-                    {
-                        l.Add(x);
-                    }
-                    else
-                    {
-                        if (x.Year == anno) l.Add(x);
-                    }
-                }
+        foreach (var x in _l.Where(x => x.Platform == "TG").Where(x => x.LinkFunzionante is null or false))
+            if (IsNullOrEmpty(anno))
+            {
+                l.Add(x);
+            }
+            else
+            {
+                if (x.Year == anno) l.Add(x);
+            }
 
         var s = "[";
 
@@ -2253,7 +2234,8 @@ public class ListaGruppo : IEnumerable
 
     public void RicreaID()
     {
-        for (var i = 0; i < _l.Count; i++) _l[i].RicreaId();
+        foreach (var t in _l)
+            t.RicreaId();
     }
 
     public void Fix_link_IDCorsi_se_ce_uno_che_ha_il_link_con_id_corso_uguale()
@@ -2300,8 +2282,14 @@ public class ListaGruppo : IEnumerable
     {
         public int Compare(Gruppo a, Gruppo b)
         {
-            if (a == null && b == null) return 0;
-            if (a == null) return -1;
+            switch (a)
+            {
+                case null when b == null:
+                    return 0;
+                case null:
+                    return -1;
+            }
+
             if (b == null) return 1;
 
             var i1 = CompareOrdinal(a.Year, b.Year);
@@ -2341,19 +2329,18 @@ public class ListaGruppo : IEnumerable
                 return i1;
 
             i1 = CompareInt(a.AnnoCorsoStudio, b.AnnoCorsoStudio);
-            if (i1 != 0)
-                return i1;
-
-            return 0;
+            return i1 != 0 ? i1 : 0;
         }
 
         private static int CompareInt(int? annoCorsoStudio1, int? annoCorsoStudio2)
         {
-            if (annoCorsoStudio1 == null && annoCorsoStudio2 == null)
-                return 0;
-
-            if (annoCorsoStudio1 == null)
-                return -1;
+            switch (annoCorsoStudio1)
+            {
+                case null when annoCorsoStudio2 == null:
+                    return 0;
+                case null:
+                    return -1;
+            }
 
             if (annoCorsoStudio2 == null)
                 return +1;

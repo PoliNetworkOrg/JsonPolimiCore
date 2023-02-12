@@ -14,10 +14,7 @@ public class ODS_Reader
     {
         var o = new OpenFileDialog();
         var r = o.ShowDialog();
-        if (r != DialogResult.OK)
-            return null;
-
-        return Read2(o.FileName);
+        return r != DialogResult.OK ? null : Read2(o.FileName);
     }
 
     public static List<List<string>> Read2(string fileName)
@@ -79,10 +76,9 @@ public class ODS_Reader
                 if (c2.OuterXml.Contains("number-columns-repeated"))
                 {
                     var c3 = c2.OuterXml.Split('"');
-                    var i2 = DetectRepeteadColumn(c3);
-                    if (i2 == null) i2 = 1; //debug here
+                    var i2 = DetectRepeteadColumn(c3) ?? 1; //debug here
 
-                    var c4 = Convert.ToInt32(c3[i2.Value]);
+                    var c4 = Convert.ToInt32(c3[i2]);
                     for (var i = 0; i < c4; i++) r.Add(c2.InnerText);
                 }
                 else
@@ -97,10 +93,8 @@ public class ODS_Reader
     private static int? DetectRepeteadColumn(string[] c3)
     {
         var i = DetectRepeteadColumn2(c3);
-        if (i == null)
-            return null;
 
-        return i.Value + 1;
+        return i + 1;
     }
 
     private static int? DetectRepeteadColumn2(string[] c3)
