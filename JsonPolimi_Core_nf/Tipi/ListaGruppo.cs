@@ -1359,7 +1359,7 @@ public class ListaGruppo : IEnumerable
             }
             catch
             {
-                ;
+                // ignored
             }
         }
     }
@@ -1964,7 +1964,7 @@ public class ListaGruppo : IEnumerable
         MessageBox.Show("Finito l'importazione dei gruppi da Telegram bot!");
     }
 
-    private void ImportaGruppiDalComandoDelBotTelegram_UpdateLinkFromJson2(List<string> l3)
+    private void ImportaGruppiDalComandoDelBotTelegram_UpdateLinkFromJson2(IReadOnlyList<string> l3)
     {
         if (l3 == null || l3.Count == 0)
             return;
@@ -2037,7 +2037,7 @@ public class ListaGruppo : IEnumerable
         oldlinks = oldlinks.Trim();
 
         if (oldlinks.StartsWith("["))
-            oldlinks = oldlinks.Substring(1);
+            oldlinks = oldlinks[1..];
         else
             return null;
 
@@ -2098,7 +2098,7 @@ public class ListaGruppo : IEnumerable
         return o2.Trim();
     }
 
-    private List<int> TrovaGruppo(string idlink, string nome, string permanentId, List<string> oldlinks_list)
+    private List<int> TrovaGruppo(string idlink, string nome, string permanentId, ICollection<string> oldlinksList)
     {
         var r = new List<int>();
         for (var i = 0; i < _l.Count; i++)
@@ -2110,14 +2110,14 @@ public class ListaGruppo : IEnumerable
                     r.Add(i);
                 else if (_l[i].PermanentId == permanentId && !IsNullOrEmpty(permanentId))
                     r.Add(i);
-                else if (oldlinks_list != null && oldlinks_list.Contains(_l[i].IdLink))
+                else if (oldlinksList != null && oldlinksList.Contains(_l[i].IdLink))
                     r.Add(i);
             }
 
         return r;
     }
 
-    private static List<List<string>> SplitPerStringaVuota(string[] l)
+    private static List<List<string>> SplitPerStringaVuota(IEnumerable<string> l)
     {
         List<List<string>> r = new();
         List<string> r2 = null;
@@ -2260,7 +2260,7 @@ public class ListaGruppo : IEnumerable
                 t.PianoDiStudi = t.PianoDiStudi.Trim();
 
                 if (t.PianoDiStudi.EndsWith(":"))
-                    t.PianoDiStudi = t.PianoDiStudi.Substring(0, t.PianoDiStudi.Length - 1);
+                    t.PianoDiStudi = t.PianoDiStudi[..^1];
             }
 
             t.RicreaId();

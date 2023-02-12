@@ -4,8 +4,8 @@ namespace JsonPolimi_Core_nf.Tipi;
 
 public class SomiglianzaClasse
 {
+    public readonly Gruppo a2;
     public Gruppo a1;
-    public Gruppo a2;
     public SomiglianzaEnum somiglianzaEnum;
 
     public SomiglianzaClasse(SomiglianzaEnum dIVERSI, Gruppo a1 = null, Gruppo a2 = null)

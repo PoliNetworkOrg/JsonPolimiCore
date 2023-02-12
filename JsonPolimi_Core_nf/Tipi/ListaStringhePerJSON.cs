@@ -31,7 +31,7 @@ public class ListaStringhePerJSON
             r += ", ";
         }
 
-        r = r.Substring(0, r.Length - 2);
+        r = r[..^2];
         return r;
     }
 
@@ -62,7 +62,7 @@ public class ListaStringhePerJSON
             foreach (var x1 in s2)
                 if (x1.StartsWith("(") && x1.EndsWith("),"))
                 {
-                    var s3 = x1.Substring(0, x1.Length - 1);
+                    var s3 = x1[..^1];
                     return GetCcsCode2(s3);
                 }
                 else if (x1.StartsWith("(") && x1.EndsWith(")"))
@@ -76,7 +76,7 @@ public class ListaStringhePerJSON
         foreach (var x1 in o)
             if (x1.StartsWith("(") && x1.EndsWith("),"))
             {
-                var s3 = x1.Substring(0, x1.Length - 1);
+                var s3 = x1[..^1];
                 return GetCcsCode2(s3);
             }
             else if (x1.StartsWith("(") && x1.EndsWith(")"))

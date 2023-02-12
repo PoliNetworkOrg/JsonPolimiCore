@@ -1319,7 +1319,7 @@ public class Gruppo
         return text;
     }
 
-    private static bool FindSeUguali(List<string> s2, int i, int rip)
+    private static bool FindSeUguali(IReadOnlyList<string> s2, int i, int rip)
     {
         if (i >= s2.Count || rip >= s2.Count) return false;
 

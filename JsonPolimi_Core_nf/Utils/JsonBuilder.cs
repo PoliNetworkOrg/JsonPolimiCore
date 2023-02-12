@@ -57,7 +57,7 @@ public static class JsonBuilder
                 json += ',';
             }
 
-            if (json.EndsWith(",")) json = json.Substring(0, json.Length - 1);
+            if (json.EndsWith(",")) json = json[..^1];
 
             json += "    ]";
             json += "\n";

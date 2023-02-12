@@ -10,12 +10,8 @@ Console.WriteLine("Hello, World!");
 ;
 
 
-;
-
-
 ListaGruppo x = new()
 {
     { new Gruppo { IdLink = "aY_y5vie7GU2MDNk", Platform = "TG" }, true }
 };
 x.CheckSeILinkVanno2(null, 10, true);
-;
