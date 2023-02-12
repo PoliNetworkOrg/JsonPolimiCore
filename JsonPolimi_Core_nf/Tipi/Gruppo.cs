@@ -545,7 +545,7 @@ namespace JsonPolimi_Core_nf.Tipi
             else if (v.StartsWith("<text:a", StringComparison.Ordinal))
             {
                 var n1 = v.IndexOf("xlink:href", StringComparison.Ordinal);
-                var s1 = v.Substring(n1 + 12);
+                var s1 = v[(n1 + 12)..];
                 var s2 = s1.Split('"');
 
                 var s3 = s2[1].Split('>');
@@ -679,10 +679,10 @@ namespace JsonPolimi_Core_nf.Tipi
             var g2 = new Gruppo();
 
             var n1 = v.IndexOf("://", StringComparison.Ordinal);
-            var s1 = v.Substring(n1 + 3);
+            var s1 = v[(n1 + 3)..];
 
             var n2 = s1.IndexOf("www.", StringComparison.Ordinal);
-            if (n2 >= 0 && n2 < s1.Length) s1 = s1.Substring(4);
+            if (n2 >= 0 && n2 < s1.Length) s1 = s1[4..];
 
             if (s1[0] == 'f') // facebook
             {
@@ -1296,7 +1296,7 @@ namespace JsonPolimi_Core_nf.Tipi
 
                 if (!string.IsNullOrEmpty(classe))
                 {
-                    Gruppo g = new Gruppo
+                    Gruppo g = new()
                     {
                         Classe = classe,
                         IDCorsoPolimi = infoParteDiGruppo_list[0].testo_selvaggio,
@@ -1307,9 +1307,9 @@ namespace JsonPolimi_Core_nf.Tipi
                         AnnoCorsoStudio = Variabili.ParametriCondivisiItem.anno,
                         Platform = pLAT2,
                         PianoDiStudi = Variabili.ParametriCondivisiItem.pianostudi2,
-                        NomeCorso = classe
+                        NomeCorso = classe,
+                        IdLink = null
                     };
-                    g.IdLink = null;
                     g.Aggiusta(false, true);
                     if (g.IdLink != null)
                     {
@@ -1361,7 +1361,7 @@ namespace JsonPolimi_Core_nf.Tipi
 
         public Gruppo Clone()
         {
-            Gruppo g = new Gruppo
+            Gruppo g = new()
             {
                 Classe = this.Classe,
                 Degree = this.Degree,
@@ -1393,7 +1393,7 @@ namespace JsonPolimi_Core_nf.Tipi
             if (infoParteDiGruppo == null)
                 return null;
 
-            List<string> L = new List<string>();
+            List<string> L = new();
             if (string.IsNullOrEmpty(infoParteDiGruppo.testo_selvaggio) && infoParteDiGruppo.sottopezzi != null)
             {
                 foreach (var x1 in infoParteDiGruppo.sottopezzi)
@@ -1553,7 +1553,7 @@ namespace JsonPolimi_Core_nf.Tipi
             string[] s = text.Trim().Split(' ');
             ;
 
-            List<string> s2 = new List<string>();
+            List<string> s2 = new();
             foreach (var s3 in s)
             {
                 s2.Add(s3.ToLower());
@@ -1587,7 +1587,7 @@ namespace JsonPolimi_Core_nf.Tipi
                         {
                             ;
 
-                            List<string> r = new List<string>();
+                            List<string> r = new();
                             int k = 0;
                             for (; k < (i + rip); k++)
                             {
@@ -1704,8 +1704,7 @@ namespace JsonPolimi_Core_nf.Tipi
             {
                 string s = "Exception in download: link " + uri + "\n" + e;
                 Console.WriteLine(s);
-                if (eventoConLog != null)
-                    eventoConLog.Log(s);
+                eventoConLog?.Log(s);
             }
 
             return null;
