@@ -140,9 +140,8 @@ public class ListaGruppo : IEnumerable
         office2.Sort();
 
         if (office1.Count == office2.Count)
-        {
-            return office1.Select((t, i) => CompareOrdinal(t.ToLower(), office2[i].ToLower())).FirstOrDefault(i1 => i1 != 0);
-        }
+            return office1.Select((t, i) => CompareOrdinal(t.ToLower(), office2[i].ToLower()))
+                .FirstOrDefault(i1 => i1 != 0);
 
         if (office1.Count > office2.Count)
         {
@@ -344,8 +343,6 @@ public class ListaGruppo : IEnumerable
         ;
 
         return new Tuple<SomiglianzaClasse, Gruppo>(eq, r2.Item2);
-    
-
     }
 
     private static bool JsonEmpty(ListaStringhePerJSON office)
@@ -769,8 +766,9 @@ public class ListaGruppo : IEnumerable
             var i1 = CompareOrdinal2(a1.CCS, a2.CCS);
             if (i1 != 0) return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
             var i2 = CompareOrdinal(a1.PianoDiStudi, a2.PianoDiStudi);
-            return i2 == 0 ? new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI) : new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
-
+            return i2 == 0
+                ? new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI)
+                : new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
         }
 
         if (!IsNullOrEmpty(a1.IDCorsoPolimi) && !IsNullOrEmpty(a2.IDCorsoPolimi) &&
@@ -861,19 +859,15 @@ public class ListaGruppo : IEnumerable
 
         var b1 = NomiSimili(a1.Classe, a2.Classe);
 
-        if (b1 == SomiglianzaEnum.DUBBIO)
-        {
-            return new SomiglianzaClasse(SomiglianzaEnum.DUBBIO, a1, a2);
-        }
+        if (b1 == SomiglianzaEnum.DUBBIO) return new SomiglianzaClasse(SomiglianzaEnum.DUBBIO, a1, a2);
 
-        if (b1 != SomiglianzaEnum.IDENTITICI) 
+        if (b1 != SomiglianzaEnum.IDENTITICI)
             return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI);
         if (!IsNullOrEmpty(a1.IdLink) && IsNullOrEmpty(a2.IdLink) &&
             IsNullOrEmpty(a1.IDCorsoPolimi) && !IsNullOrEmpty(a2.IDCorsoPolimi))
             return new SomiglianzaClasse(SomiglianzaEnum.DUBBIO, a1, a2);
 
         return new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI);
-
     }
 
     private static SomiglianzaEnum NomiSimili(string n1, string n2)
@@ -917,10 +911,7 @@ public class ListaGruppo : IEnumerable
             l2 = la2;
 
             var noMerge = new List<string> { "analisi", "vehicles", "440" };
-            if (noMerge.Any(noMergeS => l1.Contains(noMergeS) || l2.Contains(noMergeS)))
-            {
-                return SomiglianzaEnum.DIVERSI;
-            }
+            if (noMerge.Any(noMergeS => l1.Contains(noMergeS) || l2.Contains(noMergeS))) return SomiglianzaEnum.DIVERSI;
 
             var noMerge2 = new List<Tuple<string, string>>
             {
@@ -1229,7 +1220,8 @@ public class ListaGruppo : IEnumerable
 
     public List<ImportaReturn> Importa(IEnumerable<Tuple<Gruppo>> l2, bool aggiustaAnno, Chiedi chiedi2)
     {
-        return l2.Select(t => t.Item1).Select((l3, i) => Importa2(new Tuple<Gruppo, int>(l3, i), aggiustaAnno, chiedi2)).ToList();
+        return l2.Select(t => t.Item1).Select((l3, i) => Importa2(new Tuple<Gruppo, int>(l3, i), aggiustaAnno, chiedi2))
+            .ToList();
     }
 
     private ImportaReturn Importa2(Tuple<Gruppo, int> l3, bool aggiustaAnno, Chiedi chiedi2)
@@ -1339,7 +1331,7 @@ public class ListaGruppo : IEnumerable
             }
 
             if (!doThat) continue;
-            
+
             Importa3(i, r);
             return new ImportaReturn(ActionDoneImport.IMPORTED);
         }
@@ -1401,7 +1393,8 @@ public class ListaGruppo : IEnumerable
                 return null;
         }
 
-        if (!IsNullOrEmpty(a1.Classe) && !IsNullOrEmpty(a2.Classe) && string.Equals(a1.Classe, a2.Classe, StringComparison.CurrentCultureIgnoreCase))
+        if (!IsNullOrEmpty(a1.Classe) && !IsNullOrEmpty(a2.Classe) &&
+            string.Equals(a1.Classe, a2.Classe, StringComparison.CurrentCultureIgnoreCase))
         {
             //good
         }
