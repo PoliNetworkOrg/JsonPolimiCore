@@ -1,7 +1,8 @@
-﻿namespace JsonPolimi_Core_nf.Enums
+﻿namespace JsonPolimi_Core_nf.Enums;
+
+public enum Chiedi
 {
-    public enum Chiedi
-    {
-        SI, NO_DIVERSI, NO_IDENTICI
-    }
+    SI,
+    NO_DIVERSI,
+    NO_IDENTICI
 }

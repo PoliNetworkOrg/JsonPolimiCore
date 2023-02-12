@@ -1,19 +1,20 @@
-﻿namespace JsonPolimi_Core_nf.Tipi
+﻿namespace JsonPolimi_Core_nf.Tipi;
+
+public class CheckGruppo
 {
-    public class CheckGruppo
+    public enum E
     {
-        //value
-        public E n;
+        VECCHIA_RICERCA,
+        NUOVA_RICERCA,
+        TUTTO,
+        RICERCA_SITO_V3
+    }
 
-        public enum E
-        {
-            VECCHIA_RICERCA, NUOVA_RICERCA, TUTTO,
-            RICERCA_SITO_V3
-        }
+    //value
+    public E n;
 
-        public CheckGruppo(E a)
-        {
-            this.n = a;
-        }
+    public CheckGruppo(E a)
+    {
+        n = a;
     }
 }

@@ -1,7 +1,8 @@
-﻿namespace JsonPolimi_Core_nf.Enums
+﻿namespace JsonPolimi_Core_nf.Enums;
+
+public enum SomiglianzaEnum
 {
-    public enum SomiglianzaEnum
-    {
-        IDENTITICI, DIVERSI, DUBBIO
-    }
+    IDENTITICI,
+    DIVERSI,
+    DUBBIO
 }

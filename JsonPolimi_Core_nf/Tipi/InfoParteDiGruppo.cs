@@ -1,39 +1,38 @@
-﻿using JsonPolimi_Core_nf.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using JsonPolimi_Core_nf.Enums;
 
-namespace JsonPolimi_Core_nf.Tipi
+namespace JsonPolimi_Core_nf.Tipi;
+
+public class InfoParteDiGruppo
 {
-    public class InfoParteDiGruppo
+    public ImmagineGruppo immagine;
+    public Lingua? lingua;
+    public LinkGruppo link;
+    public List<InfoParteDiGruppo> sottopezzi;
+    public string testo_selvaggio;
+
+    public InfoParteDiGruppo(string testo_selvaggio)
     {
-        public string testo_selvaggio;
-        public LinkGruppo link;
-        public ImmagineGruppo immagine;
-        public List<InfoParteDiGruppo> sottopezzi;
-        public Lingua? lingua = null;
+        this.testo_selvaggio = testo_selvaggio;
+    }
 
-        public InfoParteDiGruppo(string testo_selvaggio)
-        {
-            this.testo_selvaggio = testo_selvaggio;
-        }
+    public InfoParteDiGruppo(LinkGruppo link)
+    {
+        this.link = link;
+    }
 
-        public InfoParteDiGruppo(LinkGruppo link)
-        {
-            this.link = link;
-        }
+    public InfoParteDiGruppo(ImmagineGruppo immagine)
+    {
+        this.immagine = immagine;
+    }
 
-        public InfoParteDiGruppo(ImmagineGruppo immagine)
-        {
-            this.immagine = immagine;
-        }
+    public InfoParteDiGruppo(List<InfoParteDiGruppo> sottopezzi)
+    {
+        this.sottopezzi = sottopezzi;
+    }
 
-        public InfoParteDiGruppo(List<InfoParteDiGruppo> sottopezzi)
-        {
-            this.sottopezzi = sottopezzi;
-        }
-
-        public InfoParteDiGruppo(Lingua lingua)
-        {
-            this.lingua = lingua;
-        }
+    public InfoParteDiGruppo(Lingua lingua)
+    {
+        this.lingua = lingua;
     }
 }

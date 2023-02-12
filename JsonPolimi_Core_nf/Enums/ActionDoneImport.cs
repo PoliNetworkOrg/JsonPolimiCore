@@ -1,9 +1,8 @@
-﻿namespace JsonPolimi_Core_nf.Enums
+﻿namespace JsonPolimi_Core_nf.Enums;
+
+public enum ActionDoneImport
 {
-    public enum ActionDoneImport
-    {
-        IMPORTED,
-        ADDED,
-        SIMILARITIES_FOUND
-    }
+    IMPORTED,
+    ADDED,
+    SIMILARITIES_FOUND
 }

@@ -1,7 +1,7 @@
-﻿namespace JsonPolimi_Core_nf.Enums
+﻿namespace JsonPolimi_Core_nf.Enums;
+
+public enum Lingua
 {
-    public enum Lingua
-    {
-        EN, IT
-    }
+    EN,
+    IT
 }
