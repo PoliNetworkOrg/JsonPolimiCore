@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+
 using JsonPolimi_Core_nf.Tipi;
 
 Console.WriteLine("Hello, World!");
@@ -14,7 +15,7 @@ Console.WriteLine("Hello, World!");
 
 ListaGruppo x = new()
 {
-    { new Gruppo() { IdLink = "aY_y5vie7GU2MDNk", Platform = "TG" }, true }
+    { new Gruppo { IdLink = "aY_y5vie7GU2MDNk", Platform = "TG" }, true }
 };
-x.CheckSeILinkVanno2(null, 10, true, 10);
+x.CheckSeILinkVanno2(null, 10, true);
 ;

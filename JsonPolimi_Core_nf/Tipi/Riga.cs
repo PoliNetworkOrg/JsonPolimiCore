@@ -1,19 +1,18 @@
-﻿namespace JsonPolimi_Core_nf.Tipi
+﻿namespace JsonPolimi_Core_nf.Tipi;
+
+public class Riga
 {
-    public class Riga
+    public Gruppo G;
+    public int I;
+
+    public Riga(Gruppo g, int i)
     {
-        public Gruppo G;
-        public int I;
+        G = g;
+        I = i;
+    }
 
-        public Riga(Gruppo g, int i)
-        {
-            G = g;
-            I = i;
-        }
-
-        public override string ToString()
-        {
-            return G + " " + I;
-        }
+    public override string ToString()
+    {
+        return G + " " + I;
     }
 }

@@ -1,26 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace JsonPolimi_Core_nf.Tipi
+namespace JsonPolimi_Core_nf.Tipi;
+
+public class ParametriFunzione
 {
-    public class ParametriFunzione
+    public Dictionary<string, object> _params;
+
+    internal object GetParam(string v)
     {
-        public Dictionary<string,object> _params;
+        if (_params == null)
+            return null;
 
-        internal object GetParam(string v)
-        {
-            if (_params == null)
-                return null;
+        return _params[v];
+    }
 
-            return _params[v];
-        }
+    public void AddParam(object value, string key)
+    {
+        if (_params == null)
+            _params = new Dictionary<string, object>();
 
-        public void AddParam(object value, string key)
-        {
-            if (_params == null)
-                _params = new Dictionary<string, object>();
-
-            _params[key] = value;
-        }
+        _params[key] = value;
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace JsonPolimi_Core_nf.Tipi
+﻿namespace JsonPolimi_Core_nf.Tipi;
+
+public class ParametriCondivisi
 {
-    public class ParametriCondivisi
-    {
-        public InfoManifesto infoManifesto = null;
-        public int? anno = null;
-        public string pianostudi2 = null;
-    }
+    public int? anno = null;
+    public InfoManifesto infoManifesto = null;
+    public string pianostudi2 = null;
 }
