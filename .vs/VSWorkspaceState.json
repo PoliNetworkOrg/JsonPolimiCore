@@ -1,10 +1,11 @@
 {
   "ExpandedNodes": [
     "",
+    "\\.github",
     "\\JsonPolimi_Core_nf",
     "\\JsonPolimi_Core_nf\\Utils",
     "\\TestJsonCore"
   ],
-  "SelectedNode": "\\TestJsonCore\\Program.cs",
+  "SelectedNode": "\\JsonPolimi_Core_nf\\JsonPolimi_Core_nf.sln",
   "PreviewInSolutionExplorer": false
 }
