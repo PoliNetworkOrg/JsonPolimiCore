@@ -218,7 +218,9 @@ public class Gruppo
 
     private string? CreaId()
     {
-        if (string.IsNullOrEmpty(PianoDiStudi)) ;
+        if (string.IsNullOrEmpty(PianoDiStudi))
+        {
+        }
 
         return Platform + "/" +
                Year + "/" +
@@ -859,7 +861,7 @@ public class Gruppo
         };
     }
 
-    public static Gruppo? FromInfoParteList(List<InfoParteDiGruppo> infoParteDiGruppo_list, string pLAT2)
+    public static Gruppo? FromInfoParteList(List<InfoParteDiGruppo?>? infoParteDiGruppo_list, string pLAT2)
     {
         if (infoParteDiGruppo_list == null)
             return null;
@@ -875,9 +877,9 @@ public class Gruppo
                 if (infoParteDiGruppo_list[0] == null)
                 {
                     if (infoParteDiGruppo_list[1] == null) return null;
-                    if (string.IsNullOrEmpty(infoParteDiGruppo_list[1].testo_selvaggio))
+                    if (string.IsNullOrEmpty(infoParteDiGruppo_list[1]?.testo_selvaggio))
                         return null;
-                    if (infoParteDiGruppo_list[1].testo_selvaggio is "Insegnamenti in Sequenza"
+                    if (infoParteDiGruppo_list[1]?.testo_selvaggio is "Insegnamenti in Sequenza"
                         or "Insegnamento completamente offerto in lingua italiana"
                         or "Insegnamento completamente offerto in lingua inglese"
                         or "Insegnamento offerto in lingua italiana e inglese"
@@ -886,49 +888,49 @@ public class Gruppo
                     return null;
                 }
 
-                if (string.IsNullOrEmpty(infoParteDiGruppo_list[0].testo_selvaggio) &&
-                    string.IsNullOrEmpty(infoParteDiGruppo_list[1].testo_selvaggio))
+                if (string.IsNullOrEmpty(infoParteDiGruppo_list[0]?.testo_selvaggio) &&
+                    string.IsNullOrEmpty(infoParteDiGruppo_list[1]?.testo_selvaggio))
                     return null;
 
                 if (infoParteDiGruppo_list[1] == null)
                 {
                     if (infoParteDiGruppo_list[0] == null) return null;
 
-                    if (string.IsNullOrEmpty(infoParteDiGruppo_list[0].testo_selvaggio))
+                    if (string.IsNullOrEmpty(infoParteDiGruppo_list[0]?.testo_selvaggio))
                         return null;
                     return null;
                 }
 
-                if (infoParteDiGruppo_list[1].testo_selvaggio is "Primo Semestre" or "Secondo Semestre"
+                if (infoParteDiGruppo_list[1]?.testo_selvaggio is "Primo Semestre" or "Secondo Semestre"
                     or "Insegnamento Annuale" or "Corso Integrato" or "Monodisciplinare" or "Prova Finale"
                     or "Non definita") return null; //sicuro
 
-                if (infoParteDiGruppo_list[0].testo_selvaggio is "Preside" or "Livello" or "Classe di Laurea"
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio is "Preside" or "Livello" or "Classe di Laurea"
                     or "Coordinatore CCS" or "Lingua/e ufficiali") return null; //sicuro
 
-                if (infoParteDiGruppo_list[1].testo_selvaggio is "Tirocinio"
+                if (infoParteDiGruppo_list[1]?.testo_selvaggio is "Tirocinio"
                     or "Gli insegnamenti possono essere scelti nell'anno di corso precedente"
                     or "Gli insegnamenti NON possono essere scelti nell'anno di corso precedente" or "Non significativo"
                     or "Ordine di scelta insegnamenti in fase di composizione piano") return null; //sicuro
 
-                if (infoParteDiGruppo_list[0].testo_selvaggio == "Scuola")
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio == "Scuola")
                 {
                     if (Variabili.ParametriCondivisiItem?.infoManifesto != null)
                         Variabili.ParametriCondivisiItem.infoManifesto.Scuola =
-                            infoParteDiGruppo_list[1].testo_selvaggio?.Trim();
+                            infoParteDiGruppo_list[1]?.testo_selvaggio?.Trim();
                     return null; //sicuro
                 }
 
-                if (infoParteDiGruppo_list[1].testo_selvaggio is "Gruppo di insegnamenti a preferenza"
+                if (infoParteDiGruppo_list[1]?.testo_selvaggio is "Gruppo di insegnamenti a preferenza"
                     or "Italiano/Inglese" or "Laboratorio" or "Mutuabile") return null; //sicuro
 
-                if (infoParteDiGruppo_list[1].testo_selvaggio != null &&
-                    (infoParteDiGruppo_list[1].testo_selvaggio?.StartsWith("Insegnamento")??false)) return null; //sicuro
+                if (infoParteDiGruppo_list[1]?.testo_selvaggio != null &&
+                    (infoParteDiGruppo_list[1]?.testo_selvaggio?.StartsWith("Insegnamento")??false)) return null; //sicuro
 
-                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("Classe di Laurea") ?? false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("Classe di Laurea") ?? false)
                     return null; //sicuro
 
-                if (infoParteDiGruppo_list[1].testo_selvaggio?.StartsWith("Workshop") ?? false) return null; //sicuro
+                if (infoParteDiGruppo_list[1]?.testo_selvaggio?.StartsWith("Workshop") ?? false) return null; //sicuro
 
                 return null;
             }
@@ -936,12 +938,12 @@ public class Gruppo
             //sono sicuro
             case < 3 when infoParteDiGruppo_list[0] == null:
             //sono sicuro
-            case < 3 when infoParteDiGruppo_list[0].link != null:
-            case < 3 when string.IsNullOrEmpty(infoParteDiGruppo_list[0].testo_selvaggio):
+            case < 3 when infoParteDiGruppo_list[0]?.link != null:
+            case < 3 when string.IsNullOrEmpty(infoParteDiGruppo_list[0]?.testo_selvaggio):
                 return null;
             case < 3:
             {
-                switch (infoParteDiGruppo_list[0].testo_selvaggio)
+                switch (infoParteDiGruppo_list[0]?.testo_selvaggio)
                 {
                     case "Legenda":
                     //sicuro
@@ -949,19 +951,19 @@ public class Gruppo
                         return null; //sicuro
                 }
 
-                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("(¹) Il corso di laurea offre ")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("(¹) Il corso di laurea offre ")??false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("Nessun insegnamento per")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("Nessun insegnamento per")??false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("4<sup>")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("4<sup>")??false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("5<sup>")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("5<sup>")??false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("(¹) Lo studente a")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("(¹) Lo studente a")??false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("Insegnamenti del Grupp")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("Insegnamenti del Grupp")??false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("Corso di Studi")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("Corso di Studi")??false)
                     return null; //sicuro
                 return null;
             }
@@ -974,9 +976,9 @@ public class Gruppo
         {
             case 4:
             {
-                if (infoParteDiGruppo_list[0].testo_selvaggio == "Corso di Studio")
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio == "Corso di Studio")
                 {
-                    var x1 = infoParteDiGruppo_list[1].testo_selvaggio?.Trim();
+                    var x1 = infoParteDiGruppo_list[1]?.testo_selvaggio?.Trim();
                     var x2 = x1?.Replace('\r', '\t');
                     x2 = x2?.Replace('\n', '\t');
                     var x3 = x2?.Split('\t');
@@ -986,26 +988,26 @@ public class Gruppo
                         Variabili.ParametriCondivisiItem.infoManifesto.Corso_di_studio = x4;
                 }
 
-                if (infoParteDiGruppo_list[2].testo_selvaggio == "Sede del corso")
+                if (infoParteDiGruppo_list[2]?.testo_selvaggio == "Sede del corso")
                 {
-                    var x1 = infoParteDiGruppo_list[3].testo_selvaggio?.Trim();
+                    var x1 = infoParteDiGruppo_list[3]?.testo_selvaggio?.Trim();
                     if (Variabili.ParametriCondivisiItem?.infoManifesto != null)
                         Variabili.ParametriCondivisiItem.infoManifesto.Sede_del_corso = x1?.Split(',');
                 }
 
-                if (infoParteDiGruppo_list[0].testo_selvaggio == "Anni di Corso Attivi")
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio == "Anni di Corso Attivi")
                 {
-                    var x1 = infoParteDiGruppo_list[1].testo_selvaggio?.Trim();
+                    var x1 = infoParteDiGruppo_list[1]?.testo_selvaggio?.Trim();
                     if (Variabili.ParametriCondivisiItem?.infoManifesto != null)
                         Variabili.ParametriCondivisiItem.infoManifesto.Anni_di_corso_attivi = x1?.Split(',');
                 }
 
-                if (infoParteDiGruppo_list[0].testo_selvaggio == "Anno Accademico")
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio == "Anno Accademico")
                 {
                     string? x1 = null;
                     try
                     {
-                        x1 = infoParteDiGruppo_list[1].testo_selvaggio?.Trim();
+                        x1 = infoParteDiGruppo_list[1]?.testo_selvaggio?.Trim();
                     }
                     catch
                     {
@@ -1016,12 +1018,12 @@ public class Gruppo
                         Variabili.ParametriCondivisiItem.infoManifesto.Anno_accademico = x1;
                 }
 
-                if (infoParteDiGruppo_list[2].testo_selvaggio == "Sede")
+                if (infoParteDiGruppo_list[2]?.testo_selvaggio == "Sede")
                 {
                     string? x1 = null;
                     try
                     {
-                        x1 = infoParteDiGruppo_list[3].testo_selvaggio?.Trim();
+                        x1 = infoParteDiGruppo_list[3]?.testo_selvaggio?.Trim();
                     }
                     catch
                     {
@@ -1032,10 +1034,10 @@ public class Gruppo
                         Variabili.ParametriCondivisiItem.infoManifesto.Sede = x1;
                 }
 
-                if (infoParteDiGruppo_list[2].testo_selvaggio != "Durata nominale del Corso")
+                if (infoParteDiGruppo_list[2]?.testo_selvaggio != "Durata nominale del Corso")
                     return null; //info interessanti
 
-                var x11 = infoParteDiGruppo_list[3].testo_selvaggio?.Trim();
+                var x11 = infoParteDiGruppo_list[3]?.testo_selvaggio?.Trim();
                 if (Variabili.ParametriCondivisiItem?.infoManifesto != null)
                     Variabili.ParametriCondivisiItem.infoManifesto.Durata_nominale_corso = x11;
 
@@ -1046,33 +1048,33 @@ public class Gruppo
             case 9:
             case 11:
             {
-                if (infoParteDiGruppo_list[0].testo_selvaggio == "--" &&
-                    infoParteDiGruppo_list[1].testo_selvaggio == "--" &&
-                    infoParteDiGruppo_list[2].testo_selvaggio == "--" &&
-                    infoParteDiGruppo_list[4].testo_selvaggio == "--" &&
-                    infoParteDiGruppo_list[5].testo_selvaggio == "--" &&
-                    infoParteDiGruppo_list[6].testo_selvaggio == "--")
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio == "--" &&
+                    infoParteDiGruppo_list[1]?.testo_selvaggio == "--" &&
+                    infoParteDiGruppo_list[2]?.testo_selvaggio == "--" &&
+                    infoParteDiGruppo_list[4]?.testo_selvaggio == "--" &&
+                    infoParteDiGruppo_list[5]?.testo_selvaggio == "--" &&
+                    infoParteDiGruppo_list[6]?.testo_selvaggio == "--")
                     return null; //sicuro
 
                 string? classe = null;
                 var n1 = 0;
                 if (infoParteDiGruppo_list[3]?.link != null &&
-                    !string.IsNullOrEmpty(infoParteDiGruppo_list[3].link?.v))
+                    !string.IsNullOrEmpty(infoParteDiGruppo_list[3]?.link?.v))
                 {
-                    classe = infoParteDiGruppo_list[3].link?.v;
+                    classe = infoParteDiGruppo_list[3]?.link?.v;
                     n1 = 3;
                 }
                 else if (infoParteDiGruppo_list[4]?.link != null &&
-                         !string.IsNullOrEmpty(infoParteDiGruppo_list[4].link?.v))
+                         !string.IsNullOrEmpty(infoParteDiGruppo_list[4]?.link?.v))
                 {
-                    classe = infoParteDiGruppo_list[4].link?.v;
+                    classe = infoParteDiGruppo_list[4]?.link?.v;
                     n1 = 4;
                 }
 
                 string? lang = null;
                 try
                 {
-                    var lingua1 = infoParteDiGruppo_list[n1 + 1].lingua;
+                    var lingua1 = infoParteDiGruppo_list[n1 + 1]?.lingua;
                     if (lingua1 != null)
                     {
                         var lingua = lingua1.Value;
@@ -1088,7 +1090,7 @@ public class Gruppo
                 Gruppo? g = new()
                 {
                     Classe = classe,
-                    IDCorsoPolimi = infoParteDiGruppo_list[0].testo_selvaggio,
+                    IDCorsoPolimi = infoParteDiGruppo_list[0]?.testo_selvaggio,
                     GruppoTabellaInsegnamenti = GetGruppoTabellaInsegnamenti(infoParteDiGruppo_list[1]),
                     Office = new ListaStringhePerJSON(GetSede(infoParteDiGruppo_list[5])),
                     Language = lang,
@@ -1100,7 +1102,10 @@ public class Gruppo
                     IdLink = null
                 };
                 g.Aggiusta(false, true);
-                if (g.IdLink != null) ;
+                if (g.IdLink != null)
+                {
+                }
+
                 return g;
             }
         }
@@ -1110,12 +1115,12 @@ public class Gruppo
         {
             if (infoParteDiGruppo_list[0] == null) return null;
 
-            if (string.IsNullOrEmpty(infoParteDiGruppo_list[0].testo_selvaggio))
+            if (string.IsNullOrEmpty(infoParteDiGruppo_list[0]?.testo_selvaggio))
                 return null; //sicuro
             return null;
         }
 
-        if (infoParteDiGruppo_list[1] != null && infoParteDiGruppo_list[1].testo_selvaggio == "Area Servizi ICT")
+        if (infoParteDiGruppo_list[1] != null && infoParteDiGruppo_list[1]?.testo_selvaggio == "Area Servizi ICT")
             return null; //sicuro
         return null;
     }
@@ -1246,8 +1251,6 @@ public class Gruppo
 
                 if (!(uguale.Length > ugualeMax)) return;
                 Classe = uguale;
-                return;
-
                 return;
             }
 

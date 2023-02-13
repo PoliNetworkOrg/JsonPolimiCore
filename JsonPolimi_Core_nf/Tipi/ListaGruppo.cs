@@ -1247,67 +1247,67 @@ public class ListaGruppo : IEnumerable
                     //todo: E' TEMPORANEA QUESTA COSA
                     if (r.Item1.a2 == null)
                         toShow = true;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architettura"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architettura")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Edile"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Edile")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Urbanistica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Urbanistica")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Design"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Design")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architectural"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architectural")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Edilizi"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Edilizi")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architecture"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architecture")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Management"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Management")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Aerospaziale"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Aerospaziale")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Biomedica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Biomedica")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Chimica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Chimica")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Elettrica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Elettrica")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Elettronica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Elettronica")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Energetica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Energetica")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Fisica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Fisica")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Gestionale"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Gestionale")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Aero"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Aero")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Automation"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Automation")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Prevenzione"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Prevenzione")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Materials"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Materials")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Mathematical"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Mathematical")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Mechanical"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Mechanical")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Nuclear"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Nuclear")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Space"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Space")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Civil"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Civil")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Ambiente"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Ambiente")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Matematica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Matematica")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Meccanica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Meccanica")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Materiali"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Materiali")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Automazione"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Automazione")??false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Produzione")) toShow = false;
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Produzione")??false) toShow = false;
 
                     switch (chiedi2)
                     {
@@ -2074,19 +2074,9 @@ public class ListaGruppo : IEnumerable
 
         if (oldlinks.Contains(','))
         {
-            var r = new List<string?>();
-
             var o = oldlinks.Split('\'');
-            foreach (var o2 in o)
-            {
-                var o3 = GetOldLinks2(o2);
-                if (IsNullOrEmpty(o3))
-                    ;
-                else
-                    r.Add(o3);
-            }
 
-            return r;
+            return o.Select(GetOldLinks2).Where(o3 => !IsNullOrEmpty(o3)).ToList();
         }
 
         if (!oldlinks.StartsWith("'"))
@@ -2209,7 +2199,7 @@ public class ListaGruppo : IEnumerable
         return eventoConLog;
     }
 
-    public void CheckSeILinkVanno2(EventoConLog eventoConLog, int? volteCheCiRiprova, bool? laPrimaVoltaControllaDaCapo,
+    public void CheckSeILinkVanno2(EventoConLog? eventoConLog, int? volteCheCiRiprova, bool? laPrimaVoltaControllaDaCapo,
         int? waitOgniVoltaCheCiRiprova = 10)
     {
         for (var j = 0; j < volteCheCiRiprova; j++)
