@@ -330,7 +330,7 @@ public class ListaGruppo : IEnumerable
                     {
                         ;
 
-                        if (a1.Id == a2.Id)
+                        if (a1?.Id == a2?.Id)
                         {
                             var r7 = Unisci4(i, j, aggiustaAnnno);
                             eq.somiglianzaEnum = SomiglianzaEnum.IDENTITICI;
@@ -378,30 +378,30 @@ public class ListaGruppo : IEnumerable
 
         if (s1 != s2) return SomiglianzaEnum.DUBBIO;
 
-        if (!IsNullOrEmpty(a1.Platform) && !IsNullOrEmpty(a2.Platform) && a1.Platform != a2.Platform)
+        if (!IsNullOrEmpty(a1?.Platform) && !IsNullOrEmpty(a2?.Platform) && a1.Platform != a2.Platform)
             return SomiglianzaEnum.DIVERSI;
 
         //	a1	{{"class":"Information Theory","office":null,"id":"TG///LclXl1g8Xq-OwrFr4JbInA///","degree":null,"school":null,"annocorso":null,"nomecorso":null,"idcorso":null,"pianostudi":null,"id_link":"LclXl1g8Xq-OwrFr4JbInA","language":"ENG","type":"C","year":null,"ccs":null,"permanentId":"-1001480351407","LastUpdateInviteLinkTime":"2020-03-09 14:10:18.000","platform":"TG"} JsonPolimi.Gruppo}	JsonPolimi.Gruppo
         //  a2	{{"class":"INFORMATION THEORY","office":"Leonardo","id":"TG//Leonardo//054322/474/Z2E - MICROWAVES AND PHOTONICS","degree":null,"school":null,"annocorso":"2","nomecorso":null,"idcorso":"054322","pianostudi":"Z2E - MICROWAVES AND PHOTONICS","id_link":null,"language":"EN","type":"C","year":null,"ccs":"(474), Telecommunication Engineering - Ingegneria delle Telecomunicazioni","permanentId":null,"LastUpdateInviteLinkTime":null,"platform":"TG"} JsonPolimi.Gruppo}	JsonPolimi.Gruppo
 
-        if (!IsNullOrEmpty(a1.PermanentId) && !IsNullOrEmpty(a2.PermanentId) && a1.PermanentId != a2.PermanentId)
+        if (!IsNullOrEmpty(a1?.PermanentId) && !IsNullOrEmpty(a2?.PermanentId) && a1.PermanentId != a2.PermanentId)
             return SomiglianzaEnum.DIVERSI;
 
-        if (!Gruppo.IsEmpty(a1.Office) && !Gruppo.IsEmpty(a2.Office) && Gruppo.Confronta(a1.Office, a2.Office) != 0)
+        if (!Gruppo.IsEmpty(a1?.Office) && !Gruppo.IsEmpty(a2?.Office) && Gruppo.Confronta(a1?.Office, a2?.Office) != 0)
             return SomiglianzaEnum.DIVERSI;
 
-        if (!IsNullOrEmpty(a1.PianoDiStudi) && !IsNullOrEmpty(a2.PianoDiStudi) && a1.PianoDiStudi != a2.PianoDiStudi)
+        if (!IsNullOrEmpty(a1?.PianoDiStudi) && !IsNullOrEmpty(a2?.PianoDiStudi) && a1.PianoDiStudi != a2.PianoDiStudi)
             return SomiglianzaEnum.DIVERSI;
 
-        if (!IsNullOrEmpty(a1.Tipo) && !IsNullOrEmpty(a2.Tipo) && a1.Tipo != a2.Tipo) return SomiglianzaEnum.DIVERSI;
+        if (!IsNullOrEmpty(a1?.Tipo) && !IsNullOrEmpty(a2?.Tipo) && a1.Tipo != a2.Tipo) return SomiglianzaEnum.DIVERSI;
 
-        if (!IsNullOrEmpty(a1.Tipo) && !IsNullOrEmpty(a2.Tipo) && a1.Tipo != a2.Tipo) return SomiglianzaEnum.DIVERSI;
+        if (!IsNullOrEmpty(a1?.Tipo) && !IsNullOrEmpty(a2?.Tipo) && a1.Tipo != a2.Tipo) return SomiglianzaEnum.DIVERSI;
 
-        if (!IsNullOrEmpty(a1.School) && !IsNullOrEmpty(a2.School) && a1.School != a2.School)
+        if (!IsNullOrEmpty(a1?.School) && !IsNullOrEmpty(a2?.School) && a1.School != a2.School)
             return SomiglianzaEnum.DIVERSI;
 
-        if (!ListaStringhePerJSON.IsEmpty(a1.CCS) && !ListaStringhePerJSON.IsEmpty(a2.CCS) &&
-            ListaStringhePerJSON.Confronta(a1.CCS, a2.CCS) != 0) return SomiglianzaEnum.DIVERSI;
+        if (!ListaStringhePerJSON.IsEmpty(a1?.CCS) && !ListaStringhePerJSON.IsEmpty(a2?.CCS) &&
+            ListaStringhePerJSON.Confronta(a1?.CCS, a2?.CCS) != 0) return SomiglianzaEnum.DIVERSI;
 
         return SomiglianzaEnum.DUBBIO;
     }
@@ -410,7 +410,7 @@ public class ListaGruppo : IEnumerable
     {
         ;
 
-        if (IsNullOrEmpty(a1.Classe) || IsNullOrEmpty(a2.Classe)) return somiglianzaEnumOld.somiglianzaEnum;
+        if (IsNullOrEmpty(a1?.Classe) || IsNullOrEmpty(a2?.Classe)) return somiglianzaEnumOld.somiglianzaEnum;
         var a1_cl = a1.Classe.ToLower();
         var a2_cl = a2.Classe.ToLower();
 
@@ -749,14 +749,14 @@ public class ListaGruppo : IEnumerable
 
         if (r1.somiglianzaEnum == SomiglianzaEnum.IDENTITICI)
         {
-            if (IsNullOrEmpty(a1.IDCorsoPolimi) && !IsNullOrEmpty(a2.IDCorsoPolimi))
+            if (IsNullOrEmpty(a1?.IDCorsoPolimi) && !IsNullOrEmpty(a2?.IDCorsoPolimi))
                 r1.somiglianzaEnum = SomiglianzaEnum.DUBBIO;
-            else if (!IsNullOrEmpty(a1.IDCorsoPolimi) && IsNullOrEmpty(a2.IDCorsoPolimi))
+            else if (!IsNullOrEmpty(a1?.IDCorsoPolimi) && IsNullOrEmpty(a2?.IDCorsoPolimi))
                 r1.somiglianzaEnum = SomiglianzaEnum.DUBBIO;
         }
 
         if (r1.somiglianzaEnum != SomiglianzaEnum.DUBBIO) return r1;
-        if (!IsNullOrEmpty(a1.Tipo) && !IsNullOrEmpty(a2.Tipo) &&
+        if (!IsNullOrEmpty(a1?.Tipo) && !IsNullOrEmpty(a2?.Tipo) &&
             !string.Equals(a1.Tipo, a2.Tipo, StringComparison.CurrentCultureIgnoreCase))
             r1.somiglianzaEnum = SomiglianzaEnum.DIVERSI;
 
@@ -765,7 +765,7 @@ public class ListaGruppo : IEnumerable
 
     private static SomiglianzaClasse Equivalenti5(Gruppo? a1, Gruppo? a2)
     {
-        if (!IsNullOrEmpty(a1.IDCorsoPolimi) && !IsNullOrEmpty(a2.IDCorsoPolimi) &&
+        if (!IsNullOrEmpty(a1?.IDCorsoPolimi) && !IsNullOrEmpty(a2?.IDCorsoPolimi) &&
             a1.IDCorsoPolimi == a2.IDCorsoPolimi)
         {
             var i1 = CompareOrdinal2(a1.CCS, a2.CCS);
@@ -776,55 +776,55 @@ public class ListaGruppo : IEnumerable
                 : new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
         }
 
-        if (!IsNullOrEmpty(a1.IDCorsoPolimi) && !IsNullOrEmpty(a2.IDCorsoPolimi) &&
+        if (!IsNullOrEmpty(a1?.IDCorsoPolimi) && !IsNullOrEmpty(a2?.IDCorsoPolimi) &&
             a1.IDCorsoPolimi != a2.IDCorsoPolimi)
             return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI);
 
-        if (a1.PermanentId == a2.PermanentId && !IsNullOrEmpty(a1.PermanentId))
+        if (a1?.PermanentId == a2?.PermanentId && !IsNullOrEmpty(a1?.PermanentId))
             return new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI);
 
-        if (!IsNullOrEmpty(a1.PermanentId))
-            if (!IsNullOrEmpty(a2.PermanentId))
+        if (!IsNullOrEmpty(a1?.PermanentId))
+            if (!IsNullOrEmpty(a2?.PermanentId))
                 if (a1.PermanentId != a2.PermanentId)
                     return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI);
 
-        if (a1.Id == a2.Id && !IsNullOrEmpty(a1.Id))
+        if (a1?.Id == a2?.Id && !IsNullOrEmpty(a1?.Id))
         {
-            if (a1.Classe.ToLower().Contains("cartografia") && !a2.Classe.ToLower().Contains("cartografia"))
+            if ((a1.Classe?.ToLower().Contains("cartografia")??false) && !(a2?.Classe?.ToLower().Contains("cartografia")??false))
                 return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
-            if (a2.Classe.ToLower().Contains("cartografia") && !a1.Classe.ToLower().Contains("cartografia"))
+            if ((a2?.Classe?.ToLower().Contains("cartografia")??false) && !(a1.Classe?.ToLower().Contains("cartografia")??false))
                 return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
 
             return new SomiglianzaClasse(SomiglianzaEnum.DUBBIO, a1, a2);
         }
 
-        if (!IsNullOrEmpty(a1.Year))
-            if (!IsNullOrEmpty(a2.Year))
+        if (!IsNullOrEmpty(a1?.Year))
+            if (!IsNullOrEmpty(a2?.Year))
                 if (a1.Year != a2.Year)
                     return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI);
 
-        if (!IsNullOrEmpty(a1.Platform))
-            if (!IsNullOrEmpty(a2.Platform))
+        if (!IsNullOrEmpty(a1?.Platform))
+            if (!IsNullOrEmpty(a2?.Platform))
                 if (a1.Platform != a2.Platform)
                     return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI);
 
-        if (!Gruppo.IsEmpty(a1.Office))
-            if (!Gruppo.IsEmpty(a2.Office))
+        if (!Gruppo.IsEmpty(a1?.Office))
+            if (!Gruppo.IsEmpty(a2?.Office))
             {
-                var i1 = CompareOrdinal2(a1.Office, a2.Office);
+                var i1 = CompareOrdinal2(a1?.Office, a2?.Office);
                 if (i1 != 0)
                     return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
             }
 
-        if (!IsNullOrEmpty(a1.Degree))
-            if (!IsNullOrEmpty(a2.Degree))
+        if (!IsNullOrEmpty(a1?.Degree))
+            if (!IsNullOrEmpty(a2?.Degree))
                 if (a1.Degree != a2.Degree)
                     return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI);
 
-        if (IsNullOrEmpty(a1.Classe))
+        if (IsNullOrEmpty(a1?.Classe))
             return new SomiglianzaClasse(SomiglianzaEnum.DUBBIO, a1, a2);
 
-        if (IsNullOrEmpty(a2.Classe))
+        if (IsNullOrEmpty(a2?.Classe))
             return new SomiglianzaClasse(SomiglianzaEnum.DUBBIO, a1, a2);
 
         var s1 = a1.Classe.ToLower().Split(' ');
@@ -877,7 +877,7 @@ public class ListaGruppo : IEnumerable
 
     private static SomiglianzaEnum NomiSimili(string? n1, string? n2)
     {
-        if (n1.Length == 0 || n2.Length == 0)
+        if (n1?.Length == 0 || n2?.Length == 0)
             return SomiglianzaEnum.DIVERSI;
 
         if (n1 == n2)
@@ -888,14 +888,14 @@ public class ListaGruppo : IEnumerable
 
         try
         {
-            var s1 = n1.Split(' ');
-            var s2 = n2.Split(' ');
+            var s1 = n1?.Split(' ');
+            var s2 = n2?.Split(' ');
 
             var l1 = new List<string>();
             var l2 = new List<string>();
 
-            l1.AddRange(s1);
-            l2.AddRange(s2);
+            if (s1 != null) l1.AddRange(s1);
+            if (s2 != null) l2.AddRange(s2);
 
             //lower words
             for (var i = 0; i < l1.Count; i++) l1[i] = l1[i].ToLower();
@@ -1130,11 +1130,11 @@ public class ListaGruppo : IEnumerable
             return false;
 
         if (n1 == "digital and interaction design")
-            if (n2.Contains("systems"))
+            if (n2?.Contains("systems")??false)
                 return false;
 
         if (n2 == "digital and interaction design")
-            if (n1.Contains("systems"))
+            if (n1?.Contains("systems")??false)
                 return false;
 
         if (n1 == "economia e organiz. aziendale b - elettrica")

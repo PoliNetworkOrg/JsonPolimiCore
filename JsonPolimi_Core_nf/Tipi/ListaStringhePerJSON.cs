@@ -9,12 +9,12 @@ public class ListaStringhePerJSON
 {
     public List<string?>? o;
 
-    public ListaStringhePerJSON(List<string?> office)
+    public ListaStringhePerJSON(List<string?>? office)
     {
         o = office;
     }
 
-    public ListaStringhePerJSON(string v)
+    public ListaStringhePerJSON(string? v)
     {
         o = new List<string?> { v };
     }
@@ -107,7 +107,7 @@ public class ListaStringhePerJSON
         return (o1 <  o2)  => -1
     */
 
-    public static int Confronta(ListaStringhePerJSON o1, ListaStringhePerJSON o2)
+    public static int Confronta(ListaStringhePerJSON? o1, ListaStringhePerJSON? o2)
     {
         switch (o1)
         {
@@ -146,7 +146,7 @@ public class ListaStringhePerJSON
         return 1;
     }
 
-    public static bool IsEmpty(ListaStringhePerJSON o)
+    public static bool IsEmpty(ListaStringhePerJSON? o)
     {
         return o == null || o.IsEmpty();
     }

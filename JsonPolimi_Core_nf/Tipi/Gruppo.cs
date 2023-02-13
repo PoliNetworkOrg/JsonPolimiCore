@@ -421,17 +421,18 @@ public class Gruppo
         for (var i = 0; i < 3; i++) s = UnEscapeQuotes(s);
 
         var s2 = "";
-        foreach (var t in s)
-            if (t == '"')
-            {
-                s2 += '\\';
-                s2 += '"';
-                //  =>    \"
-            }
-            else
-            {
-                s2 += t;
-            }
+        if (s != null)
+            foreach (var t in s)
+                if (t == '"')
+                {
+                    s2 += '\\';
+                    s2 += '"';
+                    //  =>    \"
+                }
+                else
+                {
+                    s2 += t;
+                }
 
         return s2;
     }
@@ -497,12 +498,12 @@ public class Gruppo
             var s1 = v[(n1 + 12)..];
             string?[] s2 = s1.Split('"');
 
-            var s3 = s2[1].Split('>');
-            string?[] s4 = s3[1].Split('<');
+            var s3 = s2[1]?.Split('>');
+            string?[]? s4 = s3?[1]?.Split('<');
 
-            var nome = s4[0];
+            var nome = s4?[0];
 
-            if (nome.StartsWith("http", StringComparison.Ordinal))
+            if (nome?.StartsWith("http", StringComparison.Ordinal) ??false)
             {
                 AggiungiLink(s2[0], ref g);
             }
@@ -563,7 +564,7 @@ public class Gruppo
         return (o1 <  o2)  => -1
     */
 
-    public static int Confronta(ListaStringhePerJSON o1, ListaStringhePerJSON o2)
+    public static int Confronta(ListaStringhePerJSON? o1, ListaStringhePerJSON? o2)
     {
         return ListaStringhePerJSON.Confronta(o1, o2);
     }
@@ -626,13 +627,13 @@ public class Gruppo
     {
         var g2 = new Gruppo();
 
-        var n1 = v.IndexOf("://", StringComparison.Ordinal);
-        var s1 = v[(n1 + 3)..];
+        var n1 = v?.IndexOf("://", StringComparison.Ordinal);
+        var s1 = v?[((n1??0) + 3)..];
 
-        var n2 = s1.IndexOf("www.", StringComparison.Ordinal);
-        if (n2 >= 0 && n2 < s1.Length) s1 = s1[4..];
+        var n2 = s1?.IndexOf("www.", StringComparison.Ordinal);
+        if (n2 >= 0 && n2 < s1?.Length) s1 = s1[4..];
 
-        switch (s1[0])
+        switch (s1?[0])
         {
             // facebook
             case 'f':
@@ -687,16 +688,16 @@ public class Gruppo
 
     public void Merge(Gruppo? gruppo)
     {
-        if (!string.IsNullOrEmpty(gruppo.Classe) && string.IsNullOrEmpty(Classe))
+        if (!string.IsNullOrEmpty(gruppo?.Classe) && string.IsNullOrEmpty(Classe))
             Classe = gruppo.Classe;
 
-        if (!string.IsNullOrEmpty(gruppo.Degree) && string.IsNullOrEmpty(Degree))
+        if (!string.IsNullOrEmpty(gruppo?.Degree) && string.IsNullOrEmpty(Degree))
             Degree = gruppo.Degree;
 
-        if (!string.IsNullOrEmpty(gruppo.Id) && string.IsNullOrEmpty(Id))
+        if (!string.IsNullOrEmpty(gruppo?.Id) && string.IsNullOrEmpty(Id))
             Id = gruppo.Id;
 
-        if (!string.IsNullOrEmpty(gruppo.IdLink))
+        if (!string.IsNullOrEmpty(gruppo?.IdLink))
         {
             if (string.IsNullOrEmpty(IdLink))
             {
@@ -742,25 +743,25 @@ public class Gruppo
 
         LastUpdateInviteLinkTime ??= DateTime.Now;
 
-        if (!string.IsNullOrEmpty(gruppo.Language) && string.IsNullOrEmpty(Language))
+        if (!string.IsNullOrEmpty(gruppo?.Language) && string.IsNullOrEmpty(Language))
             Language = gruppo.Language;
 
-        if (!IsEmpty(gruppo.Office) && IsEmpty(Office))
-            Office = gruppo.Office;
+        if (!IsEmpty(gruppo?.Office) && IsEmpty(Office))
+            Office = gruppo?.Office;
 
-        if (!string.IsNullOrEmpty(gruppo.PermanentId) && string.IsNullOrEmpty(PermanentId))
+        if (!string.IsNullOrEmpty(gruppo?.PermanentId) && string.IsNullOrEmpty(PermanentId))
             PermanentId = gruppo.PermanentId;
 
-        if (!string.IsNullOrEmpty(gruppo.Platform) && string.IsNullOrEmpty(Platform))
+        if (!string.IsNullOrEmpty(gruppo?.Platform) && string.IsNullOrEmpty(Platform))
             Platform = gruppo.Platform;
 
-        if (!string.IsNullOrEmpty(gruppo.School) && string.IsNullOrEmpty(School))
+        if (!string.IsNullOrEmpty(gruppo?.School) && string.IsNullOrEmpty(School))
             School = gruppo.School;
 
-        if (!string.IsNullOrEmpty(gruppo.Tipo) && string.IsNullOrEmpty(Tipo))
+        if (!string.IsNullOrEmpty(gruppo?.Tipo) && string.IsNullOrEmpty(Tipo))
             Tipo = gruppo.Tipo;
 
-        if (!string.IsNullOrEmpty(gruppo.Year) && string.IsNullOrEmpty(Year))
+        if (!string.IsNullOrEmpty(gruppo?.Year) && string.IsNullOrEmpty(Year))
             Year = gruppo.Year;
     }
 
@@ -817,9 +818,9 @@ public class Gruppo
     {
         var a = "" + '\\' + '"';
         var b = "" + '"';
-        classe = classe.Replace(a, b);
-        classe = classe.Replace(a, b);
-        classe = classe.Replace(b, a);
+        classe = classe?.Replace(a, b);
+        classe = classe?.Replace(a, b);
+        classe = classe?.Replace(b, a);
         return classe;
     }
 
@@ -912,8 +913,9 @@ public class Gruppo
 
                 if (infoParteDiGruppo_list[0].testo_selvaggio == "Scuola")
                 {
-                    Variabili.ParametriCondivisiItem.infoManifesto.Scuola =
-                        infoParteDiGruppo_list[1].testo_selvaggio.Trim();
+                    if (Variabili.ParametriCondivisiItem?.infoManifesto != null)
+                        Variabili.ParametriCondivisiItem.infoManifesto.Scuola =
+                            infoParteDiGruppo_list[1].testo_selvaggio?.Trim();
                     return null; //sicuro
                 }
 
@@ -921,7 +923,7 @@ public class Gruppo
                     or "Italiano/Inglese" or "Laboratorio" or "Mutuabile") return null; //sicuro
 
                 if (infoParteDiGruppo_list[1].testo_selvaggio != null &&
-                    infoParteDiGruppo_list[1].testo_selvaggio.StartsWith("Insegnamento")) return null; //sicuro
+                    (infoParteDiGruppo_list[1].testo_selvaggio?.StartsWith("Insegnamento")??false)) return null; //sicuro
 
                 if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("Classe di Laurea") ?? false)
                     return null; //sicuro
@@ -947,19 +949,19 @@ public class Gruppo
                         return null; //sicuro
                 }
 
-                if (infoParteDiGruppo_list[0].testo_selvaggio.StartsWith("(¹) Il corso di laurea offre "))
+                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("(¹) Il corso di laurea offre ")??false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0].testo_selvaggio.StartsWith("Nessun insegnamento per"))
+                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("Nessun insegnamento per")??false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0].testo_selvaggio.StartsWith("4<sup>"))
+                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("4<sup>")??false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0].testo_selvaggio.StartsWith("5<sup>"))
+                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("5<sup>")??false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0].testo_selvaggio.StartsWith("(¹) Lo studente a"))
+                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("(¹) Lo studente a")??false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0].testo_selvaggio.StartsWith("Insegnamenti del Grupp"))
+                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("Insegnamenti del Grupp")??false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0].testo_selvaggio.StartsWith("Corso di Studi"))
+                if (infoParteDiGruppo_list[0].testo_selvaggio?.StartsWith("Corso di Studi")??false)
                     return null; //sicuro
                 return null;
             }
@@ -974,62 +976,68 @@ public class Gruppo
             {
                 if (infoParteDiGruppo_list[0].testo_selvaggio == "Corso di Studio")
                 {
-                    var x1 = infoParteDiGruppo_list[1].testo_selvaggio.Trim();
-                    var x2 = x1.Replace('\r', '\t');
-                    x2 = x2.Replace('\n', '\t');
-                    var x3 = x2.Split('\t');
+                    var x1 = infoParteDiGruppo_list[1].testo_selvaggio?.Trim();
+                    var x2 = x1?.Replace('\r', '\t');
+                    x2 = x2?.Replace('\n', '\t');
+                    var x3 = x2?.Split('\t');
                     var x4 = (from x3A in x3 where !string.IsNullOrEmpty(x3A.Trim()) select x3A.Trim()).ToList();
 
-                    Variabili.ParametriCondivisiItem.infoManifesto.Corso_di_studio = x4;
+                    if (Variabili.ParametriCondivisiItem?.infoManifesto != null)
+                        Variabili.ParametriCondivisiItem.infoManifesto.Corso_di_studio = x4;
                 }
 
                 if (infoParteDiGruppo_list[2].testo_selvaggio == "Sede del corso")
                 {
-                    var x1 = infoParteDiGruppo_list[3].testo_selvaggio.Trim();
-                    Variabili.ParametriCondivisiItem.infoManifesto.Sede_del_corso = x1.Split(',');
+                    var x1 = infoParteDiGruppo_list[3].testo_selvaggio?.Trim();
+                    if (Variabili.ParametriCondivisiItem?.infoManifesto != null)
+                        Variabili.ParametriCondivisiItem.infoManifesto.Sede_del_corso = x1?.Split(',');
                 }
 
                 if (infoParteDiGruppo_list[0].testo_selvaggio == "Anni di Corso Attivi")
                 {
-                    var x1 = infoParteDiGruppo_list[1].testo_selvaggio.Trim();
-                    Variabili.ParametriCondivisiItem.infoManifesto.Anni_di_corso_attivi = x1.Split(',');
+                    var x1 = infoParteDiGruppo_list[1].testo_selvaggio?.Trim();
+                    if (Variabili.ParametriCondivisiItem?.infoManifesto != null)
+                        Variabili.ParametriCondivisiItem.infoManifesto.Anni_di_corso_attivi = x1?.Split(',');
                 }
 
                 if (infoParteDiGruppo_list[0].testo_selvaggio == "Anno Accademico")
                 {
-                    string x1 = null;
+                    string? x1 = null;
                     try
                     {
-                        x1 = infoParteDiGruppo_list[1].testo_selvaggio.Trim();
+                        x1 = infoParteDiGruppo_list[1].testo_selvaggio?.Trim();
                     }
                     catch
                     {
                         ;
                     }
 
-                    Variabili.ParametriCondivisiItem.infoManifesto.Anno_accademico = x1;
+                    if (Variabili.ParametriCondivisiItem?.infoManifesto != null)
+                        Variabili.ParametriCondivisiItem.infoManifesto.Anno_accademico = x1;
                 }
 
                 if (infoParteDiGruppo_list[2].testo_selvaggio == "Sede")
                 {
-                    string x1 = null;
+                    string? x1 = null;
                     try
                     {
-                        x1 = infoParteDiGruppo_list[3].testo_selvaggio.Trim();
+                        x1 = infoParteDiGruppo_list[3].testo_selvaggio?.Trim();
                     }
                     catch
                     {
                         ;
                     }
 
-                    Variabili.ParametriCondivisiItem.infoManifesto.Sede = x1;
+                    if (Variabili.ParametriCondivisiItem?.infoManifesto != null)
+                        Variabili.ParametriCondivisiItem.infoManifesto.Sede = x1;
                 }
 
                 if (infoParteDiGruppo_list[2].testo_selvaggio != "Durata nominale del Corso")
                     return null; //info interessanti
 
-                var x11 = infoParteDiGruppo_list[3].testo_selvaggio.Trim();
-                Variabili.ParametriCondivisiItem.infoManifesto.Durata_nominale_corso = x11;
+                var x11 = infoParteDiGruppo_list[3].testo_selvaggio?.Trim();
+                if (Variabili.ParametriCondivisiItem?.infoManifesto != null)
+                    Variabili.ParametriCondivisiItem.infoManifesto.Durata_nominale_corso = x11;
 
 
                 return null; //info interessanti
@@ -1046,22 +1054,22 @@ public class Gruppo
                     infoParteDiGruppo_list[6].testo_selvaggio == "--")
                     return null; //sicuro
 
-                string classe = null;
+                string? classe = null;
                 var n1 = 0;
                 if (infoParteDiGruppo_list[3]?.link != null &&
-                    !string.IsNullOrEmpty(infoParteDiGruppo_list[3].link.v))
+                    !string.IsNullOrEmpty(infoParteDiGruppo_list[3].link?.v))
                 {
-                    classe = infoParteDiGruppo_list[3].link.v;
+                    classe = infoParteDiGruppo_list[3].link?.v;
                     n1 = 3;
                 }
                 else if (infoParteDiGruppo_list[4]?.link != null &&
-                         !string.IsNullOrEmpty(infoParteDiGruppo_list[4].link.v))
+                         !string.IsNullOrEmpty(infoParteDiGruppo_list[4].link?.v))
                 {
-                    classe = infoParteDiGruppo_list[4].link.v;
+                    classe = infoParteDiGruppo_list[4].link?.v;
                     n1 = 4;
                 }
 
-                string lang = null;
+                string? lang = null;
                 try
                 {
                     var lingua1 = infoParteDiGruppo_list[n1 + 1].lingua;
@@ -1146,15 +1154,16 @@ public class Gruppo
         return g;
     }
 
-    private static List<string?> GetGruppoTabellaInsegnamenti(InfoParteDiGruppo infoParteDiGruppo)
+    private static List<string>? GetGruppoTabellaInsegnamenti(InfoParteDiGruppo infoParteDiGruppo)
     {
         if (infoParteDiGruppo == null)
             return null;
 
-        List<string?> l = new();
+        List<string?>? l = new();
         if (string.IsNullOrEmpty(infoParteDiGruppo.testo_selvaggio) && infoParteDiGruppo.sottopezzi != null)
         {
-            l.AddRange(infoParteDiGruppo.sottopezzi.Select(x1 => x1.testo_selvaggio));
+            var collection = infoParteDiGruppo.sottopezzi.Select(x1 => x1.testo_selvaggio);
+            l.AddRange(collection);
             return l;
         }
 
@@ -1162,7 +1171,7 @@ public class Gruppo
         return l;
     }
 
-    private static List<string?> GetSede(InfoParteDiGruppo infoParteDiGruppo)
+    private static List<string?>? GetSede(InfoParteDiGruppo? infoParteDiGruppo)
     {
         if (infoParteDiGruppo == null)
             return null;
