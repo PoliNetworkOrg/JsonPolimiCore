@@ -14,7 +14,8 @@ public class ImportaReturn
         this.actionDoneImport = actionDoneImport;
     }
 
-    public ImportaReturn(ActionDoneImport actionDoneImport, List<Tuple<int, Tuple<SomiglianzaClasse, Gruppo?>>>? simili) :
+    public ImportaReturn(ActionDoneImport actionDoneImport,
+        List<Tuple<int, Tuple<SomiglianzaClasse, Gruppo?>>>? simili) :
         this(actionDoneImport)
     {
         this.simili = simili;

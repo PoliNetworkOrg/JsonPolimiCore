@@ -62,14 +62,14 @@ public class ListaStringhePerJSON
             if (s2 != null)
             {
                 foreach (var x1 in s2)
-                    switch (x1?.StartsWith("(")??false)
+                    switch (x1?.StartsWith("(") ?? false)
                     {
-                        case true when (x1?.EndsWith("),")??false):
+                        case true when x1?.EndsWith("),") ?? false:
                         {
                             var s3 = x1[..^1];
                             return GetCcsCode2(s3);
                         }
-                        case true when (x1?.EndsWith(")")??false):
+                        case true when x1?.EndsWith(")") ?? false:
                             return GetCcsCode2(x1);
                     }
 
@@ -78,12 +78,12 @@ public class ListaStringhePerJSON
         }
 
         foreach (var x1 in o)
-            if ((x1?.StartsWith("(")??false) && (x1?.EndsWith("),")??false))
+            if ((x1?.StartsWith("(") ?? false) && (x1?.EndsWith("),") ?? false))
             {
                 var s3 = x1?[..^1];
                 return GetCcsCode2(s3);
             }
-            else if ((x1?.StartsWith("(")??false) && (x1?.EndsWith(")")??false))
+            else if ((x1?.StartsWith("(") ?? false) && (x1?.EndsWith(")") ?? false))
             {
                 return GetCcsCode2(x1);
             }
@@ -94,7 +94,7 @@ public class ListaStringhePerJSON
     private static string? GetCcsCode2(string? v)
     {
         var s = v?.Trim();
-        if ((!s?.StartsWith("(")??false) || !(s?.EndsWith(")")??false)) return null;
+        if ((!s?.StartsWith("(") ?? false) || !(s?.EndsWith(")") ?? false)) return null;
         s = s[1..];
         s = s[..^1];
 
@@ -121,7 +121,7 @@ public class ListaStringhePerJSON
             return 1;
 
         var contained = true;
-        var containses = o1.o?.Select(i1 => o2.o?.Contains(i1)).Where(contains => !(contains??false));
+        var containses = o1.o?.Select(i1 => o2.o?.Contains(i1)).Where(contains => !(contains ?? false));
         if (containses != null)
             foreach (var contains in containses)
                 contained = false;
@@ -134,7 +134,7 @@ public class ListaStringhePerJSON
             return -1;
         }
 
-        var enumerable = o2.o?.Select(i2 => o1.o?.Contains(i2)).Where(contains => !(contains??false));
+        var enumerable = o2.o?.Select(i2 => o1.o?.Contains(i2)).Where(contains => !(contains ?? false));
         if (enumerable != null)
             foreach (var contains in enumerable)
                 contained = false;

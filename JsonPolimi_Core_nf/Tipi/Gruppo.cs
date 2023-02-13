@@ -252,9 +252,9 @@ public class Gruppo
     {
         var c = Classe?.ToLower();
 
-        if (c?.Contains("and") ??false)
+        if (c?.Contains("and") ?? false)
             return "ENG";
-        return (c?.Contains("for")??false) ? "ENG" : defaultLanguage;
+        return c?.Contains("for") ?? false ? "ENG" : defaultLanguage;
     }
 
     public string? To_json(CheckGruppo.E v)
@@ -505,7 +505,7 @@ public class Gruppo
 
             var nome = s4?[0];
 
-            if (nome?.StartsWith("http", StringComparison.Ordinal) ??false)
+            if (nome?.StartsWith("http", StringComparison.Ordinal) ?? false)
             {
                 AggiungiLink(s2[0], ref g);
             }
@@ -630,7 +630,7 @@ public class Gruppo
         var g2 = new Gruppo();
 
         var n1 = v?.IndexOf("://", StringComparison.Ordinal);
-        var s1 = v?[((n1??0) + 3)..];
+        var s1 = v?[((n1 ?? 0) + 3)..];
 
         var n2 = s1?.IndexOf("www.", StringComparison.Ordinal);
         if (n2 >= 0 && n2 < s1?.Length) s1 = s1[4..];
@@ -925,7 +925,8 @@ public class Gruppo
                     or "Italiano/Inglese" or "Laboratorio" or "Mutuabile") return null; //sicuro
 
                 if (infoParteDiGruppo_list[1]?.testo_selvaggio != null &&
-                    (infoParteDiGruppo_list[1]?.testo_selvaggio?.StartsWith("Insegnamento")??false)) return null; //sicuro
+                    (infoParteDiGruppo_list[1]?.testo_selvaggio?.StartsWith("Insegnamento") ?? false))
+                    return null; //sicuro
 
                 if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("Classe di Laurea") ?? false)
                     return null; //sicuro
@@ -951,19 +952,19 @@ public class Gruppo
                         return null; //sicuro
                 }
 
-                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("(¹) Il corso di laurea offre ")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("(¹) Il corso di laurea offre ") ?? false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("Nessun insegnamento per")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("Nessun insegnamento per") ?? false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("4<sup>")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("4<sup>") ?? false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("5<sup>")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("5<sup>") ?? false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("(¹) Lo studente a")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("(¹) Lo studente a") ?? false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("Insegnamenti del Grupp")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("Insegnamenti del Grupp") ?? false)
                     return null; //sicuro
-                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("Corso di Studi")??false)
+                if (infoParteDiGruppo_list[0]?.testo_selvaggio?.StartsWith("Corso di Studi") ?? false)
                     return null; //sicuro
                 return null;
             }

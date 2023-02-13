@@ -276,17 +276,14 @@ public class ListaGruppo : IEnumerable
             var c1 = a1?.Classe?.ToLower().Trim();
             var c2 = a2?.Classe?.ToLower().Trim();
             if (c1 == c2)
-                if ((JsonEmpty(a1?.Office) && !JsonEmpty(a2?.Office)) || (!JsonEmpty(a1?.Office) && JsonEmpty(a2?.Office)))
+                if ((JsonEmpty(a1?.Office) && !JsonEmpty(a2?.Office)) ||
+                    (!JsonEmpty(a1?.Office) && JsonEmpty(a2?.Office)))
                     if ((a1?.Tipo == "C" && a2?.Tipo == "S") || (a1?.Tipo == "S" && a2?.Tipo == "C"))
                     {
                         var r7 = Unisci4(i, j, aggiustaAnnno);
-                        if (r7.Item2 != null)
-                        {
-                            r7.Item2.Tipo = "C";
-                 
-                        }        
+                        if (r7.Item2 != null) r7.Item2.Tipo = "C";
                         return new Tuple<SomiglianzaClasse, Gruppo?>(
-                                                         new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI, a1, a2), r7.Item2);
+                            new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI, a1, a2), r7.Item2);
                     }
         }
 
@@ -790,9 +787,11 @@ public class ListaGruppo : IEnumerable
 
         if (a1?.Id == a2?.Id && !IsNullOrEmpty(a1?.Id))
         {
-            if ((a1.Classe?.ToLower().Contains("cartografia")??false) && !(a2?.Classe?.ToLower().Contains("cartografia")??false))
+            if ((a1.Classe?.ToLower().Contains("cartografia") ?? false) &&
+                !(a2?.Classe?.ToLower().Contains("cartografia") ?? false))
                 return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
-            if ((a2?.Classe?.ToLower().Contains("cartografia")??false) && !(a1.Classe?.ToLower().Contains("cartografia")??false))
+            if ((a2?.Classe?.ToLower().Contains("cartografia") ?? false) &&
+                !(a1.Classe?.ToLower().Contains("cartografia") ?? false))
                 return new SomiglianzaClasse(SomiglianzaEnum.DIVERSI, a1, a2);
 
             return new SomiglianzaClasse(SomiglianzaEnum.DUBBIO, a1, a2);
@@ -1130,11 +1129,11 @@ public class ListaGruppo : IEnumerable
             return false;
 
         if (n1 == "digital and interaction design")
-            if (n2?.Contains("systems")??false)
+            if (n2?.Contains("systems") ?? false)
                 return false;
 
         if (n2 == "digital and interaction design")
-            if (n1?.Contains("systems")??false)
+            if (n1?.Contains("systems") ?? false)
                 return false;
 
         if (n1 == "economia e organiz. aziendale b - elettrica")
@@ -1220,7 +1219,8 @@ public class ListaGruppo : IEnumerable
 
     public List<ImportaReturn> Importa(IEnumerable<Tuple<Gruppo>> l2, bool aggiustaAnno, Chiedi chiedi2)
     {
-        return l2.Select(t => t.Item1).Select((l3, i) => Importa2(new Tuple<Gruppo?, int>(l3, i), aggiustaAnno, chiedi2))
+        return l2.Select(t => t.Item1)
+            .Select((l3, i) => Importa2(new Tuple<Gruppo?, int>(l3, i), aggiustaAnno, chiedi2))
             .ToList();
     }
 
@@ -1247,67 +1247,67 @@ public class ListaGruppo : IEnumerable
                     //todo: E' TEMPORANEA QUESTA COSA
                     if (r.Item1.a2 == null)
                         toShow = true;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architettura")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architettura") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Edile")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Edile") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Urbanistica")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Urbanistica") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Design")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Design") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architectural")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architectural") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Edilizi")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Edilizi") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architecture")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architecture") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Management")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Management") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Aerospaziale")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Aerospaziale") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Biomedica")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Biomedica") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Chimica")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Chimica") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Elettrica")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Elettrica") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Elettronica")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Elettronica") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Energetica")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Energetica") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Fisica")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Fisica") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Gestionale")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Gestionale") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Aero")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Aero") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Automation")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Automation") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Prevenzione")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Prevenzione") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Materials")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Materials") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Mathematical")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Mathematical") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Mechanical")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Mechanical") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Nuclear")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Nuclear") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Space")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Space") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Civil")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Civil") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Ambiente")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Ambiente") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Matematica")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Matematica") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Meccanica")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Meccanica") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Materiali")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Materiali") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Automazione")??false)
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Automazione") ?? false)
                         toShow = false;
-                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Produzione")??false) toShow = false;
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Produzione") ?? false) toShow = false;
 
                     switch (chiedi2)
                     {
@@ -1404,7 +1404,7 @@ public class ListaGruppo : IEnumerable
 
         if (IsNullOrEmpty(a1?.Classe))
         {
-            if (a1 != null) 
+            if (a1 != null)
                 a1.Classe = a2?.Classe;
         }
         else
@@ -1439,13 +1439,11 @@ public class ListaGruppo : IEnumerable
             if (a1 != null)
                 a1.Id = a2?.Id;
         if (IsNullOrEmpty(a1?.IdLink))
-        {
             if (a1 != null)
             {
                 a1.IdLink = a2?.IdLink;
                 a1.LinkFunzionante = a2?.LinkFunzionante;
             }
-        }
 
         if (IsNullOrEmpty(a1?.Language))
             if (a1 != null)
@@ -1470,7 +1468,7 @@ public class ListaGruppo : IEnumerable
                 a1.Year = a2?.Year;
         if (a1?.LastUpdateInviteLinkTime == null)
         {
-            if (a1 != null) 
+            if (a1 != null)
                 a1.LastUpdateInviteLinkTime = a2?.LastUpdateInviteLinkTime;
         }
         else
@@ -2040,14 +2038,12 @@ public class ListaGruppo : IEnumerable
         foreach (var gruppo in i.Select(i2 => _l[i2]))
         {
             if (linkFunzionante.Value)
-            {
                 if (gruppo != null)
                 {
                     gruppo.IdLink = newlink;
                     gruppo.LastUpdateInviteLinkTime = DateTime.Now;
                     gruppo.LinkFunzionante = true;
                 }
-            }
 
             if (gruppo == null) continue;
             gruppo.PermanentId = permanentId;
@@ -2199,12 +2195,13 @@ public class ListaGruppo : IEnumerable
         return eventoConLog;
     }
 
-    public void CheckSeILinkVanno2(EventoConLog? eventoConLog, int? volteCheCiRiprova, bool? laPrimaVoltaControllaDaCapo,
+    public void CheckSeILinkVanno2(EventoConLog? eventoConLog, int? volteCheCiRiprova,
+        bool? laPrimaVoltaControllaDaCapo,
         int? waitOgniVoltaCheCiRiprova = 10)
     {
         for (var j = 0; j < volteCheCiRiprova; j++)
         {
-            var b = j != 0 || !(laPrimaVoltaControllaDaCapo??false);
+            var b = j != 0 || !(laPrimaVoltaControllaDaCapo ?? false);
             foreach (var t in _l)
                 t?.CheckSeIlLinkVa(b, eventoConLog);
 
@@ -2261,7 +2258,7 @@ public class ListaGruppo : IEnumerable
                 gruppo.IdLink = _l[j]?.IdLink;
                 gruppo.Platform = _l[j]?.Platform;
             }
-                
+
 
             gruppo?.RicreaId();
         }

@@ -89,10 +89,7 @@ public static class JsonBuilder
             var elem = Variabili.L.GetElem(i);
 
             var nome = AggiustaNome(elem?.Classe);
-            if (elem != null)
-            {
-                elem.Classe = nome;
-            }            
+            if (elem != null) elem.Classe = nome;
             Variabili.L.SetElem(i, elem);
         }
 
