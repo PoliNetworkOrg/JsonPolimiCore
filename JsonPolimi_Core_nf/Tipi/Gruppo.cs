@@ -423,18 +423,18 @@ public class Gruppo
         for (var i = 0; i < 3; i++) s = UnEscapeQuotes(s);
 
         var s2 = "";
-        if (s != null)
-            foreach (var t in s)
-                if (t == '"')
-                {
-                    s2 += '\\';
-                    s2 += '"';
-                    //  =>    \"
-                }
-                else
-                {
-                    s2 += t;
-                }
+        if (s == null) return s2;
+        foreach (var t in s)
+            if (t == '"')
+            {
+                s2 += '\\';
+                s2 += '"';
+                //  =>    \"
+            }
+            else
+            {
+                s2 += t;
+            }
 
         return s2;
     }

@@ -78,14 +78,15 @@ public class ListaStringhePerJSON
         }
 
         foreach (var x1 in o)
-            if ((x1?.StartsWith("(") ?? false) && (x1?.EndsWith("),") ?? false))
+            switch (x1?.StartsWith("(") ?? false)
             {
-                var s3 = x1?[..^1];
-                return GetCcsCode2(s3);
-            }
-            else if ((x1?.StartsWith("(") ?? false) && (x1?.EndsWith(")") ?? false))
-            {
-                return GetCcsCode2(x1);
+                case true when (x1?.EndsWith("),") ?? false):
+                {
+                    var s3 = x1?[..^1];
+                    return GetCcsCode2(s3);
+                }
+                case true when (x1?.EndsWith(")") ?? false):
+                    return GetCcsCode2(x1);
             }
 
         return null;
