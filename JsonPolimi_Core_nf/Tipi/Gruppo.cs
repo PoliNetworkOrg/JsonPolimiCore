@@ -35,7 +35,7 @@ public class Gruppo
     }
 
     public string? IDCorsoPolimi { get; set; }
-    public List<string>? GruppoTabellaInsegnamenti { get; set; }
+    public List<string?>? GruppoTabellaInsegnamenti { get; set; }
     public InfoManifesto? Manifesto { get; set; }
     public int? AnnoCorsoStudio { get; set; }
     public ListaStringhePerJSON? CCS { get; set; }
@@ -1154,7 +1154,7 @@ public class Gruppo
         return g;
     }
 
-    private static List<string>? GetGruppoTabellaInsegnamenti(InfoParteDiGruppo infoParteDiGruppo)
+    private static List<string?>? GetGruppoTabellaInsegnamenti(InfoParteDiGruppo? infoParteDiGruppo)
     {
         if (infoParteDiGruppo == null)
             return null;
@@ -1231,7 +1231,7 @@ public class Gruppo
     {
         var uguale = "";
 
-        var ugualeMax = Classe.Length / 3f;
+        var ugualeMax = Classe?.Length / 3f;
         if (ugualeMax < 5)
             ugualeMax = 5;
 
@@ -1240,7 +1240,7 @@ public class Gruppo
 
         while (true)
         {
-            if (i >= Classe.Length || j >= Classe.Length)
+            if (i >= Classe?.Length || j >= Classe?.Length)
             {
                 ;
 
@@ -1251,9 +1251,9 @@ public class Gruppo
                 return;
             }
 
-            if (string.Equals(Classe[i].ToString(), Classe[j].ToString(), StringComparison.CurrentCultureIgnoreCase))
+            if (string.Equals(Classe?[i].ToString(), Classe?[j].ToString(), StringComparison.CurrentCultureIgnoreCase))
             {
-                uguale += Classe[i];
+                uguale += Classe?[i];
                 i++;
                 j++;
             }
@@ -1328,15 +1328,15 @@ public class Gruppo
         return text;
     }
 
-    private static bool FindSeUguali(IReadOnlyList<string> s2, int i, int rip)
+    private static bool FindSeUguali(IReadOnlyList<string?>? s2, int i, int rip)
     {
-        if (i >= s2.Count || rip >= s2.Count) return false;
+        if (i >= s2?.Count || rip >= s2?.Count) return false;
 
         for (var k = 0; k < rip; k++)
         {
             var l1 = k + i;
             var l2 = k + i + rip;
-            if (l1 < s2.Count && l2 < s2.Count)
+            if (l1 < s2?.Count && l2 < s2.Count)
             {
                 if (s2[l2] != s2[l1])
                     return false;
