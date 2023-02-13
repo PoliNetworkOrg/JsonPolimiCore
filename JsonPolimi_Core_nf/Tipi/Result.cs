@@ -3,7 +3,7 @@
 public class Result
 {
     public bool isReady;
-    public object result;
+    public object? result;
 
     internal void SetResult(object value)
     {

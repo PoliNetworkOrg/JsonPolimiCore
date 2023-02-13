@@ -7,11 +7,11 @@ public class EventoConLog
 {
     private readonly List<string> logs = new();
     private readonly Result result = new();
-    public Action<object, object> action;
+    public Action<object?, object?>? action;
 
     public void RunAction()
     {
-        action.Invoke(null, null);
+        action?.Invoke(null, null);
     }
 
     public void Log(string s)

@@ -6,7 +6,7 @@ namespace JsonPolimi_Core_nf.Utils;
 
 public static class JsonBuilder
 {
-    public static string GetJson(CheckGruppo v, bool entrambi_index)
+    public static string? GetJson(CheckGruppo v, bool entrambi_index)
     {
         if (Variabili.L == null)
             return null;
@@ -30,9 +30,9 @@ public static class JsonBuilder
                 if (!tenere) continue;
                 json += '\n';
                 json += '"';
-                json += elem.Id;
+                json += elem?.Id;
                 json += '"' + ":";
-                json += elem.To_json(v.n);
+                json += elem?.To_json(v.n);
                 json += ',';
             }
 
@@ -53,7 +53,7 @@ public static class JsonBuilder
                 if (!tenere) continue;
                 json += '\n';
                 json += "        ";
-                json += elem.To_json(v.n);
+                json += elem?.To_json(v.n);
                 json += ',';
             }
 
@@ -76,7 +76,7 @@ public static class JsonBuilder
         for (var i = 0; i < n; i++)
         {
             var elem = Variabili.L.GetElem(i);
-            if (!string.IsNullOrEmpty(elem.Id)) continue;
+            if (!string.IsNullOrEmpty(elem?.Id)) continue;
             Variabili.L.Remove(i);
 
             i--;
@@ -88,16 +88,18 @@ public static class JsonBuilder
         {
             var elem = Variabili.L.GetElem(i);
 
-            var nome = AggiustaNome(elem.Classe);
-            elem.Classe = nome;
-
+            var nome = AggiustaNome(elem?.Classe);
+            if (elem != null)
+            {
+                elem.Classe = nome;
+            }            
             Variabili.L.SetElem(i, elem);
         }
 
         Variabili.L.Sort();
     }
 
-    private static string AggiustaNome(string s)
+    private static string? AggiustaNome(string? s)
     {
         if (s == null)
             return null;
@@ -126,14 +128,14 @@ public static class JsonBuilder
         return s;
     }
 
-    private static bool DoCheckGruppo(CheckGruppo v, Gruppo elem)
+    private static bool DoCheckGruppo(CheckGruppo? v, Gruppo? elem)
     {
-        switch (v.n)
+        switch (v?.n)
         {
             case CheckGruppo.E.RICERCA_SITO_V3:
             case CheckGruppo.E.VECCHIA_RICERCA:
             {
-                if (string.IsNullOrEmpty(elem.Classe))
+                if (string.IsNullOrEmpty(elem?.Classe))
                     return false;
                 if (string.IsNullOrEmpty(elem.IdLink))
                     return false;
@@ -141,7 +143,7 @@ public static class JsonBuilder
             }
             case CheckGruppo.E.NUOVA_RICERCA:
             {
-                if (Empty(elem.CCS))
+                if (Empty(elem?.CCS))
                     return false;
 
                 break;
@@ -155,7 +157,7 @@ public static class JsonBuilder
         return true;
     }
 
-    private static bool Empty(ListaStringhePerJSON cCS)
+    private static bool Empty(ListaStringhePerJSON? cCS)
     {
         return cCS == null || cCS.IsEmpty();
     }

@@ -11,14 +11,14 @@ namespace JsonPolimi_Core_nf.Utils;
 
 public class ODS_Reader
 {
-    public static List<List<string>> Read()
+    public static List<List<string>>? Read()
     {
         var o = new OpenFileDialog();
         var r = o.ShowDialog();
         return r != DialogResult.OK ? null : Read2(o.FileName);
     }
 
-    public static List<List<string>> Read2(string fileName)
+    public static List<List<string>>? Read2(string? fileName)
     {
         var e = GetContentXml(fileName);
         if (e == null)
@@ -35,7 +35,7 @@ public class ODS_Reader
         return GetTableFromXml(doc);
     }
 
-    private static List<List<string>> GetTableFromXml(XmlNode doc)
+    private static List<List<string>>? GetTableFromXml(XmlNode doc)
     {
         var x1 = GetTableFromXml1(doc);
         if (x1 == null)
@@ -109,7 +109,7 @@ public class ODS_Reader
         return null;
     }
 
-    private static XmlElement GetTableFromXml4(XmlNode x1)
+    private static XmlElement? GetTableFromXml4(XmlNode x1)
     {
         foreach (var x2 in x1.ChildNodes)
             if (x2 is XmlElement { Name: "table:table" } x3)
@@ -118,7 +118,7 @@ public class ODS_Reader
         return null;
     }
 
-    private static XmlElement GetTableFromXml3(XmlNode doc)
+    private static XmlElement? GetTableFromXml3(XmlNode doc)
     {
         foreach (var c1 in doc.ChildNodes)
             if (c1 is XmlElement x2)
@@ -127,7 +127,7 @@ public class ODS_Reader
         return null;
     }
 
-    private static XmlElement GetTableFromXml2(XmlNode x1)
+    private static XmlElement? GetTableFromXml2(XmlNode x1)
     {
         foreach (var x2 in x1.ChildNodes)
             if (x2 is XmlElement { Name: "office:body" } x3)
@@ -136,7 +136,7 @@ public class ODS_Reader
         return null;
     }
 
-    private static XmlElement GetTableFromXml1(XmlNode doc)
+    private static XmlElement? GetTableFromXml1(XmlNode doc)
     {
         foreach (var c1 in doc.ChildNodes)
             if (c1 is XmlElement x2)
@@ -145,7 +145,7 @@ public class ODS_Reader
         return null;
     }
 
-    private static ZipEntry GetContentXml(string fileName)
+    private static ZipEntry? GetContentXml(string? fileName)
     {
         var options = new ReadOptions { Encoding = Encoding.UTF8 };
         using var zip = ZipFile.Read(fileName, options);

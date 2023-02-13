@@ -3,6 +3,6 @@
 public class ParametriCondivisi
 {
     public int? anno = null;
-    public InfoManifesto infoManifesto = null;
-    public string pianostudi2 = null;
+    public InfoManifesto? infoManifesto = null;
+    public string? pianostudi2 = null;
 }

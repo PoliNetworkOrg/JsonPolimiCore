@@ -11,38 +11,38 @@ namespace JsonPolimi_Core_nf.Tipi;
 public class Gruppo
 {
     public static WebClient clientDownload = new();
-    private string classe_hidden;
+    private string? classe_hidden;
 
-    public string Degree;
-    public string Id; // esempio: FB/2018/2019/LEONARDO/21432583243205
-    public string IdLink; // esempio: 21432583243205
-    public string Language;
+    public string? Degree;
+    public string? Id; // esempio: FB/2018/2019/LEONARDO/21432583243205
+    public string? IdLink; // esempio: 21432583243205
+    public string? Language;
     public DateTime? LastUpdateInviteLinkTime;
     public bool? LinkFunzionante;
-    public ListaStringhePerJSON Office; // esempio: LEONARDO
+    public ListaStringhePerJSON? Office; // esempio: LEONARDO
 
-    public string PermanentId; //per telegram, esempio -1000345953
-    public string Platform; // esempio: FB
-    public string School;
-    public string Tipo;
+    public string? PermanentId; //per telegram, esempio -1000345953
+    public string? Platform; // esempio: FB
+    public string? School;
+    public string? Tipo;
     public TipoLink TipoLink = TipoLink.UNKNOWN;
-    public string Year; // esempio: 2018/2019
+    public string? Year; // esempio: 2018/2019
 
-    public string Classe
+    public string? Classe
     {
         get => classe_hidden;
         set => classe_hidden = value;
     }
 
-    public string IDCorsoPolimi { get; set; }
-    public List<string> GruppoTabellaInsegnamenti { get; set; }
-    public InfoManifesto Manifesto { get; set; }
+    public string? IDCorsoPolimi { get; set; }
+    public List<string>? GruppoTabellaInsegnamenti { get; set; }
+    public InfoManifesto? Manifesto { get; set; }
     public int? AnnoCorsoStudio { get; set; }
-    public ListaStringhePerJSON CCS { get; set; }
-    public string PianoDiStudi { get; set; }
-    public string NomeCorso { get; set; }
+    public ListaStringhePerJSON? CCS { get; set; }
+    public string? PianoDiStudi { get; set; }
+    public string? NomeCorso { get; set; }
 
-    public string GetHTML_DataRow(string textBoxAnno, string textBoxPiattaforma)
+    public string? GetHTML_DataRow(string textBoxAnno, string textBoxPiattaforma)
     {
         if (!string.IsNullOrEmpty(textBoxAnno))
             if (textBoxAnno != Year)
@@ -170,25 +170,25 @@ public class Gruppo
     {
         if (!string.IsNullOrEmpty(Year)) return;
 
-        var title = Classe.Replace("/", "-");
-        title = title.Replace(" ", "-");
-        var t2 = title.Split('-');
+        var title = Classe?.Replace("/", "-");
+        title = title?.Replace(" ", "-");
+        var t2 = title?.Split('-');
 
         var a = AnnoInTitolo(t2);
         if (a < 0) return;
 
-        Year = t2[a] + "/" + t2[a + 1];
+        Year = t2?[a] + "/" + t2?[a + 1];
     }
 
-    private static int AnnoInTitolo(IReadOnlyList<string> t)
+    private static int AnnoInTitolo(IReadOnlyList<string>? t)
     {
-        if (t.Count <= 1) return -1;
+        if (t?.Count <= 1) return -1;
 
-        for (var i = 0; i < t.Count - 1; i++)
+        for (var i = 0; i < t?.Count - 1; i++)
             try
             {
-                var a = Convert.ToInt32(t[i]);
-                var b = Convert.ToInt32(t[i + 1]);
+                var a = Convert.ToInt32(t?[i]);
+                var b = Convert.ToInt32(t?[i + 1]);
                 if (a >= 2016 && b >= 2016)
                     return i;
             }
@@ -200,13 +200,13 @@ public class Gruppo
         return -1;
     }
 
-    private string CreaIdLink()
+    private string? CreaIdLink()
     {
-        string r2;
+        string? r2;
         try
         {
-            var r = Id.Split('/');
-            r2 = r[3];
+            string?[]? r = Id?.Split('/');
+            r2 = r?[3];
         }
         catch
         {
@@ -216,7 +216,7 @@ public class Gruppo
         return r2;
     }
 
-    private string CreaId()
+    private string? CreaId()
     {
         if (string.IsNullOrEmpty(PianoDiStudi)) ;
 
@@ -229,33 +229,33 @@ public class Gruppo
                PianoDiStudi;
     }
 
-    private static string StringNotEmpty(string a)
+    private static string StringNotEmpty(string? a)
     {
         return a ?? "";
     }
 
-    private static string IndovinaIlDegree()
+    private static string? IndovinaIlDegree()
     {
         //throw new NotImplementedException();
         return null;
     }
 
-    private static string IndovinaLaSchool()
+    private static string? IndovinaLaSchool()
     {
         //throw new NotImplementedException();
         return null;
     }
 
-    private string IndovinaLaLinguaDalNome(string defaultLanguage = "ITA")
+    private string? IndovinaLaLinguaDalNome(string? defaultLanguage = "ITA")
     {
-        var c = Classe.ToLower();
+        var c = Classe?.ToLower();
 
-        if (c.Contains("and"))
+        if (c?.Contains("and") ??false)
             return "ENG";
-        return c.Contains("for") ? "ENG" : defaultLanguage;
+        return (c?.Contains("for")??false) ? "ENG" : defaultLanguage;
     }
 
-    public string To_json(CheckGruppo.E v)
+    public string? To_json(CheckGruppo.E v)
     {
         var json = "{";
 
@@ -379,17 +379,17 @@ public class Gruppo
         return json;
     }
 
-    private static string BoolCheckNotNull(bool? linkFunzionante)
+    private static string? BoolCheckNotNull(bool? linkFunzionante)
     {
         return linkFunzionante == null ? "null" : linkFunzionante.Value ? '"' + "Y" + '"' : '"' + "N" + '"';
     }
 
-    private static string StringCheckNull(int? annoCorsoStudio)
+    private static string? StringCheckNull(int? annoCorsoStudio)
     {
         return annoCorsoStudio == null ? "null" : StringCheckNull(annoCorsoStudio.Value.ToString());
     }
 
-    private static string StringCheckNull(ListaStringhePerJSON office)
+    private static string? StringCheckNull(ListaStringhePerJSON? office)
     {
         if (office == null)
             return "null";
@@ -397,7 +397,7 @@ public class Gruppo
         return '"' + office.StringNotNull() + '"';
     }
 
-    private static string StringCheckNull(string s)
+    private static string? StringCheckNull(string? s)
     {
         if (string.IsNullOrEmpty(s))
             return "null";
@@ -405,7 +405,7 @@ public class Gruppo
         return '"' + s + '"';
     }
 
-    private static string TipoLinkCheckNull(TipoLink s)
+    private static string? TipoLinkCheckNull(TipoLink s)
     {
         if (string.IsNullOrEmpty(s.ToString()))
             return "null";
@@ -413,7 +413,7 @@ public class Gruppo
         return '"' + s.ToString() + '"';
     }
 
-    private static string EscapeQuotes(string s)
+    private static string? EscapeQuotes(string? s)
     {
         if (s == null)
             return null;
@@ -436,7 +436,7 @@ public class Gruppo
         return s2;
     }
 
-    private static string UnEscapeQuotes(string s)
+    private static string? UnEscapeQuotes(string? s)
     {
         if (s == null)
             return null;
@@ -464,7 +464,7 @@ public class Gruppo
         return s2;
     }
 
-    public static void AggiungiInformazioneAmbigua(string v, ref InsiemeDiGruppi g)
+    public static void AggiungiInformazioneAmbigua(string? v, ref InsiemeDiGruppi g)
     {
         if (string.IsNullOrEmpty(v))
             return;
@@ -495,10 +495,10 @@ public class Gruppo
         {
             var n1 = v.IndexOf("xlink:href", StringComparison.Ordinal);
             var s1 = v[(n1 + 12)..];
-            var s2 = s1.Split('"');
+            string?[] s2 = s1.Split('"');
 
             var s3 = s2[1].Split('>');
-            var s4 = s3[1].Split('<');
+            string?[] s4 = s3[1].Split('<');
 
             var nome = s4[0];
 
@@ -518,13 +518,13 @@ public class Gruppo
         }
     }
 
-    private static bool IsSede(string vUpper)
+    private static bool IsSede(string? vUpper)
     {
         return vUpper is "LEONARDO" or "MANTOVA" or "BOVISA" or "PIACENZA" or "LECCO" or "COMO" or "CREMONA"
             or "LEONARDO-CREMONA" or "LEONARDO*";
     }
 
-    private static void AggiungiAltro(ref string vUpper, ref InsiemeDiGruppi g, ref string v)
+    private static void AggiungiAltro(ref string? vUpper, ref InsiemeDiGruppi g, ref string? v)
     {
         switch (vUpper)
         {
@@ -568,25 +568,25 @@ public class Gruppo
         return ListaStringhePerJSON.Confronta(o1, o2);
     }
 
-    private static void AggiungiLingua(string vUpper, ref InsiemeDiGruppi g)
+    private static void AggiungiLingua(string? vUpper, ref InsiemeDiGruppi g)
     {
         g.GruppoDiBase.Language = vUpper;
         g.NomeOld.Language = vUpper;
     }
 
-    private static void AggiungiScuola(string vUpper, ref InsiemeDiGruppi g)
+    private static void AggiungiScuola(string? vUpper, ref InsiemeDiGruppi g)
     {
         g.GruppoDiBase.School = vUpper;
         g.NomeOld.School = vUpper;
     }
 
-    private static void AggiungiTriennaleMagistrale(string vUpper, ref InsiemeDiGruppi g)
+    private static void AggiungiTriennaleMagistrale(string? vUpper, ref InsiemeDiGruppi g)
     {
         g.GruppoDiBase.Degree = vUpper;
         g.NomeOld.Degree = vUpper;
     }
 
-    private static void AggiungiNome(string v, ref InsiemeDiGruppi g)
+    private static void AggiungiNome(string? v, ref InsiemeDiGruppi g)
     {
         if (v == "<=")
             return;
@@ -616,13 +616,13 @@ public class Gruppo
         g.NomeOld.Classe = g.GruppoDiBase.Classe;
     }
 
-    private static void AggiungiSede(string v, ref InsiemeDiGruppi g)
+    private static void AggiungiSede(string? v, ref InsiemeDiGruppi g)
     {
         g.GruppoDiBase.Office = new ListaStringhePerJSON(v);
         g.NomeOld.Office = new ListaStringhePerJSON(v);
     }
 
-    private static void AggiungiLink(string v, ref InsiemeDiGruppi g)
+    private static void AggiungiLink(string? v, ref InsiemeDiGruppi g)
     {
         var g2 = new Gruppo();
 
@@ -639,7 +639,7 @@ public class Gruppo
             {
                 g2.Platform = "FB";
 
-                var s2 = s1.Split('/');
+                string?[] s2 = s1.Split('/');
                 g2.IdLink = s2[1] == "groups" ? s2[2] : s2[1];
                 break;
             }
@@ -648,7 +648,7 @@ public class Gruppo
             {
                 g2.Platform = "TG";
 
-                var s2 = s1.Split('/');
+                string?[] s2 = s1.Split('/');
                 g2.IdLink = s2[1] == "joinchat" ? s2[2] : s2[1];
                 break;
             }
@@ -657,7 +657,7 @@ public class Gruppo
             {
                 g2.Platform = "IG";
 
-                var s2 = s1.Split('/');
+                string?[] s2 = s1.Split('/');
 
                 g2.IdLink = s2[1];
                 break;
@@ -667,7 +667,7 @@ public class Gruppo
             {
                 g2.Platform = "WA";
 
-                var s2 = s1.Split('/');
+                string?[] s2 = s1.Split('/');
 
                 g2.IdLink = s2[1];
                 break;
@@ -685,7 +685,7 @@ public class Gruppo
         return To_json(CheckGruppo.E.TUTTO) + " " + base.ToString();
     }
 
-    public void Merge(Gruppo gruppo)
+    public void Merge(Gruppo? gruppo)
     {
         if (!string.IsNullOrEmpty(gruppo.Classe) && string.IsNullOrEmpty(Classe))
             Classe = gruppo.Classe;
@@ -764,13 +764,13 @@ public class Gruppo
             Year = gruppo.Year;
     }
 
-    public static bool IsEmpty(ListaStringhePerJSON office)
+    public static bool IsEmpty(ListaStringhePerJSON? office)
     {
         return office == null || office.IsEmpty();
     }
 
     [Obsolete("DEPRECATED")]
-    public string To_json_Tg()
+    public string? To_json_Tg()
     {
         /*
          {"Chat": {"id": -1001452418598, "type": "supergroup", "title": "Polimi Piacenza \ud83c\uddee\ud83c\uddf9\ud83d\udc48",
@@ -813,7 +813,7 @@ public class Gruppo
         return json;
     }
 
-    private static string Escape(string classe)
+    private static string? Escape(string? classe)
     {
         var a = "" + '\\' + '"';
         var b = "" + '"';
@@ -823,7 +823,7 @@ public class Gruppo
         return classe;
     }
 
-    private string GetTelegramTime()
+    private string? GetTelegramTime()
     {
         if (LastUpdateInviteLinkTime == null)
             return null;
@@ -838,7 +838,7 @@ public class Gruppo
                LastUpdateInviteLinkTime.Value.Millisecond.ToString().PadLeft(3, '0');
     }
 
-    private string GetLink()
+    private string? GetLink()
     {
         if (string.IsNullOrEmpty(Platform))
             return "";
@@ -858,7 +858,7 @@ public class Gruppo
         };
     }
 
-    public static Gruppo FromInfoParteList(List<InfoParteDiGruppo> infoParteDiGruppo_list, string pLAT2)
+    public static Gruppo? FromInfoParteList(List<InfoParteDiGruppo> infoParteDiGruppo_list, string pLAT2)
     {
         if (infoParteDiGruppo_list == null)
             return null;
@@ -1077,7 +1077,7 @@ public class Gruppo
                 }
 
                 if (string.IsNullOrEmpty(classe)) return null;
-                Gruppo g = new()
+                Gruppo? g = new()
                 {
                     Classe = classe,
                     IDCorsoPolimi = infoParteDiGruppo_list[0].testo_selvaggio,
@@ -1085,9 +1085,9 @@ public class Gruppo
                     Office = new ListaStringhePerJSON(GetSede(infoParteDiGruppo_list[5])),
                     Language = lang,
                     Tipo = "C",
-                    AnnoCorsoStudio = Variabili.ParametriCondivisiItem.anno,
+                    AnnoCorsoStudio = Variabili.ParametriCondivisiItem?.anno,
                     Platform = pLAT2,
-                    PianoDiStudi = Variabili.ParametriCondivisiItem.pianostudi2,
+                    PianoDiStudi = Variabili.ParametriCondivisiItem?.pianostudi2,
                     NomeCorso = classe,
                     IdLink = null
                 };
@@ -1146,12 +1146,12 @@ public class Gruppo
         return g;
     }
 
-    private static List<string> GetGruppoTabellaInsegnamenti(InfoParteDiGruppo infoParteDiGruppo)
+    private static List<string?> GetGruppoTabellaInsegnamenti(InfoParteDiGruppo infoParteDiGruppo)
     {
         if (infoParteDiGruppo == null)
             return null;
 
-        List<string> l = new();
+        List<string?> l = new();
         if (string.IsNullOrEmpty(infoParteDiGruppo.testo_selvaggio) && infoParteDiGruppo.sottopezzi != null)
         {
             l.AddRange(infoParteDiGruppo.sottopezzi.Select(x1 => x1.testo_selvaggio));
@@ -1162,7 +1162,7 @@ public class Gruppo
         return l;
     }
 
-    private static List<string> GetSede(InfoParteDiGruppo infoParteDiGruppo)
+    private static List<string?> GetSede(InfoParteDiGruppo infoParteDiGruppo)
     {
         if (infoParteDiGruppo == null)
             return null;
@@ -1172,16 +1172,16 @@ public class Gruppo
 
         return infoParteDiGruppo.testo_selvaggio switch
         {
-            "BV" => new List<string> { "Bovisa" },
-            "MI" => new List<string> { "Leonardo" },
+            "BV" => new List<string?> { "Bovisa" },
+            "MI" => new List<string?> { "Leonardo" },
             "--" => null,
-            "MN" => new List<string> { "Mantova" },
-            "PC" => new List<string> { "Piacenza" },
-            "LC" => new List<string> { "Lecco" },
-            "CR" => new List<string> { "Cremona" },
-            "CO" => new List<string> { "Como" },
-            "BV, MI" => new List<string> { "Bovisa", "Leonardo" },
-            "LC, MI" => new List<string> { "Lecco", "Leonardo" },
+            "MN" => new List<string?> { "Mantova" },
+            "PC" => new List<string?> { "Piacenza" },
+            "LC" => new List<string?> { "Lecco" },
+            "CR" => new List<string?> { "Cremona" },
+            "CO" => new List<string?> { "Como" },
+            "BV, MI" => new List<string?> { "Bovisa", "Leonardo" },
+            "LC, MI" => new List<string?> { "Lecco", "Leonardo" },
             _ => null
         };
     }
@@ -1265,17 +1265,17 @@ public class Gruppo
         }
     }
 
-    private string AggiustaNomeDoppio2(string text)
+    private string? AggiustaNomeDoppio2(string? text)
     {
         if (string.IsNullOrEmpty(text))
             return "";
 
         text = text.Trim();
 
-        var s = text.Trim().Split(' ');
+        string?[] s = text.Trim().Split(' ');
         ;
 
-        var s2 = s.Select(s3 => s3.ToLower()).ToList();
+        var s2 = s.Select(s3 => s3?.ToLower()).ToList();
 
         switch (s2.Count)
         {
@@ -1303,7 +1303,7 @@ public class Gruppo
                 if (!uguali) continue;
                 ;
 
-                List<string> r = new();
+                List<string?> r = new();
                 var k = 0;
                 for (; k < i + rip; k++) r.Add(s[k]);
                 k += rip;
@@ -1341,7 +1341,7 @@ public class Gruppo
         return true;
     }
 
-    public bool? CheckSeIlLinkVa(bool saltaQuelliGiaFunzionanti, EventoConLog eventoConLog)
+    public bool? CheckSeIlLinkVa(bool saltaQuelliGiaFunzionanti, EventoConLog? eventoConLog)
     {
         switch (Platform)
         {
@@ -1356,7 +1356,7 @@ public class Gruppo
     }
 
     private bool? CheckSeIlLinkVa3_Telegram(bool saltaQuelliGiaFunzionanti, int tentativi1 = 2, int tentativi2 = 2,
-        EventoConLog eventoConLog = null)
+        EventoConLog? eventoConLog = null)
     {
         if (saltaQuelliGiaFunzionanti)
             if (LinkFunzionante == true)
@@ -1374,9 +1374,9 @@ public class Gruppo
         return works;
     }
 
-    public static bool? CheckSeIlLinkVa2_Telegram(string link, int tentativi = 2, EventoConLog eventoConLog = null)
+    public static bool? CheckSeIlLinkVa2_Telegram(string? link, int tentativi = 2, EventoConLog? eventoConLog = null)
     {
-        string content = null;
+        string? content = null;
         var i = 0;
         while (i <= tentativi && string.IsNullOrEmpty(content))
         {
@@ -1389,12 +1389,15 @@ public class Gruppo
         return string.IsNullOrEmpty(content) ? null : content.Contains("tgme_page_title");
     }
 
-    public static string Download(string uri, EventoConLog eventoConLog)
+    public static string? Download(string? uri, EventoConLog? eventoConLog)
     {
         try
         {
-            var htmlCode = clientDownload.DownloadString(uri);
-            return htmlCode;
+            if (uri != null)
+            {
+                var htmlCode = clientDownload.DownloadString(uri);
+                return htmlCode;
+            }
         }
         catch (Exception e)
         {

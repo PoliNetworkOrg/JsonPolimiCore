@@ -5,28 +5,28 @@ namespace JsonPolimi_Core_nf.Tipi;
 
 public class InfoParteDiGruppo
 {
-    public ImmagineGruppo immagine;
+    public ImmagineGruppo? immagine;
     public Lingua? lingua;
-    public LinkGruppo link;
-    public List<InfoParteDiGruppo> sottopezzi;
-    public string testo_selvaggio;
+    public LinkGruppo? link;
+    public List<InfoParteDiGruppo>? sottopezzi;
+    public string? testo_selvaggio;
 
-    public InfoParteDiGruppo(string testo_selvaggio)
+    public InfoParteDiGruppo(string? testo_selvaggio)
     {
         this.testo_selvaggio = testo_selvaggio;
     }
 
-    public InfoParteDiGruppo(LinkGruppo link)
+    public InfoParteDiGruppo(LinkGruppo? link)
     {
         this.link = link;
     }
 
-    public InfoParteDiGruppo(ImmagineGruppo immagine)
+    public InfoParteDiGruppo(ImmagineGruppo? immagine)
     {
         this.immagine = immagine;
     }
 
-    public InfoParteDiGruppo(List<InfoParteDiGruppo> sottopezzi)
+    public InfoParteDiGruppo(List<InfoParteDiGruppo>? sottopezzi)
     {
         this.sottopezzi = sottopezzi;
     }

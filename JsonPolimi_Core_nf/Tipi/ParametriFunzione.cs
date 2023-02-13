@@ -4,16 +4,16 @@ namespace JsonPolimi_Core_nf.Tipi;
 
 public class ParametriFunzione
 {
-    public Dictionary<string, object> _params;
+    public Dictionary<string, object?>? _params;
 
-    internal object GetParam(string v)
+    internal object? GetParam(string v)
     {
         return _params?[v];
     }
 
-    public void AddParam(object value, string key)
+    public void AddParam(object? value, string key)
     {
-        _params ??= new Dictionary<string, object>();
+        _params ??= new Dictionary<string, object?>();
 
         _params[key] = value;
     }

@@ -15,11 +15,11 @@ namespace JsonPolimi_Core_nf.Tipi;
 
 public class ListaGruppo : IEnumerable
 {
-    private readonly List<Gruppo> _l;
+    private readonly List<Gruppo?> _l;
 
     public ListaGruppo()
     {
-        _l = new List<Gruppo>();
+        _l = new List<Gruppo?>();
     }
 
     public IEnumerator GetEnumerator()
@@ -27,7 +27,7 @@ public class ListaGruppo : IEnumerable
         return _l.GetEnumerator();
     }
 
-    public List<Gruppo> GetGroups()
+    public List<Gruppo?> GetGroups()
     {
         return _l;
     }
@@ -37,12 +37,12 @@ public class ListaGruppo : IEnumerable
         return _l.Count;
     }
 
-    public Gruppo GetElem(int i)
+    public Gruppo? GetElem(int i)
     {
         return _l[i];
     }
 
-    public void Add(Gruppo g, bool merge)
+    public void Add(Gruppo? g, bool merge)
     {
         if (merge)
         {
@@ -62,28 +62,28 @@ public class ListaGruppo : IEnumerable
         }
     }
 
-    private void Merge(int i, Gruppo g)
+    private void Merge(int i, Gruppo? g)
     {
-        _l[i].Merge(g);
+        _l[i]?.Merge(g);
     }
 
-    private Tuple<bool, int> Contiene(Gruppo g)
+    private Tuple<bool, int> Contiene(Gruppo? g)
     {
         for (var i = 0; i < _l.Count; i++)
         {
-            if (!IsNullOrEmpty(_l[i].PermanentId) && !IsNullOrEmpty(g.PermanentId))
-                if (_l[i].PermanentId == g.PermanentId && _l[i].Platform == g.Platform)
+            if (!IsNullOrEmpty(_l[i]?.PermanentId) && !IsNullOrEmpty(g?.PermanentId))
+                if (_l[i]?.PermanentId == g.PermanentId && _l[i]?.Platform == g.Platform)
                     return new Tuple<bool, int>(true, i);
 
-            if (_l[i].Id == g.Id)
+            if (_l[i]?.Id == g?.Id)
                 return new Tuple<bool, int>(true, i);
 
-            var bt = _l[i].Platform == "TG" && g.Platform == "TG" && _l[i].Classe == g.Classe;
-            bt &= !IsNullOrEmpty(_l[i].PermanentId) || !IsNullOrEmpty(g.PermanentId);
-            var bt2 = IsNullOrEmpty(_l[i].Year) || IsNullOrEmpty(g.Year);
+            var bt = _l[i]?.Platform == "TG" && g?.Platform == "TG" && _l[i]?.Classe == g.Classe;
+            bt &= !IsNullOrEmpty(_l[i]?.PermanentId) || !IsNullOrEmpty(g?.PermanentId);
+            var bt2 = IsNullOrEmpty(_l[i]?.Year) || IsNullOrEmpty(g?.Year);
 
-            if (!IsNullOrEmpty(_l[i].Year) && !IsNullOrEmpty(g.Year))
-                if (_l[i].Year != g.Year)
+            if (!IsNullOrEmpty(_l[i]?.Year) && !IsNullOrEmpty(g?.Year))
+                if (_l[i]?.Year != g.Year)
                     bt2 = false;
 
             if (bt && bt2)
@@ -98,7 +98,7 @@ public class ListaGruppo : IEnumerable
         _l.RemoveAt(i);
     }
 
-    public void SetElem(int i, Gruppo elem)
+    public void SetElem(int i, Gruppo? elem)
     {
         _l[i] = elem;
     }
@@ -109,7 +109,7 @@ public class ListaGruppo : IEnumerable
         _l.Sort(cc.Compare);
     }
 
-    private static int CompareOrdinal2(ListaStringhePerJSON office1, ListaStringhePerJSON office2)
+    private static int CompareOrdinal2(ListaStringhePerJSON? office1, ListaStringhePerJSON? office2)
     {
         switch (office1)
         {
@@ -125,7 +125,7 @@ public class ListaGruppo : IEnumerable
         return office1.StringNotNull() == office2.StringNotNull() ? 0 : CompareOrdinal23(office1.o, office2.o);
     }
 
-    private static int CompareOrdinal23(List<string> office1, List<string> office2)
+    private static int CompareOrdinal23(List<string?>? office1, List<string?>? office2)
     {
         switch (office1)
         {
@@ -142,7 +142,7 @@ public class ListaGruppo : IEnumerable
         office2.Sort();
 
         if (office1.Count == office2.Count)
-            return office1.Select((t, i) => CompareOrdinal(t.ToLower(), office2[i].ToLower()))
+            return office1.Select((t, i) => CompareOrdinal(t?.ToLower(), office2[i]?.ToLower()))
                 .FirstOrDefault(i1 => i1 != 0);
 
         if (office1.Count > office2.Count)
@@ -175,41 +175,45 @@ public class ListaGruppo : IEnumerable
 
     public void MergeLink(int v1, int v2)
     {
-        _l[v1].IdLink = _l[v2].IdLink;
+        var gruppo = _l[v1];
+        var gruppo1 = _l[v2];
+        if (gruppo != null)
+            gruppo.IdLink = gruppo1?.IdLink;
 
-        switch (_l[v1].LastUpdateInviteLinkTime)
+        switch (gruppo?.LastUpdateInviteLinkTime)
         {
-            case null when _l[v2].LastUpdateInviteLinkTime == null:
-                _l[v1].LastUpdateInviteLinkTime = _l[v2].LastUpdateInviteLinkTime;
+            case null when gruppo1?.LastUpdateInviteLinkTime == null:
+                if (gruppo != null) gruppo.LastUpdateInviteLinkTime = gruppo1?.LastUpdateInviteLinkTime;
                 break;
 
             case null:
-                _l[v1].LastUpdateInviteLinkTime = _l[v2].LastUpdateInviteLinkTime;
+                if (gruppo != null) gruppo.LastUpdateInviteLinkTime = gruppo1?.LastUpdateInviteLinkTime;
                 break;
 
             default:
             {
-                if (_l[v2].LastUpdateInviteLinkTime != null)
+                if (gruppo1?.LastUpdateInviteLinkTime != null)
                 {
-                    var r = DateTime.Compare(_l[v1].LastUpdateInviteLinkTime.Value,
-                        _l[v2].LastUpdateInviteLinkTime.Value);
-                    if (r < 0) _l[v1].LastUpdateInviteLinkTime = _l[v2].LastUpdateInviteLinkTime;
+                    var r = DateTime.Compare(gruppo.LastUpdateInviteLinkTime.Value,
+                        gruppo1.LastUpdateInviteLinkTime.Value);
+                    if (r < 0) gruppo.LastUpdateInviteLinkTime = gruppo1.LastUpdateInviteLinkTime;
                 }
 
                 break;
             }
         }
 
-        _l[v1].LastUpdateInviteLinkTime ??= DateTime.Now;
+        if (gruppo == null) return;
+        gruppo.LastUpdateInviteLinkTime ??= DateTime.Now;
 
-        _l[v1].Aggiusta(true, true);
+        gruppo.Aggiusta(true, true);
     }
 
     public void ProvaAdUnire()
     {
         for (var i = 0; i < _l.Count; i++)
         {
-            _l[i].Aggiusta(true, true);
+            _l[i]?.Aggiusta(true, true);
             for (var j = _l.Count - 1; j >= 0; j--)
             {
                 if (i == j) continue;
@@ -254,40 +258,44 @@ public class ListaGruppo : IEnumerable
         ;
     }
 
-    private Tuple<SomiglianzaClasse, Gruppo> Equivalenti(int i, int j, bool aggiustaAnno)
+    private Tuple<SomiglianzaClasse, Gruppo?> Equivalenti(int i, int j, bool aggiustaAnno)
     {
-        return Equivalenti2(i, new Tuple<Gruppo, int>(_l[j], j), aggiustaAnno);
+        return Equivalenti2(i, new Tuple<Gruppo?, int>(_l[j], j), aggiustaAnno);
     }
 
-    private Tuple<SomiglianzaClasse, Gruppo> Equivalenti2(int i, Tuple<Gruppo, int> j, bool aggiustaAnnno)
+    private Tuple<SomiglianzaClasse, Gruppo?> Equivalenti2(int i, Tuple<Gruppo?, int> j, bool aggiustaAnnno)
     {
         var a1 = _l[i];
         var a2 = j.Item1;
 
-        if (a1.Platform != a2.Platform)
-            return new Tuple<SomiglianzaClasse, Gruppo>(new SomiglianzaClasse(SomiglianzaEnum.DIVERSI), null);
+        if (a1?.Platform != a2?.Platform)
+            return new Tuple<SomiglianzaClasse, Gruppo?>(new SomiglianzaClasse(SomiglianzaEnum.DIVERSI), null);
 
-        if (a1.Platform == a2.Platform)
+        if (a1?.Platform == a2?.Platform)
         {
-            var c1 = a1.Classe.ToLower().Trim();
-            var c2 = a2.Classe.ToLower().Trim();
+            var c1 = a1?.Classe?.ToLower().Trim();
+            var c2 = a2?.Classe?.ToLower().Trim();
             if (c1 == c2)
-                if ((JsonEmpty(a1.Office) && !JsonEmpty(a2.Office)) || (!JsonEmpty(a1.Office) && JsonEmpty(a2.Office)))
-                    if ((a1.Tipo == "C" && a2.Tipo == "S") || (a1.Tipo == "S" && a2.Tipo == "C"))
+                if ((JsonEmpty(a1?.Office) && !JsonEmpty(a2?.Office)) || (!JsonEmpty(a1?.Office) && JsonEmpty(a2?.Office)))
+                    if ((a1?.Tipo == "C" && a2?.Tipo == "S") || (a1?.Tipo == "S" && a2?.Tipo == "C"))
                     {
                         var r7 = Unisci4(i, j, aggiustaAnnno);
-                        r7.Item2.Tipo = "C";
-                        return new Tuple<SomiglianzaClasse, Gruppo>(
-                            new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI, a1, a2), r7.Item2);
+                        if (r7.Item2 != null)
+                        {
+                            r7.Item2.Tipo = "C";
+                 
+                        }        
+                        return new Tuple<SomiglianzaClasse, Gruppo?>(
+                                                         new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI, a1, a2), r7.Item2);
                     }
         }
 
-        if (a1.IdLink != a2.IdLink && a1.LinkFunzionante == true && a2.LinkFunzionante == true)
-            return new Tuple<SomiglianzaClasse, Gruppo>(new SomiglianzaClasse(SomiglianzaEnum.DIVERSI), null);
+        if (a1?.IdLink != a2?.IdLink && a1?.LinkFunzionante == true && a2?.LinkFunzionante == true)
+            return new Tuple<SomiglianzaClasse, Gruppo?>(new SomiglianzaClasse(SomiglianzaEnum.DIVERSI), null);
 
         var eq = Equivalenti3(a1, a2);
         if (eq.somiglianzaEnum != SomiglianzaEnum.IDENTITICI && eq.somiglianzaEnum != SomiglianzaEnum.DUBBIO)
-            return new Tuple<SomiglianzaClasse, Gruppo>(new SomiglianzaClasse(SomiglianzaEnum.DIVERSI), null);
+            return new Tuple<SomiglianzaClasse, Gruppo?>(new SomiglianzaClasse(SomiglianzaEnum.DIVERSI), null);
 
         var somiglianzaEnum2 = Equivalenti6(a1, a2, eq);
         switch (somiglianzaEnum2)
@@ -300,7 +308,7 @@ public class ListaGruppo : IEnumerable
             case SomiglianzaEnum.DIVERSI:
             {
                 eq.somiglianzaEnum = SomiglianzaEnum.DIVERSI;
-                return new Tuple<SomiglianzaClasse, Gruppo>(eq, null);
+                return new Tuple<SomiglianzaClasse, Gruppo?>(eq, null);
             }
             case SomiglianzaEnum.DUBBIO:
             {
@@ -316,7 +324,7 @@ public class ListaGruppo : IEnumerable
                     }
                     case SomiglianzaEnum.DIVERSI:
                     {
-                        return new Tuple<SomiglianzaClasse, Gruppo>(eq, null);
+                        return new Tuple<SomiglianzaClasse, Gruppo?>(eq, null);
                     }
                     case SomiglianzaEnum.DUBBIO:
                     {
@@ -326,7 +334,7 @@ public class ListaGruppo : IEnumerable
                         {
                             var r7 = Unisci4(i, j, aggiustaAnnno);
                             eq.somiglianzaEnum = SomiglianzaEnum.IDENTITICI;
-                            return new Tuple<SomiglianzaClasse, Gruppo>(eq, r7.Item2);
+                            return new Tuple<SomiglianzaClasse, Gruppo?>(eq, r7.Item2);
                         }
 
                         ;
@@ -340,24 +348,24 @@ public class ListaGruppo : IEnumerable
         }
 
         var r2 = Unisci4(i, j, aggiustaAnnno);
-        if (r2.Item1 == false) return new Tuple<SomiglianzaClasse, Gruppo>(eq, null);
+        if (r2.Item1 == false) return new Tuple<SomiglianzaClasse, Gruppo?>(eq, null);
 
         ;
 
-        return new Tuple<SomiglianzaClasse, Gruppo>(eq, r2.Item2);
+        return new Tuple<SomiglianzaClasse, Gruppo?>(eq, r2.Item2);
     }
 
-    private static bool JsonEmpty(ListaStringhePerJSON office)
+    private static bool JsonEmpty(ListaStringhePerJSON? office)
     {
         return office == null || office.IsEmpty();
     }
 
-    private static SomiglianzaEnum SciogliDubbio(Gruppo a1, Gruppo a2)
+    private static SomiglianzaEnum SciogliDubbio(Gruppo? a1, Gruppo? a2)
     {
         ;
 
-        var s1 = a1.Classe?.ToLower();
-        var s2 = a2.Classe?.ToLower();
+        var s1 = a1?.Classe?.ToLower();
+        var s2 = a2?.Classe?.ToLower();
 
         if (IsNullOrEmpty(s1) && IsNullOrEmpty(s2))
             return SomiglianzaEnum.DUBBIO;
@@ -398,7 +406,7 @@ public class ListaGruppo : IEnumerable
         return SomiglianzaEnum.DUBBIO;
     }
 
-    private static SomiglianzaEnum Equivalenti6(Gruppo a1, Gruppo a2, SomiglianzaClasse somiglianzaEnumOld)
+    private static SomiglianzaEnum Equivalenti6(Gruppo? a1, Gruppo? a2, SomiglianzaClasse somiglianzaEnumOld)
     {
         ;
 
@@ -735,7 +743,7 @@ public class ListaGruppo : IEnumerable
         return somiglianzaEnumOld.somiglianzaEnum;
     }
 
-    private static SomiglianzaClasse Equivalenti3(Gruppo a1, Gruppo a2)
+    private static SomiglianzaClasse Equivalenti3(Gruppo? a1, Gruppo? a2)
     {
         var r1 = Equivalenti5(a1, a2);
 
@@ -755,7 +763,7 @@ public class ListaGruppo : IEnumerable
         return r1;
     }
 
-    private static SomiglianzaClasse Equivalenti5(Gruppo a1, Gruppo a2)
+    private static SomiglianzaClasse Equivalenti5(Gruppo? a1, Gruppo? a2)
     {
         if (!IsNullOrEmpty(a1.IDCorsoPolimi) && !IsNullOrEmpty(a2.IDCorsoPolimi) &&
             a1.IDCorsoPolimi == a2.IDCorsoPolimi)
@@ -867,7 +875,7 @@ public class ListaGruppo : IEnumerable
         return new SomiglianzaClasse(SomiglianzaEnum.IDENTITICI);
     }
 
-    private static SomiglianzaEnum NomiSimili(string n1, string n2)
+    private static SomiglianzaEnum NomiSimili(string? n1, string? n2)
     {
         if (n1.Length == 0 || n2.Length == 0)
             return SomiglianzaEnum.DIVERSI;
@@ -990,16 +998,16 @@ public class ListaGruppo : IEnumerable
         }
     }
 
-    private static bool? ManualCheck(string n1, string n2)
+    private static bool? ManualCheck(string? n1, string? n2)
     {
-        if (n1[^1] == ' ')
+        if (n1?[^1] == ' ')
             n1 = n1.Remove(n1.Length - 1);
 
-        if (n2[^1] == ' ')
+        if (n2?[^1] == ' ')
             n2 = n2.Remove(n2.Length - 1);
 
-        n1 = n1.ToLower();
-        n2 = n2.ToLower();
+        n1 = n1?.ToLower();
+        n2 = n2?.ToLower();
 
         if (n1 == "civil engineering magistrale" && n2 == "civil engineering for risk mitigation")
             return false;
@@ -1212,13 +1220,13 @@ public class ListaGruppo : IEnumerable
 
     public List<ImportaReturn> Importa(IEnumerable<Tuple<Gruppo>> l2, bool aggiustaAnno, Chiedi chiedi2)
     {
-        return l2.Select(t => t.Item1).Select((l3, i) => Importa2(new Tuple<Gruppo, int>(l3, i), aggiustaAnno, chiedi2))
+        return l2.Select(t => t.Item1).Select((l3, i) => Importa2(new Tuple<Gruppo?, int>(l3, i), aggiustaAnno, chiedi2))
             .ToList();
     }
 
-    private ImportaReturn Importa2(Tuple<Gruppo, int> l3, bool aggiustaAnno, Chiedi chiedi2)
+    private ImportaReturn Importa2(Tuple<Gruppo?, int> l3, bool aggiustaAnno, Chiedi chiedi2)
     {
-        var simili = new List<Tuple<int, Tuple<SomiglianzaClasse, Gruppo>>>();
+        var simili = new List<Tuple<int, Tuple<SomiglianzaClasse, Gruppo?>>>();
 
         var ciSonoSimiliDaChiedere = false;
 
@@ -1239,72 +1247,72 @@ public class ListaGruppo : IEnumerable
                     //todo: E' TEMPORANEA QUESTA COSA
                     if (r.Item1.a2 == null)
                         toShow = true;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Architettura"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architettura"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Edile"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Edile"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Urbanistica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Urbanistica"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Design"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Design"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Architectural"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architectural"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Edilizi"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Edilizi"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Architecture"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Architecture"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Management"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Management"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Aerospaziale"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Aerospaziale"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Biomedica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Biomedica"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Chimica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Chimica"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Elettrica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Elettrica"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Elettronica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Elettronica"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Energetica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Energetica"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Fisica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Fisica"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Gestionale"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Gestionale"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Aero"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Aero"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Automation"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Automation"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Prevenzione"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Prevenzione"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Materials"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Materials"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Mathematical"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Mathematical"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Mechanical"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Mechanical"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Nuclear"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Nuclear"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Space"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Space"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Civil"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Civil"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Ambiente"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Ambiente"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Matematica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Matematica"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Meccanica"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Meccanica"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Materiali"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Materiali"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Automazione"))
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Automazione"))
                         toShow = false;
-                    else if (r.Item1.a2.CCS.Contains_In_Uno("Produzione")) toShow = false;
+                    else if (r.Item1.a2.CCS?.Contains_In_Uno("Produzione")) toShow = false;
 
                     switch (chiedi2)
                     {
                         case Chiedi.SI when toShow:
-                            simili.Add(new Tuple<int, Tuple<SomiglianzaClasse, Gruppo>>(i, r));
+                            simili.Add(new Tuple<int, Tuple<SomiglianzaClasse, Gruppo?>>(i, r));
                             doThat = false;
                             ciSonoSimiliDaChiedere = true;
                             break;
@@ -1335,7 +1343,7 @@ public class ListaGruppo : IEnumerable
         return new ImportaReturn(ActionDoneImport.ADDED);
     }
 
-    public void Importa3(int i, Tuple<SomiglianzaClasse, Gruppo> r)
+    public void Importa3(int i, Tuple<SomiglianzaClasse, Gruppo?> r)
     {
         _l[i] = r.Item2;
     }
@@ -1364,13 +1372,13 @@ public class ListaGruppo : IEnumerable
         }
     }
 
-    private Tuple<bool, Gruppo> Unisci4(int i, Tuple<Gruppo, int> j, bool aggiusta_anno)
+    private Tuple<bool, Gruppo?> Unisci4(int i, Tuple<Gruppo?, int> j, bool aggiusta_anno)
     {
         var g = Unisci2(i, j, aggiusta_anno, false);
-        return g == null ? new Tuple<bool, Gruppo>(false, null) : new Tuple<bool, Gruppo>(true, g);
+        return g == null ? new Tuple<bool, Gruppo?>(false, null) : new Tuple<bool, Gruppo?>(true, g);
     }
 
-    private Gruppo Unisci2(int i, Tuple<Gruppo, int> j, bool aggiusta_anno, bool forced)
+    private Gruppo? Unisci2(int i, Tuple<Gruppo?, int> j, bool aggiusta_anno, bool forced)
     {
         var a1 = _l[i];
         var a2 = j.Item1;
@@ -1382,7 +1390,7 @@ public class ListaGruppo : IEnumerable
                 return null;
         }
 
-        if (!IsNullOrEmpty(a1.Classe) && !IsNullOrEmpty(a2.Classe) &&
+        if (!IsNullOrEmpty(a1?.Classe) && !IsNullOrEmpty(a2?.Classe) &&
             string.Equals(a1.Classe, a2.Classe, StringComparison.CurrentCultureIgnoreCase))
         {
             //good
@@ -1394,13 +1402,14 @@ public class ListaGruppo : IEnumerable
 
         ;
 
-        if (IsNullOrEmpty(a1.Classe))
+        if (IsNullOrEmpty(a1?.Classe))
         {
-            a1.Classe = a2.Classe;
+            if (a1 != null) 
+                a1.Classe = a2?.Classe;
         }
         else
         {
-            if (!IsNullOrEmpty(a2.Classe))
+            if (!IsNullOrEmpty(a2?.Classe))
             {
                 var done = false;
                 if (IsNullOrEmpty(a1.Year))
@@ -1423,76 +1432,89 @@ public class ListaGruppo : IEnumerable
             }
         }
 
-        if (IsNullOrEmpty(a1.Degree))
-            a1.Degree = a2.Degree;
-        if (IsNullOrEmpty(a1.Id))
-            a1.Id = a2.Id;
-        if (IsNullOrEmpty(a1.IdLink))
+        if (IsNullOrEmpty(a1?.Degree))
+            if (a1 != null)
+                a1.Degree = a2?.Degree;
+        if (IsNullOrEmpty(a1?.Id))
+            if (a1 != null)
+                a1.Id = a2?.Id;
+        if (IsNullOrEmpty(a1?.IdLink))
         {
-            a1.IdLink = a2.IdLink;
-            a1.LinkFunzionante = a2.LinkFunzionante;
+            if (a1 != null)
+            {
+                a1.IdLink = a2?.IdLink;
+                a1.LinkFunzionante = a2?.LinkFunzionante;
+            }
         }
 
-        if (IsNullOrEmpty(a1.Language))
-            a1.Language = a2.Language;
-        if (Gruppo.IsEmpty(a1.Office))
-            a1.Office = a2.Office;
-        if (IsNullOrEmpty(a1.PermanentId))
-            a1.PermanentId = a2.PermanentId;
-        if (IsNullOrEmpty(a1.Platform))
-            a1.Platform = a2.Platform;
-        if (IsNullOrEmpty(a1.School))
-            a1.School = a2.School;
-        if (IsNullOrEmpty(a1.Tipo))
-            a1.Tipo = a2.Tipo;
-        if (IsNullOrEmpty(a1.Year))
-            a1.Year = a2.Year;
-        if (a1.LastUpdateInviteLinkTime == null)
+        if (IsNullOrEmpty(a1?.Language))
+            if (a1 != null)
+                a1.Language = a2?.Language;
+        if (Gruppo.IsEmpty(a1?.Office))
+            if (a1 != null)
+                a1.Office = a2?.Office;
+        if (IsNullOrEmpty(a1?.PermanentId))
+            if (a1 != null)
+                a1.PermanentId = a2?.PermanentId;
+        if (IsNullOrEmpty(a1?.Platform))
+            if (a1 != null)
+                a1.Platform = a2?.Platform;
+        if (IsNullOrEmpty(a1?.School))
+            if (a1 != null)
+                a1.School = a2?.School;
+        if (IsNullOrEmpty(a1?.Tipo))
+            if (a1 != null)
+                a1.Tipo = a2?.Tipo;
+        if (IsNullOrEmpty(a1?.Year))
+            if (a1 != null)
+                a1.Year = a2?.Year;
+        if (a1?.LastUpdateInviteLinkTime == null)
         {
-            a1.LastUpdateInviteLinkTime = a2.LastUpdateInviteLinkTime;
+            if (a1 != null) 
+                a1.LastUpdateInviteLinkTime = a2?.LastUpdateInviteLinkTime;
         }
         else
         {
-            if (a2.LastUpdateInviteLinkTime != null)
+            if (a2?.LastUpdateInviteLinkTime != null)
                 if (DateTime.Compare(a1.LastUpdateInviteLinkTime.Value, a2.LastUpdateInviteLinkTime.Value) < 0)
                     a1.LastUpdateInviteLinkTime = a2.LastUpdateInviteLinkTime;
         }
 
-        if (a1.LinkFunzionante is false &&
-            a2.LinkFunzionante is not false)
+        if (a1?.LinkFunzionante is false &&
+            a2?.LinkFunzionante is not false)
         {
-            a1.IdLink = a2.IdLink;
-            a1.LinkFunzionante = a2.LinkFunzionante;
+            a1.IdLink = a2?.IdLink;
+            a1.LinkFunzionante = a2?.LinkFunzionante;
         }
 
-        if (!IsNullOrEmpty(a1.Year))
-            if (!IsNullOrEmpty(a1.Tipo) && !IsNullOrEmpty(a2.Tipo))
+        if (!IsNullOrEmpty(a1?.Year))
+            if (!IsNullOrEmpty(a1.Tipo) && !IsNullOrEmpty(a2?.Tipo))
                 if (a1.Tipo.ToLower() == "s" || a2.Tipo.ToLower() == "s")
                     a1.Tipo = "S";
 
-        a1.Aggiusta(aggiusta_anno, true);
+        a1?.Aggiusta(aggiusta_anno, true);
 
         return a1;
     }
 
-    private static string UnisciNomi(string classe1, string classe2)
+    private static string? UnisciNomi(string? classe1, string? classe2)
     {
-        var s1 = classe1.ToLower().Trim();
-        var s2 = classe2.ToLower().Trim();
+        var s1 = classe1?.ToLower().Trim();
+        var s2 = classe2?.ToLower().Trim();
         if (s1 == s2)
             return classe1;
 
-        return classe1.Trim() + " " + classe2.Trim();
+        return classe1?.Trim() + " " + classe2?.Trim();
     }
 
     public bool VediSeCeGiaDaURL(string url)
     {
-        return _l.Any(i => i.IdLink == url);
+        return _l.Any(i => i?.IdLink == url);
     }
 
-    private static bool CheckIfToExit(Gruppo a1, Gruppo a2)
+    private static bool CheckIfToExit(Gruppo? a1, Gruppo? a2)
     {
-        if (IsNullOrEmpty(a1.Classe) || IsNullOrEmpty(a2.Classe)) return false;
+        if (IsNullOrEmpty(a1?.Classe) || IsNullOrEmpty(a2?.Classe)) return false;
 
         if (a1.Classe.ToLower().Contains("cazzeggio") && !a2.Classe.ToLower().Contains("cazzeggio"))
             return true;
@@ -1819,12 +1841,12 @@ public class ListaGruppo : IEnumerable
         for (var i = 0; i < _l.Count; i++)
         for (var j = 0; j < _l.Count; j++)
             if (i != j)
-                if (!IsNullOrEmpty(_l[i].PermanentId) && !IsNullOrEmpty(_l[j].PermanentId))
-                    if (_l[i].PermanentId == _l[j].PermanentId)
+                if (!IsNullOrEmpty(_l[i]?.PermanentId) && !IsNullOrEmpty(_l[j]?.PermanentId))
+                    if (_l[i]?.PermanentId == _l[j]?.PermanentId)
                     {
                         count++;
 
-                        _l[i] = Unisci2(i, new Tuple<Gruppo, int>(_l[j], j), true, true);
+                        _l[i] = Unisci2(i, new Tuple<Gruppo?, int>(_l[j], j), true, true);
                         _l.RemoveAt(j);
                         j--;
                     }
@@ -1836,9 +1858,9 @@ public class ListaGruppo : IEnumerable
     {
         var s = "";
         var i = 0;
-        foreach (var g in _l.Where(g => g.Platform.ToLower() == "wa"))
+        foreach (var g in _l.Where(g => g?.Platform?.ToLower() == "wa"))
         {
-            s += i + " https://chat.whatsapp.com/" + g.IdLink + "\n\n";
+            s += i + " https://chat.whatsapp.com/" + g?.IdLink + "\n\n";
             i++;
         }
 
@@ -1860,7 +1882,7 @@ public class ListaGruppo : IEnumerable
         HandleSerializedObject(obj);
     }
 
-    public void HandleSerializedObject(object obj)
+    public void HandleSerializedObject(object? obj)
     {
         if (obj is not DataTable dt) return;
 
@@ -1876,18 +1898,18 @@ public class ListaGruppo : IEnumerable
     {
         var gruppo = CreaGruppo(dr);
 
-        gruppo.Aggiusta(true, true);
+        gruppo?.Aggiusta(true, true);
         Add(gruppo, true);
     }
 
-    public static Gruppo CreaGruppo(DataRow dr)
+    public static Gruppo? CreaGruppo(DataRow dr)
     {
-        var idlink1 = dr.ItemArray[3].ToString().Split('/');
-        var idlink2 = idlink1[^1];
+        var idlink1 = dr.ItemArray[3]?.ToString()?.Split('/');
+        var idlink2 = idlink1?[^1];
         TipoLink tipoLink;
-        if (dr.ItemArray[3].ToString().StartsWith("https://t.me/+"))
+        if (dr.ItemArray[3]?.ToString()?.StartsWith("https://t.me/+") ?? false)
             tipoLink = TipoLink.PLUS;
-        else if (dr.ItemArray[3].ToString().StartsWith("https://t.me/joinchat/"))
+        else if (dr.ItemArray[3]?.ToString()?.StartsWith("https://t.me/joinchat/") ?? false)
             tipoLink = TipoLink.JOINCHAT;
         else
             tipoLink = TipoLink.UNKNOWN;
@@ -1908,16 +1930,16 @@ public class ListaGruppo : IEnumerable
             Platform = "TG",
             PermanentId = Convert.ToInt64(dr.ItemArray[0]).ToString(),
             IdLink = idlink2,
-            Classe = dr.ItemArray[6].ToString(),
+            Classe = dr.ItemArray[6]?.ToString(),
             LastUpdateInviteLinkTime = date2,
             TipoLink = tipoLink
         };
         return gruppo;
     }
 
-    public static object BinaryDeserializeObject(string path)
+    public static object? BinaryDeserializeObject(string path)
     {
-        StreamReader streamReader = null;
+        StreamReader? streamReader = null;
         try
         {
             streamReader = new StreamReader(path);
@@ -1931,7 +1953,7 @@ public class ListaGruppo : IEnumerable
             return null;
 
         var binaryFormatter = new BinaryFormatter();
-        object obj;
+        object? obj;
         try
         {
             obj = binaryFormatter.Deserialize(streamReader.BaseStream);
@@ -1964,7 +1986,7 @@ public class ListaGruppo : IEnumerable
         MessageBox.Show("Finito l'importazione dei gruppi da Telegram bot!");
     }
 
-    private void ImportaGruppiDalComandoDelBotTelegram_UpdateLinkFromJson2(IReadOnlyList<string> l3)
+    private void ImportaGruppiDalComandoDelBotTelegram_UpdateLinkFromJson2(IReadOnlyList<string>? l3)
     {
         if (l3 == null || l3.Count == 0)
             return;
@@ -1976,10 +1998,10 @@ public class ListaGruppo : IEnumerable
         if (permanentId is "null" or "[null]")
             permanentId = null;
 
-        string idlink = null;
-        string newlink = null;
+        string? idlink = null;
+        string? newlink = null;
         var nome = l3[9]["Nome: ".Length..].Trim();
-        List<string> oldlinksList = null;
+        List<string?>? oldlinksList = null;
 
         bool? linkFunzionante;
 
@@ -1993,7 +2015,7 @@ public class ListaGruppo : IEnumerable
 
             idlink = l3[1]["IdLink: ".Length..].Trim();
             newlink = l3[2]["NewLink: ".Length..].Trim();
-            var n2 = newlink.Split('/');
+            string?[] n2 = newlink.Split('/');
             newlink = n2[^1];
 
             var oldlinks = l3[4]["OldLink: ".Length..].Trim();
@@ -2015,21 +2037,25 @@ public class ListaGruppo : IEnumerable
             return;
         }
 
-        foreach (var i2 in i)
+        foreach (var gruppo in i.Select(i2 => _l[i2]))
         {
             if (linkFunzionante.Value)
             {
-                _l[i2].IdLink = newlink;
-                _l[i2].LastUpdateInviteLinkTime = DateTime.Now;
-                _l[i2].LinkFunzionante = true;
+                if (gruppo != null)
+                {
+                    gruppo.IdLink = newlink;
+                    gruppo.LastUpdateInviteLinkTime = DateTime.Now;
+                    gruppo.LinkFunzionante = true;
+                }
             }
 
-            _l[i2].PermanentId = permanentId;
-            _l[i2].Aggiusta(false, true);
+            if (gruppo == null) continue;
+            gruppo.PermanentId = permanentId;
+            gruppo.Aggiusta(false, true);
         }
     }
 
-    private static List<string> GetOldLinks(string oldlinks)
+    private static List<string?>? GetOldLinks(string? oldlinks)
     {
         if (IsNullOrEmpty(oldlinks))
             return null;
@@ -2048,7 +2074,7 @@ public class ListaGruppo : IEnumerable
 
         if (oldlinks.Contains(','))
         {
-            var r = new List<string>();
+            var r = new List<string?>();
 
             var o = oldlinks.Split('\'');
             foreach (var o2 in o)
@@ -2073,10 +2099,10 @@ public class ListaGruppo : IEnumerable
         else
             return null;
 
-        return new List<string> { oldlinks };
+        return new List<string?> { oldlinks };
     }
 
-    private static string GetOldLinks2(string o2)
+    private static string? GetOldLinks2(string o2)
     {
         //'feuwbbggqwgqwwg'
 
@@ -2098,29 +2124,30 @@ public class ListaGruppo : IEnumerable
         return o2.Trim();
     }
 
-    private List<int> TrovaGruppo(string idlink, string nome, string permanentId, ICollection<string> oldlinksList)
+    private List<int> TrovaGruppo(string? idlink, string nome, string? permanentId, ICollection<string?>? oldlinksList)
     {
         var r = new List<int>();
         for (var i = 0; i < _l.Count; i++)
-            if (_l[i].Platform == "TG")
-            {
-                if (_l[i].IdLink == idlink && !IsNullOrEmpty(idlink))
-                    r.Add(i);
-                else if (_l[i].Classe == nome && !IsNullOrEmpty(nome))
-                    r.Add(i);
-                else if (_l[i].PermanentId == permanentId && !IsNullOrEmpty(permanentId))
-                    r.Add(i);
-                else if (oldlinksList != null && oldlinksList.Contains(_l[i].IdLink))
-                    r.Add(i);
-            }
+        {
+            var gruppo = _l[i];
+            if (gruppo?.Platform != "TG") continue;
+            if (gruppo?.IdLink == idlink && !IsNullOrEmpty(idlink))
+                r.Add(i);
+            else if (gruppo?.Classe == nome && !IsNullOrEmpty(nome))
+                r.Add(i);
+            else if (gruppo?.PermanentId == permanentId && !IsNullOrEmpty(permanentId))
+                r.Add(i);
+            else if (oldlinksList != null && oldlinksList.Contains(gruppo?.IdLink))
+                r.Add(i);
+        }
 
         return r;
     }
 
-    private static List<List<string>> SplitPerStringaVuota(IEnumerable<string> l)
+    private static List<List<string>?> SplitPerStringaVuota(IEnumerable<string> l)
     {
-        List<List<string>> r = new();
-        List<string> r2 = null;
+        List<List<string>?> r = new();
+        List<string>? r2 = null;
         foreach (var t in l)
             if (!IsNullOrEmpty(t))
             {
@@ -2140,22 +2167,22 @@ public class ListaGruppo : IEnumerable
 
     public void SalvaTelegramIdDeiGruppiLinkCheNonVanno(string anno)
     {
-        List<Gruppo> l = new();
-        foreach (var x in _l.Where(x => x.Platform == "TG").Where(x => x.LinkFunzionante is null or false))
+        List<Gruppo?> l = new();
+        foreach (var x in _l.Where(x => x?.Platform == "TG").Where(x => x?.LinkFunzionante is null or false))
             if (IsNullOrEmpty(anno))
             {
                 l.Add(x);
             }
             else
             {
-                if (x.Year == anno) l.Add(x);
+                if (x?.Year == anno) l.Add(x);
             }
 
         var s = "[";
 
         foreach (var l2 in l)
         {
-            s += l2.To_json(CheckGruppo.E.RICERCA_SITO_V3) + ",";
+            s += l2?.To_json(CheckGruppo.E.RICERCA_SITO_V3) + ",";
             s += "\n";
         }
 
@@ -2174,36 +2201,36 @@ public class ListaGruppo : IEnumerable
 
         eventoConLog.action = (sender, e) => CheckSeILinkVanno2(
             eventoConLog,
-            (int)parametriFunzione.GetParam("volteCheCiRiprova"),
-            (bool)parametriFunzione.GetParam("laPrimaVoltaControllaDaCapo"),
-            (int)parametriFunzione.GetParam("waitOgniVoltaCheCiRiprova")
+            (int?)parametriFunzione.GetParam("volteCheCiRiprova"),
+            (bool?)parametriFunzione.GetParam("laPrimaVoltaControllaDaCapo"),
+            (int?)parametriFunzione.GetParam("waitOgniVoltaCheCiRiprova")
         );
 
         return eventoConLog;
     }
 
-    public void CheckSeILinkVanno2(EventoConLog eventoConLog, int volteCheCiRiprova, bool laPrimaVoltaControllaDaCapo,
-        int waitOgniVoltaCheCiRiprova = 10)
+    public void CheckSeILinkVanno2(EventoConLog eventoConLog, int? volteCheCiRiprova, bool? laPrimaVoltaControllaDaCapo,
+        int? waitOgniVoltaCheCiRiprova = 10)
     {
         for (var j = 0; j < volteCheCiRiprova; j++)
         {
-            var b = j != 0 || !laPrimaVoltaControllaDaCapo;
+            var b = j != 0 || !(laPrimaVoltaControllaDaCapo??false);
             foreach (var t in _l)
-                t.CheckSeIlLinkVa(b, eventoConLog);
+                t?.CheckSeIlLinkVa(b, eventoConLog);
 
-            Task.Delay(waitOgniVoltaCheCiRiprova).Wait();
+            Task.Delay(waitOgniVoltaCheCiRiprova ?? 0).Wait();
         }
     }
 
     public void AggiustaNomiDoppi()
     {
         foreach (var t in _l)
-            t.AggiustaNomeDoppio();
+            t?.AggiustaNomeDoppio();
     }
 
-    public void AddAndMerge(Gruppo g, int groupId)
+    public void AddAndMerge(Gruppo? g, int groupId)
     {
-        _l[groupId].Merge(g);
+        _l[groupId]?.Merge(g);
     }
 
     public int? FindInRamSQL(long id)
@@ -2215,7 +2242,7 @@ public class ListaGruppo : IEnumerable
         for (var i = 0; i < _l.Count; i++)
         {
             var g = _l[i];
-            if (g.PermanentId == ids) return i;
+            if (g?.PermanentId == ids) return i;
         }
 
         return null;
@@ -2224,34 +2251,37 @@ public class ListaGruppo : IEnumerable
     public void RicreaID()
     {
         foreach (var t in _l)
-            t.RicreaId();
+            t?.RicreaId();
     }
 
     public void Fix_link_IDCorsi_se_ce_uno_che_ha_il_link_con_id_corso_uguale()
     {
         for (var i = 0; i < _l.Count; i++)
         for (var j = 0; j < _l.Count; j++)
-            if (
-                i != j &&
-                !IsNullOrEmpty(_l[i].IDCorsoPolimi) &&
-                !IsNullOrEmpty(_l[j].IDCorsoPolimi) &&
-                _l[i].IDCorsoPolimi == _l[j].IDCorsoPolimi &&
-                IsNullOrEmpty(_l[i].IdLink) &&
-                !IsNullOrEmpty(_l[j].IdLink)
-            )
+        {
+            var gruppo = _l[i];
+            if (i == j ||
+                IsNullOrEmpty(gruppo?.IDCorsoPolimi) ||
+                IsNullOrEmpty(_l[j]?.IDCorsoPolimi) ||
+                gruppo?.IDCorsoPolimi != _l[j]?.IDCorsoPolimi ||
+                !IsNullOrEmpty(gruppo?.IdLink) ||
+                IsNullOrEmpty(_l[j]?.IdLink)) continue;
+            if (gruppo != null)
             {
-                _l[i].IdLink = _l[j].IdLink;
-                _l[i].Platform = _l[j].Platform;
-
-                _l[i].RicreaId();
+                gruppo.IdLink = _l[j]?.IdLink;
+                gruppo.Platform = _l[j]?.Platform;
             }
+                
+
+            gruppo?.RicreaId();
+        }
     }
 
     public void FixPianoStudi()
     {
         foreach (var t in _l)
         {
-            if (IsNullOrEmpty(t.PianoDiStudi))
+            if (IsNullOrEmpty(t?.PianoDiStudi))
             {
                 ;
             }
@@ -2263,13 +2293,13 @@ public class ListaGruppo : IEnumerable
                     t.PianoDiStudi = t.PianoDiStudi[..^1];
             }
 
-            t.RicreaId();
+            t?.RicreaId();
         }
     }
 
     public class CoordinatesBasedComparer : IComparer<Gruppo>
     {
-        public int Compare(Gruppo a, Gruppo b)
+        public int Compare(Gruppo? a, Gruppo? b)
         {
             switch (a)
             {
