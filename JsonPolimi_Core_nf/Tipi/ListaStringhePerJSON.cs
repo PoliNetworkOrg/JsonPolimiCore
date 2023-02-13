@@ -80,12 +80,12 @@ public class ListaStringhePerJSON
         foreach (var x1 in o)
             switch (x1?.StartsWith("(") ?? false)
             {
-                case true when (x1?.EndsWith("),") ?? false):
+                case true when x1?.EndsWith("),") ?? false:
                 {
                     var s3 = x1?[..^1];
                     return GetCcsCode2(s3);
                 }
-                case true when (x1?.EndsWith(")") ?? false):
+                case true when x1?.EndsWith(")") ?? false:
                     return GetCcsCode2(x1);
             }
 
